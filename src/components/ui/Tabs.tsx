@@ -12,12 +12,14 @@ export interface TabsProps {
 
 export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: TabsProps) {
   const initialTab = tabs.some((tab) => tab.id === defaultTab) ? defaultTab : tabs[0]?.id;
-  const [activeTab, setActiveTab] = React.useState(initialTab);
+  const [activeTab, setActiveTab] = React.useState<string | undefined>(initialTab);
   const baseId = React.useId();
   const tabRefs = React.useRef(new Map<string, HTMLButtonElement>());
 
   React.useEffect(() => {
-    if (!tabs.some((tab) => tab.id === activeTab)) setActiveTab(tabs[0]?.id);
+    if (!tabs.some((tab) => tab.id === activeTab)) {
+      setActiveTab(tabs[0]?.id);
+    }
   }, [activeTab, tabs]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
