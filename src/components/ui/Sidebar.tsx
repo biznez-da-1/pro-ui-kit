@@ -108,6 +108,7 @@ export function Sidebar({
                     item.active ? "page" : undefined
                   }
                   title={collapsed ? item.label : undefined}
+                  aria-label={collapsed ? item.label : undefined}
                   className={className}
                 >
                   {content}
@@ -121,6 +122,7 @@ export function Sidebar({
                 type="button"
                 onClick={item.onClick}
                 title={collapsed ? item.label : undefined}
+                aria-label={collapsed ? item.label : undefined}
                 className={className}
               >
                 {content}
