@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 export interface PopoverProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** A single focusable trigger element, preferably a native button or Button component. */
   trigger: React.ReactElement;
   children: React.ReactNode;
   align?: "left" | "center" | "right";
@@ -63,17 +64,6 @@ export function Popover({
       onClick: (event: React.MouseEvent<HTMLElement>) => {
         (trigger.props as React.HTMLAttributes<HTMLElement>).onClick?.(event);
         onOpenChange(!open);
-      },
-      onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-        (trigger.props as React.HTMLAttributes<HTMLElement>).onKeyDown?.(event);
-        if (
-          trigger.type !== "button" &&
-          event.key === "Enter" &&
-          !event.defaultPrevented
-        ) {
-          event.preventDefault();
-          onOpenChange(!open);
-        }
       },
     } as React.HTMLAttributes<HTMLElement>,
   );
