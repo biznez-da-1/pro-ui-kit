@@ -27,6 +27,10 @@ export function Avatar({
 }: AvatarProps) {
   const [imageError, setImageError] = React.useState(false);
 
+  React.useEffect(() => {
+    setImageError(false);
+  }, [src]);
+
   const showImage = Boolean(src) && !imageError;
 
   return (
