@@ -34,7 +34,7 @@ export function ActivityFeed({
             item.className,
           )}
         >
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-400">
+          <div aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-400">
             {item.icon ?? (
               <span
                 className="h-2 w-2 rounded-full bg-indigo-500"
