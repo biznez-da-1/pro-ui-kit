@@ -43,10 +43,14 @@ export function Sheet({
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
     const focusableSelector =
-      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    const getFocusable = () =>
+      Array.from(panel?.querySelectorAll<HTMLElement>(focusableSelector) ?? [])
+        .filter((element) => element.getClientRects().length > 0);
 
     const focusFirst = () => {
-      const first = panel?.querySelector<HTMLElement>(focusableSelector);
+      const first = getFocusable()[0];
       (first ?? panel)?.focus();
     };
 
@@ -58,9 +62,7 @@ export function Sheet({
       }
       if (event.key !== "Tab" || !panel) return;
 
-      const focusable = Array.from(
-        panel.querySelectorAll<HTMLElement>(focusableSelector),
-      ).filter((element) => element.offsetParent !== null);
+      const focusable = getFocusable();
       if (focusable.length === 0) {
         event.preventDefault();
         panel.focus();
@@ -93,13 +95,7 @@ export function Sheet({
 
   return (
     <div className="fixed inset-0 z-50">
-      <button
-        type="button"
-        aria-label="Close sheet"
-        tabIndex={-1}
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
-        onClick={onClose}
-      />
+      <button type="button" aria-label="Close sheet" tabIndex={-1} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div
         ref={panelRef}
         tabIndex={-1}
