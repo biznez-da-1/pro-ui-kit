@@ -32,7 +32,9 @@ export function Sheet({
 }: SheetProps) {
   const titleId = React.useId();
   const descriptionId = React.useId();
-  const panelRef = React.useRef<HTMLDivElement>(null);\n  const onCloseRef = React.useRef(onClose);\n  onCloseRef.current = onClose;
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const onCloseRef = React.useRef(onClose);
+  onCloseRef.current = onClose;
 
   React.useEffect(() => {
     if (!open) return;
