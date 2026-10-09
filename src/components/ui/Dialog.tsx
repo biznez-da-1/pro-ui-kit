@@ -24,6 +24,8 @@ export function Dialog({
   const titleId = React.useId();
   const descriptionId = React.useId();
   const panelRef = React.useRef<HTMLDivElement>(null);
+  const onCloseRef = React.useRef(onClose);
+  onCloseRef.current = onClose;
 
   React.useEffect(() => {
     if (!open) return;
@@ -32,7 +34,7 @@ export function Dialog({
     const previousOverflow = document.body.style.overflow;
     const panel = panelRef.current;
     const focusableSelector =
-      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      'a[href], button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
     const focusFirst = () => {
       const first = panel?.querySelector<HTMLElement>(focusableSelector);
@@ -41,14 +43,15 @@ export function Dialog({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        event.preventDefault();
+        onCloseRef.current();
         return;
       }
 
       if (event.key !== "Tab" || !panel) return;
       const focusable = Array.from(
         panel.querySelectorAll<HTMLElement>(focusableSelector),
-      ).filter((element) => element.offsetParent !== null);
+      ).filter((element) => element.getClientRects().length > 0);
 
       if (focusable.length === 0) {
         event.preventDefault();
@@ -77,7 +80,7 @@ export function Dialog({
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
@@ -85,7 +88,7 @@ export function Dialog({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <button
         type="button"
-        aria-label="Close dialog"
+        aria-hidden="true"
         tabIndex={-1}
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}

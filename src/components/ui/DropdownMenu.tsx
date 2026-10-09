@@ -16,7 +16,7 @@ export interface DropdownMenuItem {
 
 export interface DropdownMenuProps {
   /** Use a single button-like element, such as the Button component. */
-  trigger: React.ReactElement;
+  trigger: React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
   items: DropdownMenuItem[];
   align?: "left" | "right";
   className?: string;
@@ -25,12 +25,11 @@ export interface DropdownMenuProps {
 export function DropdownMenu({ trigger, items, align = "right", className }: DropdownMenuProps) {
   const [open, setOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
-  const triggerRef = React.useRef<HTMLElement | null>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
 
   const closeMenu = React.useCallback((restoreFocus = false) => {
     setOpen(false);
-    if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
+    if (restoreFocus) requestAnimationFrame(() => rootRef.current?.querySelector<HTMLButtonElement>("button")?.focus());
   }, []);
 
   React.useEffect(() => {
@@ -70,22 +69,16 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
     };
   }, [open, closeMenu]);
 
-  const triggerElement = React.cloneElement(trigger as React.ReactElement<any>, {
-    ref: (node: HTMLElement | null) => {
-      triggerRef.current = node;
-      const originalRef = (trigger as any).ref;
-      if (typeof originalRef === "function") originalRef(node);
-      else if (originalRef && typeof originalRef === "object") originalRef.current = node;
-    },
+  const triggerElement = React.cloneElement(trigger, {
     type: "button",
     "aria-haspopup": "menu",
     "aria-expanded": open,
-    onClick: (event: React.MouseEvent<HTMLElement>) => {
-      (trigger.props as any).onClick?.(event);
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+      trigger.props.onClick?.(event);
       setOpen((value) => !value);
     },
-    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-      (trigger.props as any).onKeyDown?.(event);
+    onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      trigger.props.onKeyDown?.(event);
       if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         setOpen(true);

@@ -29,15 +29,42 @@ export function FileUpload({
   const [dragging, setDragging] = React.useState(false);
   const [message, setMessage] = React.useState("");
 
+  const matchesAccept = (file: File) => {
+    if (!accept?.trim()) return true;
+    const fileName = file.name.toLowerCase();
+    const mimeType = file.type.toLowerCase();
+    return accept
+      .split(",")
+      .map((item) => item.trim().toLowerCase())
+      .filter(Boolean)
+      .some((item) => {
+        if (item.startsWith(".")) return fileName.endsWith(item);
+        if (item.endsWith("/*")) return mimeType.startsWith(item.slice(0, -1));
+        return mimeType === item;
+      });
+  };
+
   const processFiles = (incoming: File[]) => {
-    const rejected = maxSize ? incoming.filter((file) => file.size > maxSize) : [];
-    const accepted = maxSize ? incoming.filter((file) => file.size <= maxSize) : incoming;
-    const nextFiles = multiple ? [...files, ...accepted] : accepted.slice(0, 1);
+    const tooLarge = (file: File) => maxSize != null && maxSize >= 0 && file.size > maxSize;
+    const rejectedSize = incoming.filter(tooLarge);
+    const rejectedType = incoming.filter((file) => !tooLarge(file) && !matchesAccept(file));
+    const accepted = incoming.filter((file) => !tooLarge(file) && matchesAccept(file));
+    const uniqueAccepted = multiple
+      ? accepted.filter((file) => !files.some((existing) =>
+          existing.name === file.name && existing.size === file.size && existing.lastModified === file.lastModified,
+        ))
+      : accepted.slice(0, 1);
+    const nextFiles = multiple ? [...files, ...uniqueAccepted] : uniqueAccepted;
     setFiles(nextFiles);
     onFilesChange?.(nextFiles);
-    setMessage(rejected.length
-      ? `${rejected.length} file(s) were skipped because they exceed the ${(maxSize! / 1024 / 1024).toFixed(1)} MB size limit.`
-      : accepted.length ? `${accepted.length} file(s) selected.` : "");
+
+    const messages: string[] = [];
+    if (uniqueAccepted.length) messages.push(`${uniqueAccepted.length} file(s) selected.`);
+    if (rejectedSize.length) messages.push(`${rejectedSize.length} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(1)} MB size limit.`);
+    if (rejectedType.length) messages.push(`${rejectedType.length} file(s) did not match the accepted file types.`);
+    if (!incoming.length) messages.push("No files selected.");
+    if (multiple && accepted.length > uniqueAccepted.length) messages.push("Duplicate files were skipped.");
+    setMessage(messages.join(" "));
   };
 
   const removeFile = (index: number) => {
