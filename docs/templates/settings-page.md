@@ -70,7 +70,7 @@ export function SettingsTemplate() {
                 <p className="text-sm font-medium">Product updates</p>
                 <p className="mt-1 text-xs text-neutral-400">Toggle the preference in this local demo.</p>
               </div>
-              <Switch checked={productUpdates} onCheckedChange={setProductUpdates} />
+              <Switch checked={productUpdates} onChange={(event) => setProductUpdates(event.target.checked)} />
             </div>
           </Card>
           <div className="flex flex-wrap items-center gap-3">
