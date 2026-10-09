@@ -23,6 +23,8 @@ export function CopyButton({ value, className, label = "Copy" }: CopyButtonProps
 
   const handleCopy = async () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = null;
+    setCopiedValue(null);
     setFailedValue(null);
 
     try {

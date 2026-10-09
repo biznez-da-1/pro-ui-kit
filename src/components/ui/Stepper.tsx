@@ -28,7 +28,11 @@ export function Stepper({ steps, currentStep, className, label = "Progress" }: S
 
           return (
             <React.Fragment key={step.id}>
-              <li className="flex min-w-0 flex-1 flex-col items-center text-center">
+              <li
+                className="flex min-w-0 flex-1 flex-col items-center text-center"
+                aria-current={active ? "step" : undefined}
+                aria-label={`Step ${stepNumber}: ${step.label}${completed ? ", completed" : active ? ", current" : ""}`}
+              >
                 <div
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-full border text-sm font-semibold transition-colors motion-reduce:transition-none",
@@ -36,8 +40,6 @@ export function Stepper({ steps, currentStep, className, label = "Progress" }: S
                     active && "border-indigo-500 bg-indigo-600 text-white",
                     !completed && !active && "border-neutral-700 bg-neutral-950 text-neutral-500",
                   )}
-                  aria-current={active ? "step" : undefined}
-                  aria-label={`Step ${stepNumber}: ${step.label}${completed ? ", completed" : active ? ", current" : ""}`}
                 >
                   {completed ? <Check className="h-4 w-4" aria-hidden="true" /> : stepNumber}
                 </div>

@@ -44,6 +44,7 @@ export function Timeline({
             )}
 
             <div
+              aria-hidden="true"
               className={cn(
                 "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border",
                 statusClasses[item.status ?? "default"],

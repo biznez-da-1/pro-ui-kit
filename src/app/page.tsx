@@ -599,8 +599,8 @@ export default function Home() {
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                disabled={step === 0}
-                onClick={() => setStep((value) => Math.max(0, value - 1))}
+                disabled={step === 1}
+                onClick={() => setStep((value) => Math.max(1, value - 1))}
               >
                 Previous
               </Button>
@@ -752,9 +752,10 @@ export default function Home() {
             <Tooltip content="Settings" side="right">
               <button
                 type="button"
-                className="rounded-lg border border-white/10 p-3 text-zinc-300"
+                aria-label="Settings"
+                className="rounded-lg border border-white/10 p-3 text-zinc-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
-                <Settings size={18} />
+                <Settings size={18} aria-hidden="true" />
               </button>
             </Tooltip>
           </div>
@@ -1041,6 +1042,7 @@ export function Example() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               onClear={() => setSearch("")}
+              aria-label="Search all 40 components"
               placeholder="Search all 40 components..."
             />
             <p className="text-sm text-zinc-400">
