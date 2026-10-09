@@ -34,7 +34,7 @@ export function Dialog({
     const previousOverflow = document.body.style.overflow;
     const panel = panelRef.current;
     const focusableSelector =
-      'a[href], button:not([disabled]):not([tabindex="-1"]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      'a[href], button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
     const focusFirst = () => {
       const first = panel?.querySelector<HTMLElement>(focusableSelector);
