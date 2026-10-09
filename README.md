@@ -1,6 +1,6 @@
 # Pro UI Kit
 
-Pro UI Kit is a reusable React + TypeScript component library and interactive showcase built with Next.js and Tailwind CSS. The project currently contains 41 UI components and is being prepared for production-quality reuse.
+Pro UI Kit is a reusable React + TypeScript component library and interactive showcase built with Next.js and Tailwind CSS. The project currently contains 40 UI components and is being prepared for production-quality reuse.
 
 ## Project goals
 
@@ -44,7 +44,7 @@ npm run build -- --webpack
 - `src/app`: Next.js App Router pages, layout, and global styles
 - `src/components/ui`: reusable UI components and public exports
 - `src/lib`: shared utilities such as Tailwind class merging
-- `docs`: accessibility guidance, audit notes, and template recipes
+- `docs`: accessibility guidance and reusable template recipes
 
 ## Usage
 
@@ -67,7 +67,7 @@ Check each component's props before use. Components may have different interacti
 
 ## Accessibility
 
-Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. Review [the accessibility checklist](./docs/accessibility.md) before treating a component as release-ready.
+Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. Review [the accessibility checklist](./docs/accessibility.md) before treating a component as release-ready. Starter recipes: [dashboard](./docs/templates/dashboard.md) and [accessible form workflow](./docs/templates/form-workflow.md).
 
 ## Current release status
 
