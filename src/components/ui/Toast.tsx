@@ -13,31 +13,13 @@ export interface ToastProps {
 }
 
 const variants = {
-  success: {
-    icon: CheckCircle2,
-    className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  },
-  info: {
-    icon: Info,
-    className: "border-blue-500/30 bg-blue-500/10 text-blue-300",
-  },
-  warning: {
-    icon: TriangleAlert,
-    className: "border-amber-500/30 bg-amber-500/10 text-amber-300",
-  },
-  error: {
-    icon: TriangleAlert,
-    className: "border-red-500/30 bg-red-500/10 text-red-300",
-  },
+  success: { icon: CheckCircle2, className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300" },
+  info: { icon: Info, className: "border-blue-500/30 bg-blue-500/10 text-blue-300" },
+  warning: { icon: TriangleAlert, className: "border-amber-500/30 bg-amber-500/10 text-amber-300" },
+  error: { icon: TriangleAlert, className: "border-red-500/30 bg-red-500/10 text-red-300" },
 };
 
-export function Toast({
-  title,
-  message,
-  variant = "info",
-  onClose,
-  className,
-}: ToastProps) {
+export function Toast({ title, message, variant = "info", onClose, className }: ToastProps) {
   const config = variants[variant];
   const Icon = config.icon;
   const isError = variant === "error";
@@ -46,6 +28,7 @@ export function Toast({
     <div
       role={isError ? "alert" : "status"}
       aria-live={isError ? "assertive" : "polite"}
+      aria-atomic="true"
       className={cn(
         "flex w-full max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-xl backdrop-blur-xl",
         config.className,

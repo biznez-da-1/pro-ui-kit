@@ -31,7 +31,13 @@ export function Slider({
   const [internalValue, setInternalValue] = React.useState(defaultValue);
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
-  const currentValue = value ?? internalValue;
+  const safeMin = Number.isFinite(min) ? min : 0;
+  const safeMax = Number.isFinite(max) && max > safeMin ? max : safeMin + 100;
+  const safeStep = Number.isFinite(step) && step > 0 ? step : 1;
+  const rawValue = value ?? internalValue;
+  const currentValue = Number.isFinite(rawValue)
+    ? Math.min(safeMax, Math.max(safeMin, rawValue))
+    : safeMin;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextValue = Number(event.target.value);
@@ -48,9 +54,9 @@ export function Slider({
         id={inputId}
         type="range"
         value={currentValue}
-        min={min}
-        max={max}
-        step={step}
+        min={safeMin}
+        max={safeMax}
+        step={safeStep}
         disabled={disabled}
         onChange={handleChange}
         className="h-2 w-full cursor-pointer appearance-none rounded-full bg-neutral-800 accent-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 disabled:cursor-not-allowed disabled:opacity-50"
