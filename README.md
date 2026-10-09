@@ -67,7 +67,7 @@ Check each component's props before use. Components may have different interacti
 
 ## Accessibility
 
-Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. Review [the accessibility checklist](./docs/accessibility.md) before treating a component as release-ready. Starter recipes: [dashboard](./docs/templates/dashboard.md), [accessible form workflow](./docs/templates/form-workflow.md), and [loading, error, and empty states](./docs/templates/loading-error-empty-states.md).
+Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. Review [the accessibility checklist](./docs/accessibility.md) before treating a component as release-ready. Starter recipes: [dashboard](./docs/templates/dashboard.md), [accessible form workflow](./docs/templates/form-workflow.md), and [loading, error, and empty states](./docs/templates/loading-error-empty-states.md), and [settings page](./docs/templates/settings-page.md).
 
 ## Current release status
 
