@@ -44,54 +44,55 @@ export function RadioGroup({
   };
 
   return (
-    <div
-      role="radiogroup"
+    <fieldset
+      disabled={disabled}
       aria-label={label}
-      aria-disabled={disabled || undefined}
       className={cn(
-        "flex gap-3",
-        orientation === "vertical" ? "flex-col" : "flex-row flex-wrap",
+        "min-w-0 border-0 p-0",
         disabled && "opacity-60",
         className,
       )}
     >
-      {options.map((option) => {
-        const id = `${generatedId}-${option.value}`;
-        const optionDisabled = disabled || option.disabled;
+      <legend className="sr-only">{label}</legend>
+      <div className={cn("flex gap-3", orientation === "vertical" ? "flex-col" : "flex-row flex-wrap")}>
+        {options.map((option) => {
+          const id = `${generatedId}-${option.value}`;
+          const optionDisabled = disabled || option.disabled;
 
-        return (
-          <label
-            key={option.value}
-            htmlFor={id}
-            className={cn("flex items-start gap-3", optionDisabled ? "cursor-not-allowed" : "cursor-pointer")}
-          >
-            <input
-              id={id}
-              type="radio"
-              name={groupName}
-              value={option.value}
-              checked={selectedValue === option.value}
-              disabled={optionDisabled}
-              onChange={() => handleChange(option.value)}
-              className="peer sr-only"
-            />
-            <span
-              aria-hidden="true"
-              className={cn(
-                "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
-                "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-neutral-950",
-                selectedValue === option.value ? "border-white bg-white" : "border-neutral-700 bg-neutral-950",
-              )}
+          return (
+            <label
+              key={option.value}
+              htmlFor={id}
+              className={cn("flex items-start gap-3", optionDisabled ? "cursor-not-allowed" : "cursor-pointer")}
             >
-              {selectedValue === option.value && <span className="h-2 w-2 rounded-full bg-neutral-950" />}
-            </span>
-            <span className="min-w-0">
-              <span className="block text-sm font-medium text-white">{option.label}</span>
-              {option.description && <span className="mt-0.5 block text-xs text-neutral-500">{option.description}</span>}
-            </span>
-          </label>
-        );
-      })}
-    </div>
+              <input
+                id={id}
+                type="radio"
+                name={groupName}
+                value={option.value}
+                checked={selectedValue === option.value}
+                disabled={option.disabled}
+                onChange={() => handleChange(option.value)}
+                className="peer sr-only"
+              />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
+                  "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-neutral-950",
+                  selectedValue === option.value ? "border-white bg-white" : "border-neutral-700 bg-neutral-950",
+                )}
+              >
+                {selectedValue === option.value && <span className="h-2 w-2 rounded-full bg-neutral-950" />}
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-medium text-white">{option.label}</span>
+                {option.description && <span className="mt-0.5 block text-xs text-neutral-500">{option.description}</span>}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
   );
 }
