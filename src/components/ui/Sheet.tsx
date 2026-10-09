@@ -32,7 +32,7 @@ export function Sheet({
 }: SheetProps) {
   const titleId = React.useId();
   const descriptionId = React.useId();
-  const panelRef = React.useRef<HTMLDivElement>(null);
+  const panelRef = React.useRef<HTMLDivElement>(null);\n  const onCloseRef = React.useRef(onClose);\n  onCloseRef.current = onClose;
 
   React.useEffect(() => {
     if (!open) return;
@@ -51,7 +51,7 @@ export function Sheet({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (event.key !== "Tab" || !panel) return;
@@ -85,7 +85,7 @@ export function Sheet({
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
