@@ -1274,9 +1274,9 @@ export function Example() {
                     className="w-full sm:max-w-md"
                   />
 
-                  <div className="text-xs text-zinc-500">
-                    {filteredComponents.length} / {allComponents.length}
-                  </div>
+                  <p role="status" aria-live="polite" aria-atomic="true" className="text-xs text-zinc-500">
+                    Showing {filteredComponents.length} of {allComponents.length} components
+                  </p>
                 </div>
               </div>
 
