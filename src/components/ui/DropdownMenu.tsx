@@ -112,9 +112,19 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
   );
 }
 
-function MenuItem({ item, onClose }: { item: DropdownMenuItem; onClose: () => void }) {
+function MenuItem({
+  item,
+  onClose,
+  onNavigateBack,
+}: {
+  item: DropdownMenuItem;
+  onClose: () => void;
+  onNavigateBack?: () => void;
+}) {
   const [submenuOpen, setSubmenuOpen] = React.useState(false);
   const hasSubmenu = Boolean(item.submenu?.length);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const submenuRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelect = () => {
     if (item.disabled) return;
@@ -129,12 +139,25 @@ function MenuItem({ item, onClose }: { item: DropdownMenuItem; onClose: () => vo
   return (
     <div className="relative">
       <button
+        ref={triggerRef}
         type="button"
         role="menuitem"
         disabled={item.disabled}
         aria-haspopup={hasSubmenu ? "menu" : undefined}
         aria-expanded={hasSubmenu ? submenuOpen : undefined}
         onClick={handleSelect}
+        onKeyDown={(event) => {
+          if (hasSubmenu && event.key === "ArrowRight") {
+            event.preventDefault();
+            setSubmenuOpen(true);
+            requestAnimationFrame(() => {
+              submenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]:not(:disabled)')?.focus();
+            });
+          } else if (event.key === "ArrowLeft" && onNavigateBack) {
+            event.preventDefault();
+            onNavigateBack();
+          }
+        }}
         onMouseEnter={() => hasSubmenu && setSubmenuOpen(true)}
         className={cn(
           "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors",
@@ -148,8 +171,18 @@ function MenuItem({ item, onClose }: { item: DropdownMenuItem; onClose: () => vo
         {hasSubmenu && <ChevronRight className="h-4 w-4 shrink-0 text-neutral-500" aria-hidden="true" />}
       </button>
       {hasSubmenu && submenuOpen && (
-        <div role="menu" aria-label={item.label} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-neutral-800 bg-neutral-950 p-1 shadow-2xl">
-          {item.submenu?.map((subitem) => <MenuItem key={subitem.id} item={subitem} onClose={onClose} />)}
+        <div ref={submenuRef} role="menu" aria-label={item.label} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-neutral-800 bg-neutral-950 p-1 shadow-2xl">
+          {item.submenu?.map((subitem) => (
+            <MenuItem
+              key={subitem.id}
+              item={subitem}
+              onClose={onClose}
+              onNavigateBack={() => {
+                setSubmenuOpen(false);
+                triggerRef.current?.focus();
+              }}
+            />
+          ))}}
         </div>
       )}
     </div>
