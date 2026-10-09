@@ -131,6 +131,10 @@ const componentGroups = [
     ],
   },
   {
+    name: "Commerce",
+    items: ["PricingCard"],
+  },
+  {
     name: "Utilities",
     items: [
       "Avatar",
@@ -865,7 +869,7 @@ export default function Home() {
           <div className="grid gap-4 md:grid-cols-3">
             <StatCard
               title="Components"
-              value={41}
+              value={40}
               description="Production-ready building blocks"
               trend={12}
               trendLabel="vs last build"
@@ -905,7 +909,7 @@ export default function Home() {
               {
                 id: "2",
                 title: "Component library built",
-                description: "41 reusable components implemented.",
+                description: "40 reusable components implemented.",
                 date: "Step 2",
                 status: "success",
                 icon: <Layers3 size={14} />,
@@ -1045,7 +1049,7 @@ export function Example() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               onClear={() => setSearch("")}
-              placeholder="Search all 41 components..."
+              placeholder="Search all 40 components..."
             />
             <p className="text-sm text-zinc-400">
               Showing {filteredComponents.length} of {allComponents.length} components.
@@ -1112,7 +1116,7 @@ export function Example() {
             description="The complete production-ready React component library."
             popular
             features={[
-              "41 production-ready components",
+              "40 production-ready components",
               "TypeScript source",
               "Tailwind CSS",
               "Commercial-ready architecture",
@@ -1135,7 +1139,7 @@ export function Example() {
   };
 
   return (
-    <main className="min-h-screen bg-[#070707] text-white">
+    <main className="min-h-screen bg-[#070707] text-white">\n      <a href="#components" className="sr-only z-[100] rounded-lg bg-white px-4 py-3 font-medium text-black focus:not-sr-only focus:fixed focus:left-4 focus:top-4">Skip to components</a>
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#070707]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
           <a
@@ -1148,7 +1152,7 @@ export function Example() {
             <span>PRO UI KIT</span>
           </a>
 
-          <nav className="hidden items-center gap-6 text-sm text-zinc-400 md:flex">
+          <nav aria-label="Primary navigation" className="hidden items-center gap-6 text-sm text-zinc-400 md:flex">
             <a href="#components" className="transition hover:text-white">
               Components
             </a>
@@ -1177,7 +1181,7 @@ export function Example() {
           </div>
 
           <div className="mx-auto max-w-4xl text-center">
-            <Badge variant="danger">41 production-ready components</Badge>
+            <Badge variant="danger">40 production-ready components</Badge>
 
             <h1 className="mt-6 text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl">
               Build faster.
@@ -1373,7 +1377,7 @@ export function Example() {
               description="Everything you need to build polished React interfaces."
               popular
               features={[
-                "41 production-ready components",
+                "40 production-ready components",
                 "TypeScript source",
                 "Tailwind CSS",
                 "Reusable component architecture",
@@ -1400,7 +1404,7 @@ export function Example() {
       <footer className="border-t border-white/10 py-10">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>PRO UI KIT</div>
-          <div>41 components · React · TypeScript · Tailwind</div>
+          <div>40 components · React · TypeScript · Tailwind</div>
         </div>
       </footer>
 
