@@ -17,11 +17,11 @@ export const Textarea = React.forwardRef<
         "min-h-24 w-full resize-y rounded-xl border bg-neutral-950 px-3 py-2 text-sm text-white",
         "placeholder:text-neutral-500",
         "transition-colors duration-200",
-        "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-950",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950",
         "disabled:cursor-not-allowed disabled:opacity-50",
         error
-          ? "border-red-500/70 focus:border-red-500 focus:ring-red-500/30"
-          : "border-neutral-800 focus:border-indigo-500 focus:ring-indigo-500/30",
+          ? "border-red-500/70 focus-visible:border-red-500 focus-visible:ring-red-500/30"
+          : "border-neutral-800 focus-visible:border-indigo-500 focus-visible:ring-indigo-500/30",
         className,
       )}
       {...props}
