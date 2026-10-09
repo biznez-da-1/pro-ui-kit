@@ -82,8 +82,8 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
   const handleDialogKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key !== "Tab" || !dialogRef.current) return;
     const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    )).filter((element) => element.offsetParent !== null);
+      'button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])',
+    )).filter((element) => element.getClientRects().length > 0);
     if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
@@ -100,7 +100,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[15vh]" onKeyDown={handleDialogKeyDown}>
-      <button type="button" aria-label="Close command menu" tabIndex={-1} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <button type="button" aria-hidden="true" tabIndex={-1} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div
         ref={dialogRef}
         className={cn("relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl", className)}
@@ -113,13 +113,15 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
           <Search className="h-5 w-5 shrink-0 text-neutral-500" aria-hidden="true" />
           <input
             ref={inputRef}
+            role="combobox"
+            aria-autocomplete="list"
             value={query}
             onChange={(event) => { setQuery(event.target.value); setActiveIndex(0); }}
             onKeyDown={handleInputKeyDown}
             placeholder={placeholder}
             aria-label="Search commands"
             aria-controls={`${baseId}-results`}
-            aria-expanded={filtered.length > 0}
+            aria-expanded="true"
             aria-activedescendant={filtered[activeIndex] ? `${baseId}-option-${activeIndex}` : undefined}
             className="h-14 min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-neutral-500 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
           />
@@ -133,17 +135,16 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
               <p className="mt-1 text-xs text-neutral-500">Try a different search.</p>
             </div>
           ) : filtered.map((item, index) => (
-            <button
+            <div
               key={item.id}
               id={`${baseId}-option-${index}`}
-              type="button"
               role="option"
               aria-selected={index === activeIndex}
-              tabIndex={-1}
               onMouseEnter={() => setActiveIndex(index)}
-              onClick={() => { item.onSelect(); onClose(); }}
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => { item.onSelect(); onCloseRef.current(); }}
               className={cn(
-                "flex w-full items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
+                "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
                 index === activeIndex ? "bg-neutral-900" : "hover:bg-neutral-900/60",
               )}
             >
@@ -152,7 +153,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
                 <span className="block truncate text-sm font-medium text-white">{item.label}</span>
                 {item.description && <span className="mt-0.5 block truncate text-xs text-neutral-500">{item.description}</span>}
               </span>
-            </button>
+            </div>
           ))}
         </div>
       </div>
