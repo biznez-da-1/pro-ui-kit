@@ -14,6 +14,8 @@ export interface FileUploadProps {
   label?: string;
 }
 
+const fileKey = (file: File) => `${file.name}:${file.size}:${file.lastModified}`;
+
 export function FileUpload({
   accept,
   multiple = false,
@@ -49,10 +51,14 @@ export function FileUpload({
     const rejectedSize = incoming.filter(tooLarge);
     const rejectedType = incoming.filter((file) => !tooLarge(file) && !matchesAccept(file));
     const accepted = incoming.filter((file) => !tooLarge(file) && matchesAccept(file));
+    const seen = new Set(multiple ? files.map(fileKey) : []);
     const uniqueAccepted = multiple
-      ? accepted.filter((file) => !files.some((existing) =>
-          existing.name === file.name && existing.size === file.size && existing.lastModified === file.lastModified,
-        ))
+      ? accepted.filter((file) => {
+          const key = fileKey(file);
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        })
       : accepted.slice(0, 1);
     const nextFiles = multiple ? [...files, ...uniqueAccepted] : uniqueAccepted;
     setFiles(nextFiles);
@@ -62,12 +68,14 @@ export function FileUpload({
     if (uniqueAccepted.length) messages.push(`${uniqueAccepted.length} file(s) selected.`);
     if (rejectedSize.length) messages.push(`${rejectedSize.length} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(1)} MB size limit.`);
     if (rejectedType.length) messages.push(`${rejectedType.length} file(s) did not match the accepted file types.`);
-    if (!incoming.length) messages.push("No files selected.");
+    if (!multiple && accepted.length > 1) messages.push("Only the first accepted file was selected.");
     if (multiple && accepted.length > uniqueAccepted.length) messages.push("Duplicate files were skipped.");
+    if (!incoming.length) messages.push("No files selected.");
     setMessage(messages.join(" "));
   };
 
   const removeFile = (index: number) => {
+    if (disabled) return;
     const nextFiles = files.filter((_, fileIndex) => fileIndex !== index);
     setFiles(nextFiles);
     onFilesChange?.(nextFiles);
@@ -105,7 +113,7 @@ export function FileUpload({
         onDragLeave={() => setDragging(false)}
         onDrop={handleDrop}
         className={cn(
-          "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors",
+          "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors motion-reduce:transition-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950",
           dragging ? "border-indigo-500 bg-indigo-500/10" : "border-neutral-800 bg-neutral-950 hover:border-neutral-700 hover:bg-neutral-900/50",
           disabled && "cursor-not-allowed opacity-50",
@@ -118,7 +126,7 @@ export function FileUpload({
         <p className="mt-4 text-sm font-medium text-white">Drop files here or click to browse</p>
         <p id={`${generatedId}-hint`} className="mt-1 text-xs text-neutral-500">
           {accept ? `Accepted: ${accept}` : "Select a file from your device"}
-          {maxSize ? ` · Up to ${(maxSize / 1024 / 1024).toFixed(1)} MB per file` : ""}
+          {maxSize != null && maxSize >= 0 ? ` · Up to ${(maxSize / 1024 / 1024).toFixed(1)} MB per file` : ""}
         </p>
       </div>
 
@@ -134,7 +142,7 @@ export function FileUpload({
                 <p className="truncate text-sm font-medium text-neutral-200">{file.name}</p>
                 <p className="mt-0.5 text-xs text-neutral-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
-              <button type="button" onClick={() => removeFile(index)} aria-label={`Remove ${file.name}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+              <button type="button" disabled={disabled} onClick={() => removeFile(index)} aria-label={`Remove ${file.name}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50">
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </li>

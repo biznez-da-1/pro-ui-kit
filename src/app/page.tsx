@@ -191,7 +191,7 @@ export default function Home() {
   const [progress, setProgress] = React.useState(72);
   const [textValue, setTextValue] = React.useState("");
   const [textareaValue, setTextareaValue] = React.useState("");
-  const [filterValue, setFilterValue] = React.useState("all");
+  const [filterValue, setFilterValue] = React.useState("");
   const [step, setStep] = React.useState(1);
   const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
@@ -1011,13 +1011,12 @@ export function Example() {
           <div className="space-y-4">
             <FilterBar
               options={[
-                { id: "all", label: "All", value: "all" },
                 { id: "active", label: "Active", value: "active" },
                 { id: "popular", label: "Popular", value: "popular" },
               ]}
               value={filterValue}
               onChange={setFilterValue}
-              onClear={() => setFilterValue("all")}
+              onClear={() => setFilterValue("")}
             />
             <p className="text-sm text-zinc-400">
               Current filter: {filterValue}
