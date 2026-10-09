@@ -24,7 +24,6 @@ export function Popover({
   label = "Additional details",
 }: PopoverProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const triggerRef = React.useRef<HTMLElement | null>(null);
   const onOpenChangeRef = React.useRef(onOpenChange);
   onOpenChangeRef.current = onOpenChange;
 
@@ -40,7 +39,7 @@ export function Popover({
       if (event.key === "Escape") {
         event.preventDefault();
         onOpenChangeRef.current(false);
-        triggerRef.current?.focus();
+        containerRef.current?.querySelector<HTMLElement>('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')?.focus();
       }
     };
 
@@ -55,15 +54,12 @@ export function Popover({
   const triggerElement = React.cloneElement(
     trigger as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
     {
-      ref: (node: HTMLElement | null) => {
-        triggerRef.current = node;
-      },
       "aria-haspopup": "dialog",
       "aria-expanded": open,
       "aria-label": trigger.props["aria-label"] ?? label,
       onClick: (event: React.MouseEvent<HTMLElement>) => {
         (trigger.props as React.HTMLAttributes<HTMLElement>).onClick?.(event);
-        onOpenChange(!open);
+        if (!event.defaultPrevented) onOpenChange(!open);
       },
     } as React.HTMLAttributes<HTMLElement>,
   );
