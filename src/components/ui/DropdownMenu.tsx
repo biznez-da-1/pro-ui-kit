@@ -182,7 +182,7 @@ function MenuItem({
                 triggerRef.current?.focus();
               }}
             />
-          ))}}
+          ))}
         </div>
       )}
     </div>
