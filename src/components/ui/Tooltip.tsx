@@ -34,25 +34,28 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
       child.props.onBlur?.(event);
       setOpen(false);
     },
-    onMouseEnter: (event: React.MouseEvent<HTMLElement>) => {
-      child.props.onMouseEnter?.(event);
-      setOpen(true);
-    },
-    onMouseLeave: (event: React.MouseEvent<HTMLElement>) => {
-      child.props.onMouseLeave?.(event);
-      setOpen(false);
-    },
   } as React.HTMLAttributes<HTMLElement>);
 
   return (
-    <span className="relative inline-flex" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+    <span
+      className="relative inline-flex"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) setOpen(false);
+      }}
+    >
       {trigger}
       {open && (
-        <span id={tooltipId} role="tooltip" className={cn(
-          "pointer-events-none absolute z-50 whitespace-nowrap rounded-lg border border-neutral-700 bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-xl",
-          sideClasses[side],
-          className,
-        )}>
+        <span
+          id={tooltipId}
+          role="tooltip"
+          className={cn(
+            "pointer-events-none absolute z-50 whitespace-nowrap rounded-lg border border-neutral-700 bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-xl",
+            sideClasses[side],
+            className,
+          )}
+        >
           {content}
         </span>
       )}
