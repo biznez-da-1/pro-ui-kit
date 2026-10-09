@@ -17,7 +17,7 @@ Use the same state model across pages so people always know whether content is l
 import { Alert, Button, EmptyState, Progress, Skeleton } from "@/components/ui";
 
 type ResourceState =
-  | { status: "loading" }
+  | { status: "loading"; progress?: number }
   | { status: "error"; message: string }
   | { status: "empty" }
   | { status: "ready"; items: { id: string; title: string }[] };
@@ -32,6 +32,9 @@ export function ResourcePanel({ state, onRetry }: {
         <Skeleton className="h-7 w-1/3" />
         <Skeleton className="h-20 w-full" />
         <Skeleton className="h-20 w-full" />
+        {state.progress != null && (
+          <Progress label="Loading projects" value={state.progress} max={100} showLabel />
+        )}
       </section>
     );
   }
@@ -65,7 +68,6 @@ export function ResourcePanel({ state, onRetry }: {
           <li key={item.id} className="rounded-xl border p-4">{item.title}</li>
         ))}
       </ul>
-      <Progress label="Projects loaded" value={state.items.length} max={Math.max(state.items.length, 1)} />
     </section>
   );
 }
