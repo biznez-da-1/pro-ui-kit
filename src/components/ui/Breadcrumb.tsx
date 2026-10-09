@@ -78,7 +78,8 @@ export function BreadcrumbEllipsis({
 }) {
   return (
     <span
-      aria-label="More"
+      role="img"
+      aria-label="More breadcrumb items"
       className={cn(
         "inline-flex items-center justify-center text-neutral-500",
         className,
