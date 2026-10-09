@@ -4,11 +4,11 @@ A responsive dashboard composition recipe. It provides layout and sample UI only
 
 ## Component contracts used here
 
-- `Navbar`: optional `brand`, `links`, and `actions` props; check its current type before using.
+- `Navbar`: all props are optional; use `logo`, `children`, `actions`, or `mobileMenu` for its supported slots.
 - `Sidebar`: requires an `items` array. Each item needs an `id` and `label`; an item can use `href` or `onClick`.
 - `StatCard`: requires `title` and `value`.
-- `ActivityFeed`: requires an `items` array.
-- `EmptyState`: requires a `title` and `description`; `action` is optional.
+- `ActivityFeed`: requires an `items` array. Each activity needs `id`, `title`, and `timestamp`.
+- `EmptyState`: requires `title`; `description` and `action` are optional.
 
 ## Example
 
