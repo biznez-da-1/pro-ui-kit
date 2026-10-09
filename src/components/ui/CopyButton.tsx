@@ -11,33 +11,30 @@ export interface CopyButtonProps {
 }
 
 export function CopyButton({ value, className, label = "Copy" }: CopyButtonProps) {
-  const [copied, setCopied] = React.useState(false);
-  const [copyFailed, setCopyFailed] = React.useState(false);
+  const [copiedValue, setCopiedValue] = React.useState<string | null>(null);
+  const [failedValue, setFailedValue] = React.useState<string | null>(null);
+  const copied = copiedValue === value;
+  const copyFailed = failedValue === value;
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   React.useEffect(() => () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, []);
 
-  React.useEffect(() => {
-    setCopied(false);
-    setCopyFailed(false);
-  }, [value]);
-
   const handleCopy = async () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    setCopyFailed(false);
+    setFailedValue(null);
 
     try {
       if (!navigator.clipboard?.writeText) throw new Error("Clipboard API unavailable");
       await navigator.clipboard.writeText(value);
-      setCopied(true);
+      setCopiedValue(value);
       timeoutRef.current = setTimeout(() => {
-        setCopied(false);
+        setCopiedValue(null);
         timeoutRef.current = null;
       }, 2000);
     } catch {
-      setCopyFailed(true);
+      setFailedValue(value);
     }
   };
 
