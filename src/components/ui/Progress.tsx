@@ -5,6 +5,7 @@ export interface ProgressProps {
   max?: number;
   className?: string;
   showLabel?: boolean;
+  label?: string;
 }
 
 export function Progress({
@@ -12,18 +13,17 @@ export function Progress({
   max = 100,
   className,
   showLabel = false,
+  label = "Progress",
 }: ProgressProps) {
-  const safeMax = max > 0 ? max : 100;
-  const percentage = Math.min(
-    100,
-    Math.max(0, (value / safeMax) * 100),
-  );
+  const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
+  const safeValue = Number.isFinite(value) ? Math.min(safeMax, Math.max(0, value)) : 0;
+  const percentage = (safeValue / safeMax) * 100;
 
   return (
     <div className={cn("w-full", className)}>
       {showLabel && (
         <div className="mb-2 flex items-center justify-between text-xs text-neutral-400">
-          <span>Progress</span>
+          <span>{label}</span>
           <span>{Math.round(percentage)}%</span>
         </div>
       )}
@@ -31,12 +31,14 @@ export function Progress({
       <div
         className="h-2 w-full overflow-hidden rounded-full bg-neutral-800"
         role="progressbar"
-        aria-valuenow={value}
+        aria-label={label}
+        aria-valuenow={safeValue}
         aria-valuemin={0}
         aria-valuemax={safeMax}
+        aria-valuetext={`${Math.round(percentage)}%`}
       >
         <div
-          className="h-full rounded-full bg-indigo-500 transition-all duration-300"
+          className="h-full rounded-full bg-indigo-500 transition-all duration-300 motion-reduce:transition-none"
           style={{ width: `${percentage}%` }}
         />
       </div>
