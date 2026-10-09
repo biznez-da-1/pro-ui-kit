@@ -29,6 +29,7 @@ export function Dialog({
     if (!open) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
     const panel = panelRef.current;
     const focusableSelector =
       'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -72,7 +73,7 @@ export function Dialog({
     focusFirst();
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
