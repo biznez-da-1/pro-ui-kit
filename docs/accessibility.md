@@ -1,35 +1,40 @@
 # Accessibility checklist
 
-Use this checklist when auditing components and before calling a component release-ready. Passing a code review does not replace keyboard, screen-reader, and browser testing.
+Use this checklist before treating a component or screen as ready for production.
 
-## Interactive controls
-- [ ] Every control has a meaningful accessible name.
-- [ ] Native HTML controls are preferred when they provide the required behavior.
-- [ ] All actions work using the keyboard alone.
-- [ ] Focus is visible and not obscured by sticky content or overlays.
-- [ ] Disabled controls expose a real disabled state and cannot trigger actions.
-- [ ] Hover-only information is also available on focus.
-- [ ] Touch targets and spacing are usable on narrow screens.
+## Semantics and names
 
-## Forms
-- [ ] Each field has a programmatic label.
-- [ ] Help text and errors are associated with the field using `aria-describedby`.
-- [ ] Invalid state is exposed with `aria-invalid`, not only a red border.
-- [ ] Required fields are identified in text and programmatically.
-- [ ] Validation messages explain how to correct the problem.
+- Prefer native HTML elements over custom roles and keyboard emulation.
+- Give every interactive control a visible label or accessible name.
+- Use headings in a meaningful hierarchy and landmarks for major page regions.
+- Connect form labels, descriptions, errors, tabs, dialogs, and tooltips with stable unique IDs.
+- Avoid nested interactive controls, such as a button inside another button or an interactive element inside an element with `role="button"`.
+- For avatars, provide a useful `alt` value when the person or entity is meaningful; use an empty value only when the avatar is decorative.
 
-## Overlays and navigation
-- [ ] Dialogs have unique title/description IDs, contain keyboard focus, close predictably, and restore focus.
-- [ ] Menus and tabs implement expected keyboard behavior and correct ARIA relationships.
-- [ ] Tooltips are connected to their trigger and can be reached without a mouse.
-- [ ] Navigation landmarks and link text communicate their purpose.
+## Keyboard and focus
 
-## Visual and motion checks
-- [ ] Meaning is not conveyed by color alone.
-- [ ] Text and control contrast are checked against WCAG 2.2 AA targets.
-- [ ] Layout works at 320 CSS pixels and at 200% zoom.
-- [ ] Animations respect `prefers-reduced-motion`.
-- [ ] Focus rings remain visible in all supported themes.
+- Test every control with Tab, Shift+Tab, Enter, Space, and arrow keys where appropriate.
+- Make keyboard focus clearly visible against both the control and page background.
+- Restore focus to the trigger when dismissing a dialog-like surface with Escape.
+- Confirm that Escape and outside-click behavior do not leave focus in hidden content.
+- Respect reduced-motion preferences for nonessential animation and transitions.
 
-## Verification record
-For each audited component, record: date, reviewer, browser/device, keyboard checks, assistive technology if available, automated test results, known limitations, and follow-up issues.
+## State and feedback
+
+- Ensure disabled controls cannot activate and communicate their disabled state.
+- Announce important status changes politely; reserve assertive alerts for urgent errors.
+- Show loading, error, and empty states without relying on color alone.
+- Ensure controlled components update only through their documented callbacks and that clear/reset actions are observable.
+
+## Theme and contrast
+
+- The current showcase and component primitives use a dark-first palette. Native form controls should follow the same color scheme.
+- Verify text, icons, focus rings, disabled states, borders, and status colors against their backgrounds.
+- Do not communicate success, warning, or failure by color alone.
+
+## Manual verification still required
+
+- Test keyboard interaction and focus restoration in a real browser.
+- Check representative screens at narrow mobile widths and desktop widths.
+- Verify with a screen reader and browser zoom.
+- Check color contrast with an automated tool and visual review; this checklist is guidance, not a substitute for testing.

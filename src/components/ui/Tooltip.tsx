@@ -34,6 +34,12 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
       child.props.onBlur?.(event);
       setOpen(false);
     },
+    onMouseEnter: (event: React.MouseEvent<HTMLElement>) => {
+      child.props.onMouseEnter?.(event);
+    },
+    onMouseLeave: (event: React.MouseEvent<HTMLElement>) => {
+      child.props.onMouseLeave?.(event);
+    },
   } as React.HTMLAttributes<HTMLElement>);
 
   return (

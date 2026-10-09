@@ -35,6 +35,8 @@ export function Avatar({
 
   return (
     <div
+      role={alt ? "img" : undefined}
+      aria-label={alt || undefined}
       className={cn(
         "flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-800 font-semibold text-neutral-300",
         sizes[size],
@@ -44,14 +46,12 @@ export function Avatar({
       {showImage ? (
         <img
           src={src}
-          alt={alt}
+          alt={alt ? "" : undefined}
           className="h-full w-full object-cover"
           onError={() => setImageError(true)}
         />
       ) : (
-        <span aria-hidden={alt ? "true" : undefined}>
-          {fallback}
-        </span>
+        <span aria-hidden="true">{fallback}</span>
       )}
     </div>
   );
