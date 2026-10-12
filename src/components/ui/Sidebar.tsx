@@ -33,12 +33,12 @@ export function Sidebar({
   return (
     <aside
       className={cn(
-        "flex h-full min-h-[400px] flex-col border-r border-neutral-800 bg-neutral-950 transition-[width] duration-200 motion-reduce:transition-none",
+        "flex h-full min-h-[400px] flex-col border-r border-border bg-surface transition-[width] duration-200 motion-reduce:transition-none",
         collapsed ? "w-20" : "w-64",
         className,
       )}
     >
-      <div className="flex min-h-16 items-center border-b border-neutral-800 px-3">
+      <div className="flex min-h-16 items-center border-b border-border px-3">
         <div className="min-w-0 flex-1 overflow-hidden">
           {!collapsed && header}
         </div>
@@ -49,7 +49,7 @@ export function Sidebar({
             onClick={() => onCollapsedChange(!collapsed)}
             aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
             aria-expanded={!collapsed}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-neutral-400 transition-colors hover:bg-neutral-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-ui text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" aria-hidden="true" />
@@ -76,11 +76,11 @@ export function Sidebar({
 
             const itemClassName = cn(
               "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors motion-reduce:transition-none",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
               collapsed && "justify-center",
               item.active
-                ? "bg-indigo-600/15 text-indigo-300"
-                : "text-neutral-400 hover:bg-neutral-900 hover:text-white",
+                ? "bg-primary/15 text-primary"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
             );
 
             if (item.href) {
@@ -115,7 +115,7 @@ export function Sidebar({
       </nav>
 
       {footer && (
-        <div className="border-t border-neutral-800 p-3">
+        <div className="border-t border-border p-3">
           {collapsed ? null : footer}
         </div>
       )}
