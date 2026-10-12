@@ -14,7 +14,7 @@ export function Kbd({
   return (
     <kbd
       className={cn(
-        "inline-flex min-h-6 items-center justify-center rounded-md border border-neutral-700 bg-neutral-900 px-2 font-mono text-xs font-medium text-neutral-300 shadow-sm",
+        "inline-flex min-h-6 items-center justify-center rounded-md border border-border bg-muted px-2 font-mono text-xs font-medium text-surface-foreground shadow-sm",
         className,
       )}
       {...props}
