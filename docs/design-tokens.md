@@ -47,6 +47,7 @@ The app does not currently ship a theme switcher, local-storage persistence, or 
 
 ## Rules of use
 
+- For keyboard-operable controls, use `focus-visible` styles with the semantic `ring-ring` color and a visible offset where appropriate.
 - Prefer semantic tokens over hard-coded palette values in new reusable components.
 - Keep text, icons, borders, disabled states, and focus indicators distinguishable in both themes.
 - Do not rely on color alone to communicate success, warning, or failure.
