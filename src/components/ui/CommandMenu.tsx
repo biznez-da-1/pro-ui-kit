@@ -43,8 +43,48 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
     document.body.style.overflow = "hidden";
     inputRef.current?.focus();
 
+    const handleTabKey = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !dialogRef.current) return;
+      const focusable = Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter(
+        (element) =>
+          element.getClientRects().length > 0 &&
+          element.getAttribute("aria-hidden") !== "true",
+      );
+
+      if (!focusable.length) {
+        event.preventDefault();
+        dialogRef.current.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const activeElement = document.activeElement;
+      const focusIsOutsideDialog = !dialogRef.current.contains(activeElement);
+
+      if (
+        event.shiftKey &&
+        (activeElement === first || activeElement === dialogRef.current || focusIsOutsideDialog)
+      ) {
+        event.preventDefault();
+        last.focus();
+      } else if (
+        !event.shiftKey &&
+        (activeElement === last || focusIsOutsideDialog)
+      ) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleTabKey);
     return () => {
       document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleTabKey);
       previouslyFocused?.focus();
     };
   }, [open]);
@@ -79,30 +119,14 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
     }
   };
 
-  const handleDialogKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== "Tab" || !dialogRef.current) return;
-    const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>(
-      'button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])',
-    )).filter((element) => element.getClientRects().length > 0);
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
-  };
-
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[15vh]" onKeyDown={handleDialogKeyDown}>
+    <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[15vh]">
       <button type="button" aria-hidden="true" tabIndex={-1} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div
         ref={dialogRef}
+        tabIndex={-1}
         className={cn("relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl", className)}
         role="dialog"
         aria-modal="true"
