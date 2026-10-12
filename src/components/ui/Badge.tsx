@@ -8,15 +8,15 @@ export interface BadgeProps
 
 const variants = {
   default:
-    "border-neutral-700 bg-neutral-800 text-neutral-200",
+    "border-border bg-muted text-muted-foreground",
   success:
-    "border-emerald-500/20 bg-emerald-500/10 text-emerald-400",
+    "border-success/30 bg-success/10 text-success",
   warning:
-    "border-amber-500/20 bg-amber-500/10 text-amber-400",
+    "border-warning/30 bg-warning/10 text-warning",
   danger:
-    "border-red-500/20 bg-red-500/10 text-red-400",
+    "border-danger/30 bg-danger/10 text-danger",
   info:
-    "border-blue-500/20 bg-blue-500/10 text-blue-400",
+    "border-primary/30 bg-primary/10 text-primary",
 };
 
 export function Badge({
