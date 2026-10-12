@@ -22,14 +22,14 @@ export function Progress({
   return (
     <div className={cn("w-full", className)}>
       {showLabel && (
-        <div className="mb-2 flex items-center justify-between text-xs text-neutral-400">
+        <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
           <span>{label}</span>
           <span>{Math.round(percentage)}%</span>
         </div>
       )}
 
       <div
-        className="h-2 w-full overflow-hidden rounded-full bg-neutral-800"
+        className="h-2 w-full overflow-hidden rounded-full bg-muted"
         role="progressbar"
         aria-label={label}
         aria-valuenow={safeValue}
@@ -38,7 +38,7 @@ export function Progress({
         aria-valuetext={`${Math.round(percentage)}%`}
       >
         <div
-          className="h-full rounded-full bg-indigo-500 transition-all duration-300 motion-reduce:transition-none"
+          className="h-full rounded-full bg-primary transition-all duration-300 motion-reduce:transition-none"
           style={{ width: `${percentage}%` }}
         />
       </div>
