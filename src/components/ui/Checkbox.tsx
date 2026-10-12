@@ -15,7 +15,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     const inputId = id ?? generatedId;
 
     return (
-      <div className="inline-flex items-center gap-3">
+      <div className={cn("inline-flex items-center gap-3", props.disabled ? "cursor-not-allowed" : "cursor-pointer")}>
         <span className="relative flex h-5 w-5 shrink-0 items-center justify-center">
           <input
             ref={ref}
