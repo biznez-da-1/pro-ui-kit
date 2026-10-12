@@ -18,7 +18,7 @@ export default function Error({
   return (
     <main className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground/60">Something went wrong</p>
-      <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">This page couldn't load.</h1>
+      <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">This page couldn&apos;t load.</h1>
       <p className="mt-3 max-w-md text-foreground/70">Try again. If the problem continues, return to the component showcase.</p>
       <div className="mt-7 flex flex-wrap justify-center gap-3">
         <button type="button" onClick={() => reset()} className="inline-flex h-10 items-center rounded-xl bg-indigo-600 px-4 text-sm font-medium text-white hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
