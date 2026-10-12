@@ -147,14 +147,27 @@ function MenuItem({
         aria-expanded={hasSubmenu ? submenuOpen : undefined}
         onClick={handleSelect}
         onKeyDown={(event) => {
-          if (hasSubmenu && event.key === "ArrowRight") {
+          if (
+            hasSubmenu &&
+            submenuOpen &&
+            (event.key === "ArrowLeft" || event.key === "Escape")
+          ) {
+            event.preventDefault();
+            event.stopPropagation();
+            setSubmenuOpen(false);
+            triggerRef.current?.focus();
+          } else if (hasSubmenu && event.key === "ArrowRight") {
             event.preventDefault();
             setSubmenuOpen(true);
             requestAnimationFrame(() => {
               submenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]:not(:disabled)')?.focus();
             });
-          } else if (event.key === "ArrowLeft" && onNavigateBack) {
+          } else if (
+            onNavigateBack &&
+            (event.key === "ArrowLeft" || event.key === "Escape")
+          ) {
             event.preventDefault();
+            event.stopPropagation();
             onNavigateBack();
           }
         }}
