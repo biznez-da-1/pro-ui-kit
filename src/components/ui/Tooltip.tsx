@@ -18,9 +18,16 @@ const sideClasses = {
 };
 
 export function Tooltip({ content, children, side = "top", className }: TooltipProps) {
-  const [open, setOpen] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
+  const [dismissed, setDismissed] = React.useState(false);
   const tooltipId = React.useId();
   const child = React.Children.only(children);
+  const open = (hovered || focused) && !dismissed;
+
+  React.useEffect(() => {
+    if (!hovered && !focused) setDismissed(false);
+  }, [hovered, focused]);
 
   const trigger = React.cloneElement(child, {
     "aria-describedby": open
@@ -28,11 +35,11 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
       : child.props["aria-describedby"],
     onFocus: (event: React.FocusEvent<HTMLElement>) => {
       child.props.onFocus?.(event);
-      setOpen(true);
+      setFocused(true);
     },
     onBlur: (event: React.FocusEvent<HTMLElement>) => {
       child.props.onBlur?.(event);
-      setOpen(false);
+      setFocused(false);
     },
     onMouseEnter: (event: React.MouseEvent<HTMLElement>) => {
       child.props.onMouseEnter?.(event);
@@ -45,10 +52,13 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
   return (
     <span
       className="relative inline-flex"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onKeyDown={(event) => {
-        if (event.key === "Escape" && open) setOpen(false);
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          setDismissed(true);
+        }
       }}
     >
       {trigger}
