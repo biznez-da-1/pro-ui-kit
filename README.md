@@ -32,8 +32,6 @@ npm run dev -- --webpack
 
 ## Quality checks
 
-Run these commands before opening a pull request:
-
 ```bash
 npm run typecheck
 npm run lint
@@ -48,6 +46,11 @@ The CI workflow runs dependency installation, typecheck, lint, and a production 
 - `src/components/ui`: reusable UI components and public exports
 - `src/lib`: shared utilities such as Tailwind class merging
 - `docs`: accessibility guidance and reusable template recipes
+
+## Routes
+
+- `/`: interactive component showcase
+- `/product`: no-index product preview; checkout is intentionally disabled until the commercial flow is ready
 
 ## Usage
 
