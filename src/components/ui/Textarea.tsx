@@ -13,6 +13,8 @@ export const Textarea = React.forwardRef<
   return (
     <textarea
       ref={ref}
+      {...props}
+      aria-invalid={error ? true : props["aria-invalid"]}
       className={cn(
         "min-h-24 w-full resize-y rounded-ui border bg-surface px-3 py-2 text-sm text-surface-foreground",
         "placeholder:text-muted-foreground",
@@ -24,7 +26,6 @@ export const Textarea = React.forwardRef<
           : "border-border focus-visible:border-ring focus-visible:ring-ring/30",
         className,
       )}
-      {...props}
     />
   );
 });
