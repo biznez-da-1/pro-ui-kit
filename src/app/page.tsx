@@ -674,6 +674,7 @@ export default function Home() {
         return (
           <div className="flex items-center gap-4">
             <DropdownMenu
+              label="Component actions"
               trigger={
                 <Button variant="outline">
                   Actions <ChevronRight className="ml-2 h-4 w-4" />
