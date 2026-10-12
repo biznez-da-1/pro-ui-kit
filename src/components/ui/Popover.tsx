@@ -72,7 +72,7 @@ export function Popover({
           role="dialog"
           aria-label={label}
           className={cn(
-            "absolute z-50 mt-2 min-w-64 rounded-xl border border-neutral-800 bg-neutral-950 p-4 text-white shadow-2xl",
+            "absolute z-50 mt-2 min-w-64 rounded-xl border border-border bg-surface p-4 text-surface-foreground shadow-2xl",
             align === "left" && "left-0",
             align === "center" && "left-1/2 -translate-x-1/2",
             align === "right" && "right-0",
