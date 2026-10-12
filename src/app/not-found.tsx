@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
       <p className="text-sm font-semibold uppercase tracking-[0.2em] text-foreground/60">404 · Page not found</p>
-      <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">This page isn't here.</h1>
+      <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">This page isn&apos;t here.</h1>
       <p className="mt-3 max-w-md text-foreground/70">
         The link may be outdated, or the page may have moved. You can return to the component showcase or view the product preview.
       </p>
