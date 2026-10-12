@@ -6,6 +6,7 @@ Use this checklist before treating a component or screen as ready for production
 
 - Prefer native HTML elements over custom roles and keyboard emulation.
 - Give every interactive control a visible label or accessible name.
+- Give each menu a descriptive accessible name when its purpose is not obvious; keep nested menus named for their parent action and avoid blank names.
 - Use headings in a meaningful hierarchy and landmarks for major page regions.
 - Connect form labels, descriptions, errors, tabs, dialogs, and tooltips with stable unique IDs.
 - Avoid nested interactive controls, such as a button inside another button or an interactive element inside an element with `role="button"`.
