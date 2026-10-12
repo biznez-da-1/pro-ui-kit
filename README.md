@@ -1,6 +1,6 @@
 # Pro UI Kit
 
-Pro UI Kit is a reusable React + TypeScript component library and interactive showcase built with Next.js and Tailwind CSS. The project currently contains 40 UI components and is being prepared for production-quality reuse.
+Pro UI Kit is a reusable React + TypeScript component library and interactive showcase built with Next.js and Tailwind CSS. The current showcase includes 40 UI components. The project is being prepared for production-quality reuse, with automated checks and human verification tracked separately.
 
 ## Project goals
 
@@ -12,32 +12,35 @@ Pro UI Kit is a reusable React + TypeScript component library and interactive sh
 
 ## Requirements
 
-- Node.js 20 or newer (the current project has been built with Node.js 24)
+- Node.js 20 or newer (CI currently uses Node.js 24)
 - npm
 
 ## Local development
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
 Open http://localhost:3000.
 
-## Quality checks
+If your environment cannot use Turbopack's native bindings, start the development server with the Webpack fallback:
 
 ```bash
-npx tsc --noEmit
+npm run dev -- --webpack
+```
+
+## Quality checks
+
+Run these commands before opening a pull request:
+
+```bash
+npm run typecheck
 npm run lint
 npm run build
 ```
 
-If the local environment uses an Android ARM64 device where Turbopack native bindings are unavailable, use the Webpack fallback:
-
-```bash
-npm run dev -- --webpack
-npm run build -- --webpack
-```
+The CI workflow runs dependency installation, typecheck, lint, and a production build. A green CI run does not replace browser, keyboard, screen-reader, contrast, or responsive testing.
 
 ## Project structure
 
@@ -63,12 +66,24 @@ export function Example() {
 }
 ```
 
-Check each component's props before use. Components may have different interaction requirements, and not every component has been fully audited yet.
+Check each component's props before use. Follow the documented contract instead of assuming that props from another UI library are supported.
 
-## Accessibility
+## Templates and recipes
 
-Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. Review [the accessibility checklist](./docs/accessibility.md) before treating a component as release-ready. Starter recipes: [dashboard](./docs/templates/dashboard.md), [accessible form workflow](./docs/templates/form-workflow.md), and [loading, error, and empty states](./docs/templates/loading-error-empty-states.md), and [settings page](./docs/templates/settings-page.md).
+- [Dashboard](./docs/templates/dashboard.md)
+- [Accessible form workflow](./docs/templates/form-workflow.md)
+- [Loading, error, and empty states](./docs/templates/loading-error-empty-states.md)
+- [Settings page](./docs/templates/settings-page.md)
+- [Marketing landing page](./docs/templates/marketing-landing-page.md)
+- [Accessible data table](./docs/templates/data-table.md)
+
+## Accessibility and release readiness
+
+- [Accessibility checklist](./docs/accessibility.md)
+- [Release-readiness checklist](./docs/release-readiness.md)
+
+Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. The component audit and CI improve the baseline, but human browser and assistive-technology validation remains necessary.
 
 ## Current release status
 
-This repository is under active development. The showcase and component set are a foundation, not a claim that every component has completed accessibility, browser, or assistive-technology testing. Payment, licensing, and secure download delivery are not enabled.
+This repository is under active development. The showcase and component set are a foundation, not a claim that every component has completed accessibility, browser, or assistive-technology testing. Payment, licensing, and secure download delivery are not enabled. Do not advertise checkout or delivery as functional until those flows have been implemented and tested end to end.
