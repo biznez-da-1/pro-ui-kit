@@ -23,6 +23,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className,
         )}
         {...props}
+        aria-invalid={error ? true : props["aria-invalid"]}
       />
     );
   },
