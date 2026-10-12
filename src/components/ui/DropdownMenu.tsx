@@ -34,7 +34,7 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
 
   React.useEffect(() => {
     if (!open) return;
-    const first = menuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]:not(:disabled)');
+    const first = menuRef.current?.querySelector<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)');
     first?.focus();
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -50,7 +50,7 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
         return;
       }
       if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key) || !menuRef.current) return;
-      const enabled = Array.from(menuRef.current.querySelectorAll<HTMLButtonElement>('[role="menuitem"]:not(:disabled)'));
+      const enabled = Array.from(menuRef.current.querySelectorAll<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)'));
       if (!enabled.length) return;
       event.preventDefault();
       const index = enabled.indexOf(document.activeElement as HTMLButtonElement);
@@ -141,7 +141,8 @@ function MenuItem({
       <button
         ref={triggerRef}
         type="button"
-        role="menuitem"
+        role={item.checked === undefined ? "menuitem" : "menuitemcheckbox"}
+        aria-checked={item.checked}
         disabled={item.disabled}
         aria-haspopup={hasSubmenu ? "menu" : undefined}
         aria-expanded={hasSubmenu ? submenuOpen : undefined}
@@ -160,7 +161,7 @@ function MenuItem({
             event.preventDefault();
             setSubmenuOpen(true);
             requestAnimationFrame(() => {
-              submenuRef.current?.querySelector<HTMLButtonElement>('[role="menuitem"]:not(:disabled)')?.focus();
+              submenuRef.current?.querySelector<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)')?.focus();
             });
           } else if (
             onNavigateBack &&
