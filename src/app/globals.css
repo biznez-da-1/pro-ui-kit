@@ -2,10 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Semantic tokens keep component styles tied to meaning instead of palette values.
+ * Dark is the default theme. Set data-theme="light" on <html> to opt into light mode.
+ */
 :root {
   color-scheme: dark;
   --background: #0a0a0a;
   --foreground: #ededed;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --surface: #111113;
+  --surface-foreground: #ededed;
+  --border: #27272a;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --success: #16a34a;
+  --warning: #d97706;
+  --danger: #dc2626;
+  --ring: #818cf8;
+  --radius: 0.75rem;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --surface: #fafafa;
+  --surface-foreground: #18181b;
+  --border: #e4e4e7;
+  --primary: #4338ca;
+  --primary-foreground: #ffffff;
+  --success: #15803d;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --ring: #4f46e5;
 }
 
 html {
@@ -18,6 +51,11 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  color: var(--primary-foreground);
+  background: var(--primary);
 }
 
 @layer utilities {
