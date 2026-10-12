@@ -114,35 +114,35 @@ export function FileUpload({
         onDrop={handleDrop}
         className={cn(
           "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors motion-reduce:transition-none",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950",
-          dragging ? "border-indigo-500 bg-indigo-500/10" : "border-neutral-800 bg-neutral-950 hover:border-neutral-700 hover:bg-neutral-900/50",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          dragging ? "border-primary bg-primary/10" : "border-border bg-surface hover:border-ring hover:bg-muted",
           disabled && "cursor-not-allowed opacity-50",
         )}
       >
         <input ref={inputRef} type="file" accept={accept} multiple={multiple} disabled={disabled} onChange={handleInputChange} className="sr-only" tabIndex={-1} aria-hidden="true" />
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-400">
+        <div className="flex h-12 w-12 items-center justify-center rounded-ui-xl border border-border bg-muted text-muted-foreground">
           <Upload className="h-5 w-5" aria-hidden="true" />
         </div>
-        <p className="mt-4 text-sm font-medium text-white">Drop files here or click to browse</p>
-        <p id={`${generatedId}-hint`} className="mt-1 text-xs text-neutral-500">
+        <p className="mt-4 text-sm font-medium text-surface-foreground">Drop files here or click to browse</p>
+        <p id={`${generatedId}-hint`} className="mt-1 text-xs text-muted-foreground">
           {accept ? `Accepted: ${accept}` : "Select a file from your device"}
           {maxSize != null && maxSize >= 0 ? ` · Up to ${(maxSize / 1024 / 1024).toFixed(1)} MB per file` : ""}
         </p>
       </div>
 
-      <p id={`${generatedId}-status`} role="status" aria-live="polite" className="mt-2 min-h-5 text-sm text-neutral-300">
+      <p id={`${generatedId}-status`} role="status" aria-live="polite" className="mt-2 min-h-5 text-sm text-foreground">
         {message}
       </p>
 
       {files.length > 0 && (
         <ul className="mt-3 space-y-2" aria-label="Selected files">
           {files.map((file, index) => (
-            <li key={`${file.name}-${file.lastModified}-${index}`} className="flex items-center gap-3 rounded-xl border border-neutral-800 bg-neutral-950 p-3">
+            <li key={`${file.name}-${file.lastModified}-${index}`} className="flex items-center gap-3 rounded-ui-lg border border-border bg-surface p-3">
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-neutral-200">{file.name}</p>
-                <p className="mt-0.5 text-xs text-neutral-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                <p className="truncate text-sm font-medium text-surface-foreground">{file.name}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
-              <button type="button" disabled={disabled} onClick={() => removeFile(index)} aria-label={`Remove ${file.name}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-neutral-500 transition-colors hover:bg-neutral-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50">
+              <button type="button" disabled={disabled} onClick={() => removeFile(index)} aria-label={`Remove ${file.name}`} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-ui text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </li>
