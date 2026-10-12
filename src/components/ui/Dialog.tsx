@@ -98,7 +98,7 @@ export function Dialog({
         ref={panelRef}
         tabIndex={-1}
         className={cn(
-          "relative z-10 w-full max-w-lg rounded-2xl border border-neutral-800 bg-neutral-950 p-6 shadow-2xl",
+          "relative z-10 w-full max-w-lg rounded-2xl border border-border bg-surface p-6 shadow-2xl",
           className,
         )}
         role="dialog"
@@ -110,7 +110,7 @@ export function Dialog({
           type="button"
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <X className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -118,12 +118,12 @@ export function Dialog({
         {(title || description) && (
           <div className="mb-5 pr-10">
             {title && (
-              <h2 id={titleId} className="text-xl font-semibold text-white">
+              <h2 id={titleId} className="text-xl font-semibold text-surface-foreground">
                 {title}
               </h2>
             )}
             {description && (
-              <p id={descriptionId} className="mt-2 text-sm leading-6 text-neutral-400">
+              <p id={descriptionId} className="mt-2 text-sm leading-6 text-muted-foreground">
                 {description}
               </p>
             )}
