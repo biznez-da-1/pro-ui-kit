@@ -36,22 +36,22 @@ export function Stepper({ steps, currentStep, className, label = "Progress" }: S
                 <div
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-full border text-sm font-semibold transition-colors motion-reduce:transition-none",
-                    completed && "border-emerald-500 bg-emerald-500 text-white",
-                    active && "border-indigo-500 bg-indigo-600 text-white",
-                    !completed && !active && "border-neutral-700 bg-neutral-950 text-neutral-500",
+                    completed && "border-success bg-success text-white",
+                    active && "border-primary bg-primary text-primary-foreground",
+                    !completed && !active && "border-border bg-surface text-muted-foreground",
                   )}
                 >
                   {completed ? <Check className="h-4 w-4" aria-hidden="true" /> : stepNumber}
                 </div>
                 <div className="mt-3">
-                  <p className={cn("text-sm font-medium", active || completed ? "text-white" : "text-neutral-500")}>
+                  <p className={cn("text-sm font-medium", active || completed ? "text-surface-foreground" : "text-muted-foreground")}>
                     {step.label}
                   </p>
-                  {step.description && <p className="mt-1 text-xs leading-5 text-neutral-500">{step.description}</p>}
+                  {step.description && <p className="mt-1 text-xs leading-5 text-muted-foreground">{step.description}</p>}
                 </div>
               </li>
               {index < steps.length - 1 && (
-                <li className={cn("mt-[18px] h-px flex-1 list-none", completed ? "bg-emerald-500" : "bg-neutral-800")} aria-hidden="true" />
+                <li className={cn("mt-[18px] h-px flex-1 list-none", completed ? "bg-success" : "bg-border")} aria-hidden="true" />
               )}
             </React.Fragment>
           );
