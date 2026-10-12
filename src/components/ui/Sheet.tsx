@@ -104,8 +104,8 @@ export function Sheet({
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descriptionId : undefined}
         className={cn(
-          "fixed z-10 overflow-y-auto bg-neutral-950 p-6 shadow-2xl focus:outline-none",
-          "border-neutral-800",
+          "fixed z-10 overflow-y-auto bg-surface p-6 shadow-2xl focus:outline-none",
+          "border-border",
           sideClasses[side],
           className,
         )}
@@ -114,14 +114,14 @@ export function Sheet({
           type="button"
           onClick={onClose}
           aria-label="Close sheet"
-          className="absolute right-4 top-4 rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <X className="h-5 w-5" aria-hidden="true" />
         </button>
         {(title || description) && (
           <div className="mb-6 pr-10">
-            {title && <h2 id={titleId} className="text-xl font-semibold text-white">{title}</h2>}
-            {description && <p id={descriptionId} className="mt-2 text-sm leading-6 text-neutral-400">{description}</p>}
+            {title && <h2 id={titleId} className="text-xl font-semibold text-surface-foreground">{title}</h2>}
+            {description && <p id={descriptionId} className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>}
           </div>
         )}
         {children}
