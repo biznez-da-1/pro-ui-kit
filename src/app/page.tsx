@@ -385,6 +385,7 @@ export default function Home() {
               value={radioValue}
               onValueChange={setRadioValue}
               name="plan"
+              label="Choose a plan"
               orientation="horizontal"
               options={[
                 {
@@ -413,7 +414,9 @@ export default function Home() {
       case "Select":
         return (
           <div className="max-w-md space-y-3">
+            <label htmlFor="demo-framework" className="block text-sm font-medium text-zinc-300">Framework</label>
             <Select
+              id="demo-framework"
               value={selectValue}
               onChange={(event) => setSelectValue(event.target.value)}
             >
@@ -432,6 +435,7 @@ export default function Home() {
         return (
           <div className="max-w-xl space-y-4">
             <Slider
+              label="Intensity"
               value={sliderValue}
               min={0}
               max={100}
@@ -738,8 +742,14 @@ export default function Home() {
               description="A full-height responsive panel."
             >
               <div className="space-y-5">
-                <Input placeholder="Project name" />
-                <Textarea placeholder="Project description" rows={4} />
+                <div className="space-y-2">
+                  <label htmlFor="sheet-project-name" className="block text-sm font-medium text-zinc-300">Project name</label>
+                  <Input id="sheet-project-name" placeholder="Project name" />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="sheet-project-description" className="block text-sm font-medium text-zinc-300">Project description</label>
+                  <Textarea id="sheet-project-description" placeholder="Project description" rows={4} />
+                </div>
                 <div className="flex justify-end">
                   <Button onClick={() => setSheetOpen(false)}>
                     Save changes
