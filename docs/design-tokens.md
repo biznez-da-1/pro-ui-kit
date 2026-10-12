@@ -51,4 +51,4 @@ The app does not currently ship a theme switcher, local-storage persistence, or 
 - Keep text, icons, borders, disabled states, and focus indicators distinguishable in both themes.
 - Do not rely on color alone to communicate success, warning, or failure.
 - Check contrast with a contrast tool and test both themes in a browser before claiming full theme accessibility.
-- The Button, Card, Badge, Input, Select, Textarea, Checkbox, Switch, Slider, RadioGroup, Separator, and Skeleton primitives use semantic tokens. Many other components still contain palette-specific utilities, so the entire library is not yet theme-ready.
+- Button, Card, Badge, Input, Select, Textarea, Checkbox, Switch, Slider, RadioGroup, Separator, Skeleton, Alert, Progress, Toast, EmptyState, StatCard, and ActivityFeed now use semantic tokens for their core surfaces and states. Many other components still contain palette-specific utilities, so the entire library is not yet theme-ready.
