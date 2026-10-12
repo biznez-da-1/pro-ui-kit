@@ -27,6 +27,12 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
               className,
             )}
             {...props}
+            aria-label={
+              label == null
+                ? (props["aria-label"] ??
+                  (props["aria-labelledby"] == null ? "Checkbox" : undefined))
+                : props["aria-label"]
+            }
           />
           <span
             aria-hidden="true"
