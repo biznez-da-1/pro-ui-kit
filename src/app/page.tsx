@@ -804,23 +804,23 @@ export default function Home() {
             items={[
               {
                 id: "1",
-                title: "New component added",
-                description: "CommandMenu is now available.",
-                timestamp: "2 minutes ago",
+                title: "Sample: component added",
+                description: "Example activity item for the showcase.",
+                timestamp: "Sample time",
                 icon: <Layers3 size={16} />,
               },
               {
                 id: "2",
-                title: "Build completed",
-                description: "Production build passed successfully.",
-                timestamp: "15 minutes ago",
+                title: "Sample: build completed",
+                description: "Example build-status activity.",
+                timestamp: "Sample time",
                 icon: <Check size={16} />,
               },
               {
                 id: "3",
-                title: "Project updated",
-                description: "Showcase improvements committed.",
-                timestamp: "1 hour ago",
+                title: "Sample: project updated",
+                description: "Example project activity.",
+                timestamp: "Sample time",
                 icon: <Zap size={16} />,
               },
             ]}
