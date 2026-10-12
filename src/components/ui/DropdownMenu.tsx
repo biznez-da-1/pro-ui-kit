@@ -139,6 +139,7 @@ function MenuItem({
 }) {
   const [submenuOpen, setSubmenuOpen] = React.useState(false);
   const hasSubmenu = Boolean(item.submenu?.length);
+  const submenuLabel = item.label.trim() || "Submenu";
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const submenuRef = React.useRef<HTMLDivElement>(null);
 
@@ -213,7 +214,7 @@ function MenuItem({
         {hasSubmenu && <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />}
       </button>
       {hasSubmenu && submenuOpen && (
-        <div ref={submenuRef} role="menu" aria-label={item.label} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-border bg-surface p-1 shadow-2xl">
+        <div ref={submenuRef} role="menu" aria-label={submenuLabel} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-border bg-surface p-1 shadow-2xl">
           {item.submenu?.map((subitem) => (
             <MenuItem
               key={subitem.id}
