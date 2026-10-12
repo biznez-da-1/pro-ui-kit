@@ -11,7 +11,7 @@ const variants = {
   primary:
     "bg-primary text-primary-foreground shadow-sm hover:brightness-110",
   secondary:
-    "bg-muted text-foreground shadow-sm hover:bg-muted/80",
+    "bg-muted text-foreground shadow-sm hover:bg-muted",
   outline:
     "border border-border bg-transparent text-foreground hover:bg-muted",
   ghost:
