@@ -18,11 +18,20 @@ export interface DropdownMenuProps {
   /** Use a single button-like element, such as the Button component. */
   trigger: React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
   items: DropdownMenuItem[];
+  /** Accessible name for the root menu, describing the actions in this menu. */
+  label?: string;
   align?: "left" | "right";
   className?: string;
 }
 
-export function DropdownMenu({ trigger, items, align = "right", className }: DropdownMenuProps) {
+export function DropdownMenu({
+  trigger,
+  items,
+  label = "Actions",
+  align = "right",
+  className,
+}: DropdownMenuProps) {
+  const accessibleLabel = label.trim() || "Actions";
   const [open, setOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -100,7 +109,7 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
         <div
           ref={menuRef}
           role="menu"
-          aria-label="Actions"
+          aria-label={accessibleLabel}
           onKeyDown={(event) => {
             if (event.key === "Tab") closeMenu(false);
           }}
@@ -130,6 +139,7 @@ function MenuItem({
 }) {
   const [submenuOpen, setSubmenuOpen] = React.useState(false);
   const hasSubmenu = Boolean(item.submenu?.length);
+  const submenuLabel = item.label.trim() || "Submenu";
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const submenuRef = React.useRef<HTMLDivElement>(null);
 
@@ -204,7 +214,7 @@ function MenuItem({
         {hasSubmenu && <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />}
       </button>
       {hasSubmenu && submenuOpen && (
-        <div ref={submenuRef} role="menu" aria-label={item.label} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-border bg-surface p-1 shadow-2xl">
+        <div ref={submenuRef} role="menu" aria-label={submenuLabel} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-border bg-surface p-1 shadow-2xl">
           {item.submenu?.map((subitem) => (
             <MenuItem
               key={subitem.id}
