@@ -26,10 +26,10 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
   const hasActiveFilter = value !== undefined && value !== "";
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-2 rounded-2xl border border-neutral-800 bg-neutral-950 p-3", className)}>
+    <div className={cn("flex flex-wrap items-center gap-2 rounded-ui-xl border border-border bg-surface p-3", className)}>
       {options.length > 0 && (
         <div className="flex min-w-0 items-center gap-2">
-          <label htmlFor={selectId} className="flex items-center gap-2 text-sm font-medium text-neutral-400">
+          <label htmlFor={selectId} className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
             <Filter className="h-4 w-4" aria-hidden="true" />
             <span>{label}</span>
           </label>
@@ -37,7 +37,7 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
             id={selectId}
             value={value ?? ""}
             onChange={(event) => onChange?.(event.target.value)}
-            className="h-9 min-w-32 rounded-lg border border-neutral-800 bg-neutral-900 px-3 text-sm text-neutral-200 outline-none transition-colors focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
+            className="h-9 min-w-32 rounded-ui border border-border bg-muted px-3 text-sm text-surface-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
           >
             <option value="">All</option>
             {options.map((option) => <option key={option.id} value={option.value}>{option.label}</option>)}
@@ -48,7 +48,7 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
       {children}
 
       {hasActiveFilter && onClear && (
-        <Button type="button" variant="ghost" size="sm" onClick={onClear} className="text-neutral-400">
+        <Button type="button" variant="ghost" size="sm" onClick={onClear} className="text-muted-foreground">
           <X className="h-4 w-4" aria-hidden="true" />
           Clear filters
         </Button>
