@@ -21,6 +21,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             ref={ref}
             id={inputId}
             type="checkbox"
+            aria-label={label == null ? (props["aria-label"] ?? "Checkbox") : props["aria-label"]}
             className={cn(
               "peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0",
               "disabled:cursor-not-allowed",
