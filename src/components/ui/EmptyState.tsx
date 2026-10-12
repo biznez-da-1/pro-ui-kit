@@ -20,11 +20,11 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center rounded-2xl border border-dashed border-neutral-800 bg-neutral-950 px-6 py-12 text-center",
+        "flex flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-surface px-6 py-12 text-center",
         className,
       )}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-400">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-muted text-muted-foreground">
         {icon ?? (
           <Inbox
             className="h-5 w-5"
@@ -33,12 +33,12 @@ export function EmptyState({
         )}
       </div>
 
-      <h3 className="mt-4 text-lg font-semibold text-white">
+      <h3 className="mt-4 text-lg font-semibold text-surface-foreground">
         {title}
       </h3>
 
       {description && (
-        <p className="mt-2 max-w-md text-sm leading-6 text-neutral-400">
+        <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
           {description}
         </p>
       )}
