@@ -22,7 +22,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           disabled={disabled}
           className={cn("peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed", className)}
           {...props}
-          aria-label={label == null ? (props["aria-label"] ?? "Toggle switch") : props["aria-label"]}
+          aria-label={props["aria-label"] ?? (label == null ? "Toggle switch" : undefined)}
         />
         <span
           aria-hidden="true"
