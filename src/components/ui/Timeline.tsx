@@ -16,10 +16,10 @@ export interface TimelineProps {
 }
 
 const statusClasses = {
-  default: "border-neutral-700 bg-neutral-900 text-neutral-400",
-  success: "border-emerald-500/40 bg-emerald-500/10 text-emerald-400",
-  warning: "border-amber-500/40 bg-amber-500/10 text-amber-400",
-  danger: "border-red-500/40 bg-red-500/10 text-red-400",
+  default: "border-border bg-muted text-muted-foreground",
+  success: "border-success/40 bg-success/10 text-success",
+  warning: "border-warning/40 bg-warning/10 text-warning",
+  danger: "border-danger/40 bg-danger/10 text-danger",
 };
 
 export function Timeline({
@@ -38,7 +38,7 @@ export function Timeline({
           >
             {!isLast && (
               <div
-                className="absolute left-4 top-9 h-[calc(100%-1rem)] w-px bg-neutral-800"
+                className="absolute left-4 top-9 h-[calc(100%-1rem)] w-px bg-border"
                 aria-hidden="true"
               />
             )}
@@ -65,19 +65,19 @@ export function Timeline({
               )}
             >
               <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h3 className="text-sm font-semibold text-white">
+                <h3 className="text-sm font-semibold text-surface-foreground">
                   {item.title}
                 </h3>
 
                 {item.date && (
-                  <time className="text-xs text-neutral-500">
+                  <time className="text-xs text-muted-foreground">
                     {item.date}
                   </time>
                 )}
               </div>
 
               {item.description && (
-                <p className="mt-1 text-sm leading-6 text-neutral-400">
+                <p className="mt-1 text-sm leading-6 text-muted-foreground">
                   {item.description}
                 </p>
               )}
