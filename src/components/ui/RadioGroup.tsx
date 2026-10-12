@@ -63,7 +63,7 @@ export function RadioGroup({
             <label
               key={option.value}
               htmlFor={id}
-              className={cn("flex items-start gap-3", optionDisabled ? "cursor-not-allowed" : "cursor-pointer")}
+              className={cn("flex items-start gap-3", optionDisabled ? "cursor-not-allowed opacity-50" : "cursor-pointer")}
             >
               <input
                 id={id}
@@ -71,7 +71,7 @@ export function RadioGroup({
                 name={groupName}
                 value={option.value}
                 checked={selectedValue === option.value}
-                disabled={option.disabled}
+                disabled={optionDisabled}
                 onChange={() => handleChange(option.value)}
                 className="peer sr-only"
               />
