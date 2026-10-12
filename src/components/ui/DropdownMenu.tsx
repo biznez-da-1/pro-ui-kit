@@ -18,11 +18,19 @@ export interface DropdownMenuProps {
   /** Use a single button-like element, such as the Button component. */
   trigger: React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
   items: DropdownMenuItem[];
+  /** Accessible name for the root menu, describing the actions in this menu. */
+  label?: string;
   align?: "left" | "right";
   className?: string;
 }
 
-export function DropdownMenu({ trigger, items, align = "right", className }: DropdownMenuProps) {
+export function DropdownMenu({
+  trigger,
+  items,
+  label = "Actions",
+  align = "right",
+  className,
+}: DropdownMenuProps) {
   const [open, setOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -100,7 +108,7 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
         <div
           ref={menuRef}
           role="menu"
-          aria-label="Actions"
+          aria-label={label}
           onKeyDown={(event) => {
             if (event.key === "Tab") closeMenu(false);
           }}
