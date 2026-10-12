@@ -48,15 +48,15 @@ export function CopyButton({ value, className, label = "Copy" }: CopyButtonProps
         aria-label={copied ? "Copied" : label}
         title={copied ? "Copied" : label}
         className={cn(
-          "inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-neutral-800 bg-neutral-950 px-3 text-sm font-medium text-neutral-300 transition-colors",
-          "hover:bg-neutral-900 hover:text-white",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
+          "inline-flex h-9 items-center justify-center gap-2 rounded-ui border border-border bg-surface px-3 text-sm font-medium text-surface-foreground transition-colors",
+          "hover:bg-muted hover:text-foreground",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           className,
         )}
       >
-        {copied ? <><Check className="h-4 w-4 text-emerald-400" aria-hidden="true" /><span>Copied</span></> : <><Copy className="h-4 w-4" aria-hidden="true" /><span>{label}</span></>}
+        {copied ? <><Check className="h-4 w-4 text-success" aria-hidden="true" /><span>Copied</span></> : <><Copy className="h-4 w-4" aria-hidden="true" /><span>{label}</span></>}
       </button>
-      <span role="status" aria-live="polite" className="text-xs text-neutral-400">
+      <span role="status" aria-live="polite" className="text-xs text-muted-foreground">
         {copied ? "Copied to clipboard." : copyFailed ? "Could not copy. Check clipboard permissions and try again." : ""}
       </span>
     </div>

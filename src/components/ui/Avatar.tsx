@@ -38,7 +38,7 @@ export function Avatar({
       role={alt ? "img" : undefined}
       aria-label={alt || undefined}
       className={cn(
-        "flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-800 font-semibold text-neutral-300",
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-muted font-semibold text-muted-foreground",
         sizes[size],
         className,
       )}
