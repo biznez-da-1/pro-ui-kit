@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import {
   Activity,
   ArrowRight,
@@ -790,7 +791,7 @@ export default function Home() {
                 id: "what",
                 title: "What is Pro UI Kit?",
                 content:
-                  "A reusable collection of production-ready React UI components.",
+                  "A reusable collection of React UI components, TypeScript APIs, Tailwind styling, and usage recipes. The package is still in development.",
               },
               {
                 id: "license",
@@ -1121,7 +1122,6 @@ export function Example() {
             price="$49"
             period="one-time"
             description="A reusable React component collection. Commercial release is still in development."
-            popular
             features={[
               "40 reusable UI components",
               "TypeScript source",
@@ -1163,20 +1163,14 @@ export function Example() {
             <a href="#components" className="transition hover:text-white">
               Components
             </a>
+            <Link href="/product" className="transition hover:text-white">Product</Link>
             <a href="#pricing" className="transition hover:text-white">
               Pricing
             </a>
           </nav>
 
-          <Button
-            size="sm"
-            onClick={() =>
-              document
-                .getElementById("pricing")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            Get Pro UI Kit
+          <Button size="sm" onClick={() => window.location.assign("/product")}>
+            Product preview
           </Button>
         </div>
       </header>
@@ -1188,7 +1182,7 @@ export function Example() {
           </div>
 
           <div className="mx-auto max-w-4xl text-center">
-            <Badge variant="danger">40 production-ready components</Badge>
+            <Badge variant="info">40 reusable UI components</Badge>
 
             <h1 className="mt-6 text-4xl font-black tracking-tight sm:text-6xl lg:text-7xl">
               Build faster.
