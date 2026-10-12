@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { cn } from "@/lib/cn";
 
@@ -11,6 +13,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         ref={ref}
+        {...props}
+        aria-invalid={error ? true : props["aria-invalid"]}
         className={cn(
           "flex h-10 w-full rounded-ui border bg-surface px-3 py-2 text-sm text-surface-foreground",
           "placeholder:text-muted-foreground",
@@ -22,7 +26,6 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             : "border-border focus-visible:border-ring focus-visible:ring-ring/30",
           className,
         )}
-        {...props}
       />
     );
   },
