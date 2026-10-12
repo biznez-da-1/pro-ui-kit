@@ -9,21 +9,21 @@ export interface ButtonProps
 
 const variants = {
   primary:
-    "bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 focus-visible:ring-indigo-500",
+    "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
   secondary:
-    "bg-neutral-800 text-white shadow-sm hover:bg-neutral-700 focus-visible:ring-neutral-500",
+    "bg-muted text-foreground shadow-sm hover:bg-muted/80",
   outline:
-    "border border-neutral-700 bg-transparent text-neutral-200 hover:bg-neutral-800 focus-visible:ring-neutral-500",
+    "border border-border bg-transparent text-foreground hover:bg-muted",
   ghost:
-    "bg-transparent text-neutral-300 hover:bg-neutral-800 hover:text-white focus-visible:ring-neutral-500",
+    "bg-transparent text-foreground hover:bg-muted",
   destructive:
-    "bg-red-600 text-white shadow-sm hover:bg-red-500 focus-visible:ring-red-500",
+    "bg-danger text-white shadow-sm hover:bg-danger/90",
 };
 
 const sizes = {
-  sm: "h-9 rounded-lg px-3 text-sm",
-  md: "h-10 rounded-xl px-4 text-sm",
-  lg: "h-12 rounded-xl px-6 text-base",
+  sm: "h-9 rounded-ui px-3 text-sm",
+  md: "h-10 rounded-ui px-4 text-sm",
+  lg: "h-12 rounded-ui-lg px-6 text-base",
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -35,7 +35,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           "inline-flex items-center justify-center gap-2 font-medium",
           "transition-colors duration-200",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none disabled:opacity-50",
           variants[variant],
           sizes[size],
