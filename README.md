@@ -56,6 +56,8 @@ The CI workflow runs dependency installation, typecheck, lint, and a production 
 
 - [Semantic color, surface, focus, and radius tokens](./docs/design-tokens.md)
 
+The dark palette is the default. A light palette is available through `data-theme="light"`, but the app does not yet include a theme switcher or preference persistence.
+
 ## Usage
 
 Import components from the shared entry point when an export is available:
