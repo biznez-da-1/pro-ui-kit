@@ -16,19 +16,19 @@ export interface AlertProps
 const variants = {
   info: {
     icon: Info,
-    className: "border-blue-500/30 bg-blue-500/10 text-blue-300",
+    className: "border-primary/30 bg-primary/10 text-primary",
   },
   success: {
     icon: CheckCircle2,
-    className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+    className: "border-success/30 bg-success/10 text-success",
   },
   warning: {
     icon: TriangleAlert,
-    className: "border-amber-500/30 bg-amber-500/10 text-amber-300",
+    className: "border-warning/30 bg-warning/10 text-warning",
   },
   error: {
     icon: XCircle,
-    className: "border-red-500/30 bg-red-500/10 text-red-300",
+    className: "border-danger/30 bg-danger/10 text-danger",
   },
 };
 
@@ -57,8 +57,8 @@ export function Alert({
     >
       <Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
       <div className="min-w-0">
-        {title && <p className="text-sm font-semibold text-white">{title}</p>}
-        <div className="mt-1 text-sm leading-6 text-neutral-300">{children}</div>
+        {title && <p className="text-sm font-semibold text-surface-foreground">{title}</p>}
+        <div className="mt-1 text-sm leading-6 text-foreground">{children}</div>
       </div>
     </div>
   );
