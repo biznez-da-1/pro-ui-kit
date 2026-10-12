@@ -31,6 +31,7 @@ export function DropdownMenu({
   align = "right",
   className,
 }: DropdownMenuProps) {
+  const accessibleLabel = label.trim() || "Actions";
   const [open, setOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -108,7 +109,7 @@ export function DropdownMenu({
         <div
           ref={menuRef}
           role="menu"
-          aria-label={label}
+          aria-label={accessibleLabel}
           onKeyDown={(event) => {
             if (event.key === "Tab") closeMenu(false);
           }}
