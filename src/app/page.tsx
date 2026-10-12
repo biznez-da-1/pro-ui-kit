@@ -874,8 +874,6 @@ export default function Home() {
               title="Components"
               value={40}
               description="Reusable building blocks"
-              trend={12}
-              trendLabel="vs last build"
               icon={<Layers3 size={18} />}
             />
             <StatCard
@@ -1364,8 +1362,7 @@ export function Example() {
               Ship your next interface faster.
             </h2>
             <p className="mt-4 text-zinc-400">
-              Get the complete Pro UI Kit source package for a one-time $49
-              purchase.
+              Preview the planned package and pricing. Sales are not open yet.
             </p>
           </div>
 
@@ -1374,8 +1371,7 @@ export function Example() {
               title="Pro UI Kit"
               price="$49"
               period="one-time"
-              description="Everything you need to build polished React interfaces."
-              popular
+              description="Planned source-code package. Final contents and terms are still in development."
               features={[
                 "40 reusable UI components",
                 "TypeScript source",
@@ -1386,9 +1382,9 @@ export function Example() {
               button={
                 <Button
                   className="w-full"
-                  onClick={() => setSelectedAction("Pricing checkout clicked")}
+                  onClick={() => setSelectedAction("Pricing CTA demo clicked; no purchase was made")}
                 >
-                  Get Pro UI Kit
+                  Preview purchase CTA
                 </Button>
               }
             />
