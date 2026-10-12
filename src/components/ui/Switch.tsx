@@ -13,7 +13,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
     const inputId = id ?? generatedId;
 
     const control = (
-      <span className="relative flex h-6 w-11 shrink-0">
+      <span className={cn("relative flex h-6 w-11 shrink-0", disabled ? "cursor-not-allowed" : "cursor-pointer")}>
         <input
           ref={ref}
           id={inputId}
