@@ -157,6 +157,18 @@ function MenuItem({
             event.stopPropagation();
             setSubmenuOpen(false);
             triggerRef.current?.focus();
+          } else if (
+            hasSubmenu &&
+            (event.key === "Enter" || event.key === " ")
+          ) {
+            event.preventDefault();
+            const nextOpen = !submenuOpen;
+            setSubmenuOpen(nextOpen);
+            if (nextOpen) {
+              requestAnimationFrame(() => {
+                submenuRef.current?.querySelector<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)')?.focus();
+              });
+            }
           } else if (hasSubmenu && event.key === "ArrowRight") {
             event.preventDefault();
             setSubmenuOpen(true);
