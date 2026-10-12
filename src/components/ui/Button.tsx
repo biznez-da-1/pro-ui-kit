@@ -9,7 +9,7 @@ export interface ButtonProps
 
 const variants = {
   primary:
-    "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+    "bg-primary text-primary-foreground shadow-sm hover:brightness-110",
   secondary:
     "bg-muted text-foreground shadow-sm hover:bg-muted/80",
   outline:
