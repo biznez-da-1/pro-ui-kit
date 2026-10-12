@@ -47,8 +47,8 @@ export function Slider({
 
   return (
     <div className={cn("w-full", className)}>
-      <label htmlFor={inputId} className="mb-2 block text-sm font-medium text-neutral-200">
-        {label} <span className="text-neutral-400">({currentValue})</span>
+      <label htmlFor={inputId} className="mb-2 block text-sm font-medium text-foreground">
+        {label} <span className="text-muted-foreground">({currentValue})</span>
       </label>
       <input
         id={inputId}
@@ -59,7 +59,7 @@ export function Slider({
         step={safeStep}
         disabled={disabled}
         onChange={handleChange}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-neutral-800 accent-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 disabled:cursor-not-allowed disabled:opacity-50"
+        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
   );

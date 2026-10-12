@@ -79,15 +79,15 @@ export function RadioGroup({
                 aria-hidden="true"
                 className={cn(
                   "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
-                  "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-neutral-950",
-                  selectedValue === option.value ? "border-white bg-white" : "border-neutral-700 bg-neutral-950",
+                  "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
+                  selectedValue === option.value ? "border-primary bg-primary" : "border-border bg-surface",
                 )}
               >
-                {selectedValue === option.value && <span className="h-2 w-2 rounded-full bg-neutral-950" />}
+                {selectedValue === option.value && <span className="h-2 w-2 rounded-full bg-primary-foreground" />}
               </span>
               <span className="min-w-0">
-                <span className="block text-sm font-medium text-white">{option.label}</span>
-                {option.description && <span className="mt-0.5 block text-xs text-neutral-500">{option.description}</span>}
+                <span className="block text-sm font-medium text-surface-foreground">{option.label}</span>
+                {option.description && <span className="mt-0.5 block text-xs text-muted-foreground">{option.description}</span>}
               </span>
             </label>
           );

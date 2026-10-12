@@ -27,15 +27,15 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
         <span
           aria-hidden="true"
           className={cn(
-            "absolute inset-0 rounded-full border border-neutral-700 bg-neutral-800 transition-colors",
-            "peer-checked:border-indigo-500 peer-checked:bg-indigo-600",
-            "peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-neutral-950",
+            "absolute inset-0 rounded-full border border-border bg-muted transition-colors",
+            "peer-checked:border-primary peer-checked:bg-primary",
+            "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-background",
             "peer-disabled:opacity-50",
           )}
         />
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-1 top-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5"
+          className="pointer-events-none absolute left-1 top-1 h-4 w-4 rounded-full bg-primary-foreground shadow-sm transition-transform peer-checked:translate-x-5"
         />
       </span>
     );
@@ -45,7 +45,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
     return (
       <label htmlFor={inputId} className={cn("inline-flex items-center gap-3", disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer")}>
         {control}
-        <span className="text-sm text-neutral-300">{label}</span>
+        <span className="text-sm text-foreground">{label}</span>
       </label>
     );
   },

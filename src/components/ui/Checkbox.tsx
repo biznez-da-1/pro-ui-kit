@@ -31,14 +31,14 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <span
             aria-hidden="true"
             className={cn(
-              "flex h-5 w-5 items-center justify-center rounded-md border border-neutral-700 bg-neutral-950 transition-colors",
-              "peer-checked:border-indigo-500 peer-checked:bg-indigo-600",
-              "peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-neutral-950",
+              "flex h-5 w-5 items-center justify-center rounded-md border border-border bg-surface transition-colors",
+              "peer-checked:border-primary peer-checked:bg-primary",
+              "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface",
               "peer-disabled:opacity-50",
             )}
           >
             <Check
-              className="h-3.5 w-3.5 text-white opacity-0 transition-opacity peer-checked:opacity-100"
+              className="h-3.5 w-3.5 text-primary-foreground opacity-0 transition-opacity peer-checked:opacity-100"
               aria-hidden="true"
             />
           </span>
@@ -47,7 +47,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <label
             htmlFor={inputId}
             className={cn(
-              "text-sm text-neutral-300",
+              "text-sm text-foreground",
               props.disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
             )}
           >
