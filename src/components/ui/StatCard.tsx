@@ -27,29 +27,29 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-neutral-800 bg-neutral-950 p-5 shadow-lg",
+        "rounded-ui-xl border border-border bg-surface p-5 shadow-lg",
         className,
       )}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-sm font-medium text-neutral-400">
+          <p className="text-sm font-medium text-muted-foreground">
             {title}
           </p>
 
-          <p className="mt-2 text-3xl font-bold tracking-tight text-white">
+          <p className="mt-2 text-3xl font-bold tracking-tight text-surface-foreground">
             {value}
           </p>
 
           {description && (
-            <p className="mt-2 text-sm text-neutral-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               {description}
             </p>
           )}
         </div>
 
         {icon && (
-          <div aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-300">
+          <div aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-ui-lg border border-border bg-muted text-muted-foreground">
             {icon}
           </div>
         )}
@@ -61,8 +61,8 @@ export function StatCard({
             className={cn(
               "inline-flex items-center gap-1 font-medium",
               isPositive
-                ? "text-emerald-400"
-                : "text-red-400",
+                ? "text-success"
+                : "text-danger",
             )}
           >
             {isPositive ? (
@@ -81,7 +81,7 @@ export function StatCard({
           </span>
 
           {trendLabel && (
-            <span className="text-neutral-500">
+            <span className="text-muted-foreground">
               {trendLabel}
             </span>
           )}
