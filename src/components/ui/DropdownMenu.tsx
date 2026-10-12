@@ -34,7 +34,7 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
 
   React.useEffect(() => {
     if (!open) return;
-    const first = menuRef.current?.querySelector<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)');
+    const first = menuRef.current?.querySelector<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)');
     first?.focus();
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -49,11 +49,18 @@ export function DropdownMenu({ trigger, items, align = "right", className }: Dro
         closeMenu(true);
         return;
       }
-      if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key) || !menuRef.current) return;
-      const enabled = Array.from(menuRef.current.querySelectorAll<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)'));
+      if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+
+      const activeElement = document.activeElement as HTMLElement | null;
+      const activeMenu = activeElement?.closest<HTMLDivElement>('[role="menu"]');
+      if (!activeMenu || !rootRef.current?.contains(activeMenu)) return;
+
+      const enabled = Array.from(
+        activeMenu.querySelectorAll<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)'),
+      );
       if (!enabled.length) return;
       event.preventDefault();
-      const index = enabled.indexOf(document.activeElement as HTMLButtonElement);
+      const index = enabled.indexOf(activeElement as HTMLButtonElement);
       const next = event.key === "Home" ? 0
         : event.key === "End" ? enabled.length - 1
         : event.key === "ArrowDown" ? (index + 1 + enabled.length) % enabled.length
@@ -166,14 +173,14 @@ function MenuItem({
             setSubmenuOpen(nextOpen);
             if (nextOpen) {
               requestAnimationFrame(() => {
-                submenuRef.current?.querySelector<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)')?.focus();
+                submenuRef.current?.querySelector<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)')?.focus();
               });
             }
           } else if (hasSubmenu && event.key === "ArrowRight") {
             event.preventDefault();
             setSubmenuOpen(true);
             requestAnimationFrame(() => {
-              submenuRef.current?.querySelector<HTMLButtonElement>('[role^="menuitem"]:not(:disabled)')?.focus();
+              submenuRef.current?.querySelector<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)')?.focus();
             });
           } else if (
             onNavigateBack &&
