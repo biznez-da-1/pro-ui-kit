@@ -34,7 +34,7 @@ export function Breadcrumb({
               {index > 0 && (
                 <li
                   aria-hidden="true"
-                  className="text-neutral-600"
+                  className="text-muted-foreground"
                 >
                   {separator ?? (
                     <ChevronRight className="h-4 w-4" />
@@ -46,19 +46,19 @@ export function Breadcrumb({
                 {isLast ? (
                   <span
                     aria-current="page"
-                    className="font-medium text-white"
+                    className="font-medium text-surface-foreground"
                   >
                     {item.label}
                   </span>
                 ) : item.href ? (
                   <a
                     href={item.href}
-                    className="text-neutral-400 transition-colors hover:text-white focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
+                    className="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     {item.label}
                   </a>
                 ) : (
-                  <span className="text-neutral-400">
+                  <span className="text-muted-foreground">
                     {item.label}
                   </span>
                 )}
@@ -81,7 +81,7 @@ export function BreadcrumbEllipsis({
       role="img"
       aria-label="More breadcrumb items"
       className={cn(
-        "inline-flex items-center justify-center text-neutral-500",
+        "inline-flex items-center justify-center text-muted-foreground",
         className,
       )}
     >
