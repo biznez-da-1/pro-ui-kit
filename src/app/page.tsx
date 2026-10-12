@@ -311,12 +311,19 @@ export default function Home() {
       case "Input":
         return (
           <div className="grid gap-4 md:grid-cols-2">
-            <Input
-              value={textValue}
-              onChange={(event) => setTextValue(event.target.value)}
-              placeholder="Type something..."
-            />
-            <Input placeholder="Error example" error />
+            <div className="space-y-2">
+              <label htmlFor="demo-input" className="block text-sm text-zinc-300">Text input</label>
+              <Input
+                id="demo-input"
+                value={textValue}
+                onChange={(event) => setTextValue(event.target.value)}
+                placeholder="Type something..."
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="demo-input-error" className="block text-sm text-zinc-300">Error state</label>
+              <Input id="demo-input-error" placeholder="Example value" error />
+            </div>
             <p className="text-sm text-zinc-400 md:col-span-2">
               Current value: {textValue || "Nothing entered yet"}
             </p>
@@ -456,7 +463,9 @@ export default function Home() {
       case "Textarea":
         return (
           <div className="max-w-2xl space-y-3">
+            <label htmlFor="demo-textarea" className="block text-sm text-zinc-300">Message</label>
             <Textarea
+              id="demo-textarea"
               value={textareaValue}
               onChange={(event) => setTextareaValue(event.target.value)}
               placeholder="Write a message..."
@@ -605,14 +614,14 @@ export default function Home() {
                 Previous
               </Button>
               <Button
-                disabled={step === 3}
-                onClick={() => setStep((value) => Math.min(3, value + 1))}
+                disabled={step === 4}
+                onClick={() => setStep((value) => Math.min(4, value + 1))}
               >
                 Next
               </Button>
             </div>
             <p className="text-sm text-zinc-400">
-              Step {step + 1} of 4
+              Step {step} of 4
             </p>
           </div>
         );
@@ -864,25 +873,21 @@ export default function Home() {
             <StatCard
               title="Components"
               value={40}
-              description="Production-ready building blocks"
+              description="Reusable building blocks"
               trend={12}
               trendLabel="vs last build"
               icon={<Layers3 size={18} />}
             />
             <StatCard
-              title="Downloads"
-              value="2,481"
-              description="This month"
-              trend={24}
-              trendLabel="growth"
+              title="Templates"
+              value={6}
+              description="Documented starter recipes"
               icon={<Download size={18} />}
             />
             <StatCard
-              title="Status"
-              value="Live"
-              description="All systems operational"
-              trend={1}
-              trendLabel="stable"
+              title="Release"
+              value="Preview"
+              description="Checkout not connected"
               icon={<Activity size={18} />}
             />
           </div>
@@ -1107,21 +1112,21 @@ export function Example() {
             title="Pro UI Kit"
             price="$49"
             period="one-time"
-            description="The complete production-ready React component library."
+            description="A reusable React component collection. Commercial release is still in development."
             popular
             features={[
-              "40 production-ready components",
+              "40 reusable UI components",
               "TypeScript source",
               "Tailwind CSS",
-              "Commercial-ready architecture",
-              "Lifetime product access",
+              "Usage recipes and accessibility guidance",
+              "Source-code package (planned)",
             ]}
             button={
               <Button
                 className="w-full"
-                onClick={() => setSelectedAction("Checkout demo clicked")}
+                onClick={() => setSelectedAction("Pricing CTA demo clicked; no purchase was made")}
               >
-                Get Pro UI Kit
+                Preview purchase CTA
               </Button>
             }
           />
@@ -1272,6 +1277,7 @@ export function Example() {
                     onChange={(event) => setSearch(event.target.value)}
                     onClear={() => setSearch("")}
                     placeholder="Filter components..."
+                    aria-label="Filter components"
                     className="w-full sm:max-w-md"
                   />
 
@@ -1353,7 +1359,7 @@ export function Example() {
 
         <section id="pricing" className="scroll-mt-24 border-t border-white/10 py-24">
           <div className="mx-auto max-w-3xl text-center">
-            <Badge variant="success">One-time purchase</Badge>
+            <Badge variant="warning">Pricing preview · Not available yet</Badge>
             <h2 className="mt-5 text-3xl font-black sm:text-5xl">
               Ship your next interface faster.
             </h2>
@@ -1371,11 +1377,11 @@ export function Example() {
               description="Everything you need to build polished React interfaces."
               popular
               features={[
-                "40 production-ready components",
+                "40 reusable UI components",
                 "TypeScript source",
                 "Tailwind CSS",
                 "Reusable component architecture",
-                "Lifetime product access",
+                "Source-code package (planned)",
               ]}
               button={
                 <Button
@@ -1389,8 +1395,7 @@ export function Example() {
           </div>
 
           <p className="mt-5 text-center text-sm text-zinc-600">
-            Checkout integration will be connected after the showcase is fully
-            verified.
+            This is a UI-only pricing demo. No purchase is processed. Final pricing, licensing, refund terms, and download delivery must be confirmed before release.
           </p>
         </section>
       </div>
