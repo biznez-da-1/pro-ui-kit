@@ -25,6 +25,7 @@ export const Textarea = React.forwardRef<
         className,
       )}
       {...props}
+      aria-invalid={error ? true : props["aria-invalid"]}
     />
   );
 });
