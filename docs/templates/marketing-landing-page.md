@@ -42,9 +42,12 @@ export function MarketingLandingPage() {
         <nav aria-label="Main navigation" className="flex items-center gap-4 text-sm">
           <Link href="#features" className="hover:underline">Features</Link>
           <Link href="#pricing" className="hover:underline">Pricing</Link>
-          <Button asChild>
-            <Link href="#pricing">Get started</Link>
-          </Button>
+          <Link
+            href="#pricing"
+            className="inline-flex h-9 items-center justify-center rounded-lg bg-indigo-600 px-3 text-sm font-medium text-white hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          >
+            Get started
+          </Link>
         </nav>
       </header>
 
@@ -57,11 +60,17 @@ export function MarketingLandingPage() {
           Explain who the product helps, the problem it solves, and the result a customer can expect.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button asChild>
-            <Link href="#pricing">Explore plans</Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="#features">See how it works</Link>
+          <Link
+            href="#pricing"
+            className="inline-flex h-12 items-center justify-center rounded-xl bg-indigo-600 px-6 text-base font-medium text-white hover:bg-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          >
+            Explore plans
+          </Link>
+          <Button
+            variant="outline"
+            onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            See how it works
           </Button>
         </div>
       </section>
@@ -94,11 +103,9 @@ export function MarketingLandingPage() {
           <p className="mt-3 text-foreground/70">
             Explain the price, what is included, and any usage or renewal terms before checkout.
           </p>
-          <div className="mt-6">
-            <Button asChild>
-              <Link href="/contact">Talk to us</Link>
-            </Button>
-          </div>
+          <Link href="#top" className="mt-6 inline-block text-sm underline underline-offset-4">
+            Back to top
+          </Link>
         </div>
       </section>
     </main>
@@ -106,7 +113,7 @@ export function MarketingLandingPage() {
 }
 ```
 
-> **Component API note:** This example assumes the kit's `Button` supports `asChild`. Confirm that contract in the current implementation before copying the example; if it does not, render a normal `Link` styled with the project's approved link/button pattern instead. The recipe is illustrative and is not wired to checkout.
+This is a front-end recipe only. It does not implement checkout, customer accounts, lead capture, or purchase delivery.
 
 ## Before publishing
 
