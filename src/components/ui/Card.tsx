@@ -8,7 +8,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 const variants = {
   default: "border border-border bg-surface shadow-lg",
   glass:
-    "border border-border/70 bg-surface/80 shadow-xl backdrop-blur-xl",
+    "border border-border bg-surface shadow-xl backdrop-blur-xl",
   outlined:
     "border border-border bg-transparent",
 };
