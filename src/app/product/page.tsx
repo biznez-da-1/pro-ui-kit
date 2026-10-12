@@ -4,8 +4,7 @@ import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from
 
 export const metadata: Metadata = {
   title: "Product preview",
-  description:
-    "Preview Pro UI Kit: reusable React and TypeScript components, accessible interaction patterns, and practical interface recipes.",
+  description: "Preview Pro UI Kit: reusable React and TypeScript components, accessible interaction patterns, and practical interface recipes.",
   robots: { index: false, follow: false },
 };
 
@@ -14,13 +13,7 @@ const features = [
   { title: "TypeScript + Tailwind", description: "Start from typed React components and utility-first styling that can be adapted to your own design system." },
   { title: "Practical recipes", description: "Use documented examples for dashboards, forms, settings, marketing pages, tables, and common UI states." },
 ];
-const includes = [
-  "React component source code",
-  "TypeScript component APIs",
-  "Tailwind CSS styling",
-  "Interactive component showcase",
-  "Usage recipes and accessibility checklists",
-];
+const includes = ["React component source code", "TypeScript component APIs", "Tailwind CSS styling", "Interactive component showcase", "Usage recipes and accessibility checklists"];
 const linkClass = "inline-flex min-h-10 items-center justify-center rounded-xl px-4 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500";
 const primaryLinkClass = `${linkClass} bg-indigo-600 text-white hover:bg-indigo-500`;
 const secondaryLinkClass = `${linkClass} border border-foreground/20 hover:bg-foreground/5`;
@@ -33,7 +26,7 @@ export default function ProductPreviewPage() {
           <Link href="#top" className="font-bold tracking-tight">PRO UI KIT</Link>
           <nav aria-label="Main navigation" className="flex items-center gap-4 text-sm">
             <Link href="#features" className="text-foreground/70 hover:text-foreground">Features</Link>
-            <Link href="#included" className="text-foreground/70 hover:text-foreground">What's included</Link>
+            <Link href="#included" className="text-foreground/70 hover:text-foreground">What&apos;s included</Link>
             <Link href="#pricing" className="text-foreground/70 hover:text-foreground">Availability</Link>
           </nav>
         </div>
@@ -41,9 +34,7 @@ export default function ProductPreviewPage() {
       <section id="top" className="mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 sm:py-28">
         <Badge variant="info">Product preview · In development</Badge>
         <h1 className="mx-auto mt-6 max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl">Spend less time rebuilding UI. More time building your product.</h1>
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-foreground/70 sm:text-lg">
-          Pro UI Kit is a React, TypeScript, and Tailwind component collection with interactive examples and practical interface recipes.
-        </p>
+        <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-foreground/70 sm:text-lg">Pro UI Kit is a React, TypeScript, and Tailwind component collection with interactive examples and practical interface recipes.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href="#features" className={primaryLinkClass}>Explore the benefits</Link>
           <Link href="/" className={secondaryLinkClass}>Open component showcase</Link>
@@ -56,11 +47,7 @@ export default function ProductPreviewPage() {
           <p className="mt-3 text-foreground/70">A clear baseline for teams that want reusable patterns and fewer one-off interface decisions.</p>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {features.map((feature) => (
-            <Card key={feature.title}>
-              <CardHeader><CardTitle>{feature.title}</CardTitle><CardDescription>{feature.description}</CardDescription></CardHeader>
-            </Card>
-          ))}
+          {features.map((feature) => <Card key={feature.title}><CardHeader><CardTitle>{feature.title}</CardTitle><CardDescription>{feature.description}</CardDescription></CardHeader></Card>)}
         </div>
       </section>
       <section id="included" aria-labelledby="included-title" className="border-y border-foreground/10 bg-foreground/[0.02] px-4 py-16 sm:px-6">
@@ -71,18 +58,14 @@ export default function ProductPreviewPage() {
           </div>
           <Card>
             <CardHeader><CardTitle>Planned package contents</CardTitle><CardDescription>Final contents and terms must be confirmed before release.</CardDescription></CardHeader>
-            <CardContent><ul className="space-y-3">
-              {includes.map((item) => <li key={item} className="flex items-start gap-3 text-sm"><span aria-hidden="true" className="mt-0.5 text-emerald-500">✓</span><span>{item}</span></li>)}
-            </ul></CardContent>
+            <CardContent><ul className="space-y-3">{includes.map((item) => <li key={item} className="flex items-start gap-3 text-sm"><span aria-hidden="true" className="mt-0.5 text-emerald-500">✓</span><span>{item}</span></li>)}</ul></CardContent>
           </Card>
         </div>
       </section>
       <section id="pricing" aria-labelledby="pricing-title" className="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6">
         <Badge variant="warning">Not available for purchase yet</Badge>
         <h2 id="pricing-title" className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">Planned one-time price: $49</h2>
-        <p className="mx-auto mt-4 max-w-2xl leading-7 text-foreground/70">
-          The price is a planning placeholder based on the current showcase. Purchase terms, final package contents, licensing, refunds, support, checkout, and download delivery must be completed before sales open.
-        </p>
+        <p className="mx-auto mt-4 max-w-2xl leading-7 text-foreground/70">The price is a planning placeholder based on the current showcase. Purchase terms, final package contents, licensing, refunds, support, checkout, and download delivery must be completed before sales open.</p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <button type="button" disabled aria-disabled="true" className={`${linkClass} cursor-not-allowed border border-foreground/10 opacity-60`}>Checkout coming soon</button>
           <Link href="/" className={secondaryLinkClass}>Return to showcase</Link>
