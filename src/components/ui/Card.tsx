@@ -6,11 +6,11 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const variants = {
-  default: "border border-neutral-800 bg-neutral-900 shadow-lg",
+  default: "border border-border bg-surface shadow-lg",
   glass:
-    "border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl",
+    "border border-border/70 bg-surface/80 shadow-xl backdrop-blur-xl",
   outlined:
-    "border border-neutral-700 bg-transparent",
+    "border border-border bg-transparent",
 };
 
 export function Card({
@@ -21,7 +21,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-2xl",
+        "rounded-ui-xl",
         variants[variant],
         className,
       )}
@@ -49,7 +49,7 @@ export function CardTitle({
   return (
     <h3
       className={cn(
-        "text-lg font-semibold tracking-tight text-white",
+        "text-lg font-semibold tracking-tight text-surface-foreground",
         className,
       )}
       {...props}
@@ -64,7 +64,7 @@ export function CardDescription({
   return (
     <p
       className={cn(
-        "mt-1 text-sm leading-6 text-neutral-400",
+        "mt-1 text-sm leading-6 text-muted-foreground",
         className,
       )}
       {...props}
