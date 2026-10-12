@@ -49,9 +49,14 @@ export function Dialog({
       }
 
       if (event.key !== "Tab" || !panel) return;
+
       const focusable = Array.from(
         panel.querySelectorAll<HTMLElement>(focusableSelector),
-      ).filter((element) => element.getClientRects().length > 0);
+      ).filter(
+        (element) =>
+          element.getClientRects().length > 0 &&
+          element.getAttribute("aria-hidden") !== "true",
+      );
 
       if (focusable.length === 0) {
         event.preventDefault();
@@ -61,11 +66,21 @@ export function Dialog({
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
+      const activeElement = document.activeElement;
+      const focusIsOutsidePanel = !panel.contains(activeElement);
 
-      if (event.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
+      if (
+        event.shiftKey &&
+        (activeElement === first ||
+          activeElement === panel ||
+          focusIsOutsidePanel)
+      ) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
+      } else if (
+        !event.shiftKey &&
+        (activeElement === last || focusIsOutsidePanel)
+      ) {
         event.preventDefault();
         first.focus();
       }
@@ -103,6 +118,7 @@ export function Dialog({
         )}
         role="dialog"
         aria-modal="true"
+        aria-label={title ? undefined : "Dialog"}
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descriptionId : undefined}
       >
