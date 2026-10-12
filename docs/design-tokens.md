@@ -51,4 +51,4 @@ The app does not currently ship a theme switcher, local-storage persistence, or 
 - Keep text, icons, borders, disabled states, and focus indicators distinguishable in both themes.
 - Do not rely on color alone to communicate success, warning, or failure.
 - Check contrast with a contrast tool and test both themes in a browser before claiming full theme accessibility.
-- Existing components still contain palette-specific utility classes; this token layer is a migration foundation, not a claim that every component has been converted.
+- The Button, Card, Badge, Input, Select, and Textarea primitives use semantic tokens. Many other components still contain palette-specific utilities, so the entire library is not yet theme-ready.
