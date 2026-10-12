@@ -103,14 +103,14 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
       <button type="button" aria-hidden="true" tabIndex={-1} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div
         ref={dialogRef}
-        className={cn("relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl", className)}
+        className={cn("relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl", className)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={`${baseId}-title`}
       >
         <h2 id={`${baseId}-title`} className="sr-only">Command menu</h2>
-        <div className="flex items-center gap-3 border-b border-neutral-800 px-4">
-          <Search className="h-5 w-5 shrink-0 text-neutral-500" aria-hidden="true" />
+        <div className="flex items-center gap-3 border-b border-border px-4">
+          <Search className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden="true" />
           <input
             ref={inputRef}
             role="combobox"
@@ -123,16 +123,16 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
             aria-controls={`${baseId}-results`}
             aria-expanded="true"
             aria-activedescendant={filtered[activeIndex] ? `${baseId}-option-${activeIndex}` : undefined}
-            className="h-14 min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-neutral-500 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+            className="h-14 min-w-0 flex-1 bg-transparent text-sm text-surface-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
           />
-          <kbd className="hidden rounded-md border border-neutral-800 bg-neutral-900 px-2 py-1 text-xs text-neutral-500 sm:inline-flex">ESC</kbd>
+          <kbd className="hidden rounded-md border border-border bg-muted px-2 py-1 text-xs text-muted-foreground sm:inline-flex">ESC</kbd>
         </div>
         <div id={`${baseId}-results`} role="listbox" aria-label="Command results" className="max-h-80 overflow-y-auto p-2">
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center px-4 py-10 text-center">
-              <Command className="h-6 w-6 text-neutral-600" aria-hidden="true" />
-              <p className="mt-3 text-sm font-medium text-neutral-300">No commands found</p>
-              <p className="mt-1 text-xs text-neutral-500">Try a different search.</p>
+              <Command className="h-6 w-6 text-muted-foreground" aria-hidden="true" />
+              <p className="mt-3 text-sm font-medium text-foreground">No commands found</p>
+              <p className="mt-1 text-xs text-muted-foreground">Try a different search.</p>
             </div>
           ) : filtered.map((item, index) => (
             <div
@@ -144,14 +144,14 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => { item.onSelect(); onCloseRef.current(); }}
               className={cn(
-                "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
-                index === activeIndex ? "bg-neutral-900" : "hover:bg-neutral-900/60",
+                "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                index === activeIndex ? "bg-muted" : "hover:bg-muted",
               )}
             >
-              {item.icon && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-400">{item.icon}</span>}
+              {item.icon && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-muted-foreground">{item.icon}</span>}
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium text-white">{item.label}</span>
-                {item.description && <span className="mt-0.5 block truncate text-xs text-neutral-500">{item.description}</span>}
+                <span className="block truncate text-sm font-medium text-surface-foreground">{item.label}</span>
+                {item.description && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.description}</span>}
               </span>
             </div>
           ))}
