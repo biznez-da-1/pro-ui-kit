@@ -38,7 +38,7 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
 
   return (
     <div className={cn("w-full", className)}>
-      <div role="tablist" aria-label={label} className="flex gap-1 overflow-x-auto rounded-xl border border-neutral-800 bg-neutral-950 p-1">
+      <div role="tablist" aria-label={label} className="flex gap-1 overflow-x-auto rounded-ui-lg border border-border bg-surface p-1">
         {tabs.map((tab, index) => {
           const active = tab.id === activeTab;
           return (
@@ -54,9 +54,9 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
               onClick={() => setActiveTab(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
               className={cn(
-                "shrink-0 rounded-lg px-4 py-2 text-sm font-medium transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500",
-                active ? "bg-neutral-800 text-white shadow-sm" : "text-neutral-400 hover:bg-neutral-900 hover:text-white",
+                "shrink-0 rounded-ui px-4 py-2 text-sm font-medium transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                active ? "bg-muted text-surface-foreground shadow-sm" : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               {tab.label}
@@ -72,12 +72,12 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
           aria-labelledby={`${baseId}-tab-${tab.id}`}
           tabIndex={0}
           hidden={tab.id !== activeTab}
-          className="mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          className="mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {tab.content}
         </div>
       ))}
-      {tabs.length === 0 && <p className="mt-4 text-sm text-neutral-400">No tabs available.</p>}
+      {tabs.length === 0 && <p className="mt-4 text-sm text-muted-foreground">No tabs available.</p>}
     </div>
   );
 }
