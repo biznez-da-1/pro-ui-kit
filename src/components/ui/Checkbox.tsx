@@ -32,13 +32,13 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             aria-hidden="true"
             className={cn(
               "flex h-5 w-5 items-center justify-center rounded-md border border-border bg-surface transition-colors",
-              "peer-checked:border-primary peer-checked:bg-primary",
+              "peer-checked:border-primary peer-checked:bg-primary peer-checked:[&>svg]:opacity-100",
               "peer-focus-visible:ring-2 peer-focus-visible:ring-ring peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-surface",
               "peer-disabled:opacity-50",
             )}
           >
             <Check
-              className="h-3.5 w-3.5 text-primary-foreground opacity-0 transition-opacity peer-checked:opacity-100"
+              className="h-3.5 w-3.5 text-primary-foreground opacity-0 transition-opacity"
               aria-hidden="true"
             />
           </span>
