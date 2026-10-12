@@ -26,7 +26,7 @@ export function Navbar({
     <nav
       aria-label="Main navigation"
       className={cn(
-        "relative border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-xl",
+        "relative border-b border-border bg-surface backdrop-blur-xl",
         className,
       )}
     >
@@ -44,15 +44,15 @@ export function Navbar({
           aria-controls={mobileMenuId}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((open) => !open)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-xl text-neutral-400 transition-colors hover:bg-neutral-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950 md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-ui-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
         >
           {mobileOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
         </button>
       </div>
 
-      <div id={mobileMenuId} hidden={!mobileOpen} className="border-t border-neutral-800 px-4 py-4 md:hidden">
+      <div id={mobileMenuId} hidden={!mobileOpen} className="border-t border-border px-4 py-4 md:hidden">
         <div className="flex flex-col gap-2">{mobileMenu ?? children}</div>
-        {actions && <div className="mt-4 border-t border-neutral-800 pt-4">{actions}</div>}
+        {actions && <div className="mt-4 border-t border-border pt-4">{actions}</div>}
       </div>
     </nav>
   );
