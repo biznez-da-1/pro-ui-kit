@@ -13,6 +13,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, label, id, ...props }, ref) => {
     const generatedId = React.useId();
     const inputId = id ?? generatedId;
+    const fallbackLabel =
+      label == null && props["aria-label"] == null && props["aria-labelledby"] == null
+        ? "Checkbox"
+        : undefined;
 
     return (
       <div className={cn("inline-flex items-center gap-3", props.disabled ? "cursor-not-allowed" : "cursor-pointer")}>
@@ -21,7 +25,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             ref={ref}
             id={inputId}
             type="checkbox"
-            aria-label={label == null ? (props["aria-label"] ?? "Checkbox") : props["aria-label"]}
+            aria-label={props["aria-label"] ?? fallbackLabel}
             className={cn(
               "peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0",
               "disabled:cursor-not-allowed",
