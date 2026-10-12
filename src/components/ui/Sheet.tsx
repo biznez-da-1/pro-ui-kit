@@ -43,11 +43,14 @@ export function Sheet({
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
     const focusableSelector =
-      'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      'a[href], button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
     const getFocusable = () =>
-      Array.from(panel?.querySelectorAll<HTMLElement>(focusableSelector) ?? [])
-        .filter((element) => element.getClientRects().length > 0);
+      Array.from(panel?.querySelectorAll<HTMLElement>(focusableSelector) ?? []).filter(
+        (element) =>
+          element.getClientRects().length > 0 &&
+          element.getAttribute("aria-hidden") !== "true",
+      );
 
     const focusFirst = () => {
       const first = getFocusable()[0];
@@ -71,10 +74,21 @@ export function Sheet({
 
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      if (event.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
+      const activeElement = document.activeElement;
+      const focusIsOutsidePanel = !panel.contains(activeElement);
+
+      if (
+        event.shiftKey &&
+        (activeElement === first ||
+          activeElement === panel ||
+          focusIsOutsidePanel)
+      ) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
+      } else if (
+        !event.shiftKey &&
+        (activeElement === last || focusIsOutsidePanel)
+      ) {
         event.preventDefault();
         first.focus();
       }
@@ -95,12 +109,19 @@ export function Sheet({
 
   return (
     <div className="fixed inset-0 z-50">
-      <button type="button" aria-label="Close sheet" tabIndex={-1} className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+      <button
+        type="button"
+        aria-label="Close sheet"
+        tabIndex={-1}
+        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        onClick={onClose}
+      />
       <div
         ref={panelRef}
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
+        aria-label={title ? undefined : "Sheet"}
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descriptionId : undefined}
         className={cn(
@@ -120,8 +141,16 @@ export function Sheet({
         </button>
         {(title || description) && (
           <div className="mb-6 pr-10">
-            {title && <h2 id={titleId} className="text-xl font-semibold text-surface-foreground">{title}</h2>}
-            {description && <p id={descriptionId} className="mt-2 text-sm leading-6 text-muted-foreground">{description}</p>}
+            {title && (
+              <h2 id={titleId} className="text-xl font-semibold text-surface-foreground">
+                {title}
+              </h2>
+            )}
+            {description && (
+              <p id={descriptionId} className="mt-2 text-sm leading-6 text-muted-foreground">
+                {description}
+              </p>
+            )}
           </div>
         )}
         {children}
