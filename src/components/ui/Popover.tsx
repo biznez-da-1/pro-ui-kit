@@ -12,6 +12,8 @@ export interface PopoverProps {
   align?: "left" | "center" | "right";
   className?: string;
   label?: string;
+  /** Accessible name for icon-only triggers; text triggers keep their visible name by default. */
+  triggerLabel?: string;
 }
 
 export function Popover({
@@ -22,6 +24,7 @@ export function Popover({
   align = "left",
   className,
   label = "Additional details",
+  triggerLabel,
 }: PopoverProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const onOpenChangeRef = React.useRef(onOpenChange);
@@ -52,11 +55,13 @@ export function Popover({
     };
   }, [open]);
 
+  const accessibleTriggerLabel = triggerLabel?.trim() || trigger.props["aria-label"];
   const triggerElement = React.cloneElement(
     trigger as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
     {
       "aria-haspopup": "dialog",
       "aria-expanded": open,
+      "aria-label": accessibleTriggerLabel,
       onClick: (event: React.MouseEvent<HTMLElement>) => {
         (trigger.props as React.HTMLAttributes<HTMLElement>).onClick?.(event);
         if (!event.defaultPrevented) onOpenChange(!open);
