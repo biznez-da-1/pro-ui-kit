@@ -92,6 +92,7 @@ export function DropdownMenu({
 
   const triggerElement = React.cloneElement(trigger, {
     type: "button",
+    disabled: trigger.props.disabled || items.length === 0,
     "aria-haspopup": "menu",
     "aria-expanded": open,
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
