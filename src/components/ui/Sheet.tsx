@@ -4,6 +4,7 @@ import * as React from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { acquireBodyScrollLock } from "@/lib/body-scroll-lock";
+import { getFocusableElements } from "@/lib/focusable-elements";
 
 export interface SheetProps {
   open: boolean;
@@ -45,15 +46,7 @@ export function Sheet({
     const releaseScrollLock = acquireBodyScrollLock();
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    const focusableSelector =
-      'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), summary:not([tabindex="-1"]), iframe:not([tabindex="-1"]), audio[controls]:not([tabindex="-1"]), video[controls]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
-
-    const getFocusable = () =>
-      Array.from(panel?.querySelectorAll<HTMLElement>(focusableSelector) ?? []).filter(
-        (element) =>
-          element.getClientRects().length > 0 &&
-          !element.closest('[aria-hidden="true"]'),
-      );
+    const getFocusable = () => getFocusableElements(panel);
 
     const focusFirst = () => {
       const first = getFocusable()[0];
@@ -131,6 +124,31 @@ export function Sheet({
             event.preventDefault();
             event.stopPropagation();
             onCloseRef.current();
+            return;
+          }
+          if (event.key !== "Tab") return;
+          event.stopPropagation();
+
+          const panel = panelRef.current;
+          if (!panel) return;
+          const focusable = getFocusableElements(panel);
+          if (focusable.length === 0) {
+            event.preventDefault();
+            panel.focus();
+            return;
+          }
+
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          const activeElement = document.activeElement;
+          const focusIsOutsidePanel = !panel.contains(activeElement);
+
+          if (event.shiftKey && (activeElement === first || activeElement === panel || focusIsOutsidePanel)) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && (activeElement === last || focusIsOutsidePanel)) {
+            event.preventDefault();
+            first.focus();
           }
         }}
         className={cn(
