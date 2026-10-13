@@ -56,6 +56,11 @@ export function RadioGroup({
     >
       <legend className="sr-only">{accessibleLabel}</legend>
       <div className={cn("flex gap-3", orientation === "vertical" ? "flex-col" : "flex-row flex-wrap")}>
+        {options.length === 0 && (
+          <p role="status" className="text-sm text-muted-foreground">
+            No options available.
+          </p>
+        )}
         {options.map((option, index) => {
           const id = `${generatedId}-option-${index}`;
           const optionDisabled = disabled || option.disabled;
