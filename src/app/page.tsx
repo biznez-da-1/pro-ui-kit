@@ -1065,7 +1065,7 @@ export function Example() {
         return (
           <div className="flex flex-wrap items-center gap-3 text-sm text-zinc-400">
             <span>Press</span>
-            <Kbd>⌘</Kbd>
+            <Kbd>Ctrl / ⌘</Kbd>
             <Kbd>K</Kbd>
             <span>to open command search.</span>
           </div>
