@@ -21,6 +21,7 @@ export function Navbar({
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const mobileMenuId = React.useId();
+  const mobileToggleRef = React.useRef<HTMLButtonElement>(null);
 
   return (
     <nav
@@ -29,6 +30,14 @@ export function Navbar({
         "relative border-b border-border bg-surface backdrop-blur-xl",
         className,
       )}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && mobileOpen) {
+          event.preventDefault();
+          event.stopPropagation();
+          setMobileOpen(false);
+          mobileToggleRef.current?.focus();
+        }
+      }}
     >
       <div className="mx-auto flex min-h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-6">
@@ -39,6 +48,7 @@ export function Navbar({
         <div className="hidden items-center gap-3 md:flex">{actions}</div>
 
         <button
+          ref={mobileToggleRef}
           type="button"
           aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-controls={mobileMenuId}
