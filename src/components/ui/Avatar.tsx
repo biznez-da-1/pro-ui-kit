@@ -26,6 +26,7 @@ export function Avatar({
   className,
 }: AvatarProps) {
   const [imageError, setImageError] = React.useState(false);
+  const accessibleAlt = alt.trim();
 
   React.useEffect(() => {
     setImageError(false);
@@ -35,8 +36,8 @@ export function Avatar({
 
   return (
     <div
-      role={alt ? "img" : undefined}
-      aria-label={alt || undefined}
+      role={accessibleAlt ? "img" : undefined}
+      aria-label={accessibleAlt || undefined}
       className={cn(
         "flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-muted font-semibold text-muted-foreground",
         sizes[size],
