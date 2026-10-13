@@ -45,11 +45,11 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
             <button
               key={tab.id}
               ref={(node) => { if (node) tabRefs.current.set(tab.id, node); else tabRefs.current.delete(tab.id); }}
-              id={`${baseId}-tab-${tab.id}`}
+              id={`${baseId}-tab-${index}`}
               type="button"
               role="tab"
               aria-selected={active}
-              aria-controls={`${baseId}-panel-${tab.id}`}
+              aria-controls={`${baseId}-panel-${index}`}
               tabIndex={active ? 0 : -1}
               onClick={() => setActiveTab(tab.id)}
               onKeyDown={(event) => handleKeyDown(event, index)}
@@ -64,12 +64,12 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
           );
         })}
       </div>
-      {tabs.map((tab) => (
+      {tabs.map((tab, index) => (
         <div
           key={tab.id}
-          id={`${baseId}-panel-${tab.id}`}
+          id={`${baseId}-panel-${index}`}
           role="tabpanel"
-          aria-labelledby={`${baseId}-tab-${tab.id}`}
+          aria-labelledby={`${baseId}-tab-${index}`}
           tabIndex={0}
           hidden={tab.id !== activeTab}
           className="mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
