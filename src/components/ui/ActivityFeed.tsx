@@ -6,6 +6,8 @@ export interface ActivityItem {
   title: string;
   description?: string;
   timestamp: string;
+  /** Machine-readable date/time string for the timestamp, such as an ISO 8601 value. */
+  timestampDateTime?: string;
   icon?: React.ReactNode;
   className?: string;
 }
@@ -60,7 +62,7 @@ export function ActivityFeed({
                 </p>
 
                 {timestampText && (
-                  <time className="shrink-0 text-xs text-muted-foreground">
+                  <time dateTime={item.timestampDateTime?.trim() || undefined} className="shrink-0 text-xs text-muted-foreground">
                     {timestampText}
                   </time>
                 )}
