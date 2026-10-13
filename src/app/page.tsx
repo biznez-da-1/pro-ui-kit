@@ -667,8 +667,26 @@ export default function Home() {
               <div className="space-y-5">
                 <p className="text-sm text-zinc-400">
                   The action is ready to be connected to your real checkout
-                  flow later.
+                  flow later. Open the nested menu and press Escape to close
+                  the menu without closing this dialog.
                 </p>
+                <DropdownMenu
+                  label="Dialog actions"
+                  trigger={<Button variant="outline">More actions</Button>}
+                  items={[
+                    {
+                      id: "save-draft",
+                      label: "Save draft",
+                      onSelect: () => setSelectedAction("Dialog menu: Save draft"),
+                    },
+                    {
+                      id: "view-details",
+                      label: "View details",
+                      onSelect: () => setSelectedAction("Dialog menu: View details"),
+                    },
+                  ]}
+                />
+                <p className="text-xs text-zinc-400">Last action: {selectedAction}</p>
                 <div className="flex justify-end gap-2">
                   <Button
                     variant="outline"
