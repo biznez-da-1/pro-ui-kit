@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Command, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { acquireBodyScrollLock } from "@/lib/body-scroll-lock";
 
 export interface CommandItem {
   id: string;
@@ -37,11 +38,10 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
 
   React.useEffect(() => {
     if (!open) return;
-    const previousOverflow = document.body.style.overflow;
+    const releaseScrollLock = acquireBodyScrollLock();
     const previouslyFocused = document.activeElement as HTMLElement | null;
     setQuery("");
     setActiveIndex(0);
-    document.body.style.overflow = "hidden";
     inputRef.current?.focus();
 
     const handleTabKey = (event: KeyboardEvent) => {
@@ -84,7 +84,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
 
     window.addEventListener("keydown", handleTabKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock();
       window.removeEventListener("keydown", handleTabKey);
       previouslyFocused?.focus();
     };
