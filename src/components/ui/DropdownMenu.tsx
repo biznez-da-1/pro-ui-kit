@@ -126,6 +126,13 @@ export function DropdownMenu({
           ref={menuRef}
           role="menu"
           aria-label={accessibleLabel}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              event.stopPropagation();
+              closeMenu(true);
+            }
+          }}
           className={cn(
             "absolute z-50 mt-2 min-w-48 overflow-hidden rounded-xl border border-border bg-surface p-1 shadow-2xl",
             align === "right" ? "right-0" : "left-0",

@@ -126,6 +126,13 @@ export function Sheet({
         aria-label={titleText ? undefined : "Sheet"}
         aria-labelledby={titleText ? titleId : undefined}
         aria-describedby={descriptionText ? descriptionId : undefined}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            event.stopPropagation();
+            onCloseRef.current();
+          }
+        }}
         className={cn(
           "fixed z-10 overflow-y-auto bg-surface p-6 shadow-2xl focus:outline-none",
           "border-border",
