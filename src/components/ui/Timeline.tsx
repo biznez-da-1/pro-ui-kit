@@ -45,6 +45,7 @@ export function Timeline({
         const isLast = index === items.length - 1;
         const titleText = item.title.trim() || "Timeline event";
         const descriptionText = item.description?.trim();
+        const dateText = item.date?.trim();
 
         return (
           <li
@@ -84,9 +85,9 @@ export function Timeline({
                   {titleText}
                 </h3>
 
-                {item.date && (
+                {dateText && (
                   <time className="text-xs text-muted-foreground">
-                    {item.date}
+                    {dateText}
                   </time>
                 )}
               </div>
