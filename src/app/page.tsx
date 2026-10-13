@@ -155,9 +155,12 @@ function DemoShell({
   description: string;
   children: React.ReactNode;
 }) {
+  const sectionId = `component-${name.toLowerCase().replace(/\s+/g, "-")}`;
+
   return (
     <section
-      id={`component-${name.toLowerCase().replace(/\s+/g, "-")}`}
+      id={sectionId}
+      aria-labelledby={`${sectionId}-title`}
       tabIndex={-1}
       className="scroll-mt-24"
     >
@@ -165,7 +168,7 @@ function DemoShell({
         <CardHeader>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <CardTitle>{name}</CardTitle>
+              <CardTitle id={`${sectionId}-title`}>{name}</CardTitle>
               <CardDescription>{description}</CardDescription>
             </div>
             <Badge variant="info">Live</Badge>
