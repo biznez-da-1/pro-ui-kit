@@ -27,6 +27,7 @@ export function Avatar({
 }: AvatarProps) {
   const [imageError, setImageError] = React.useState(false);
   const accessibleAlt = alt.trim();
+  const fallbackText = fallback.trim() || "?";
 
   React.useEffect(() => {
     setImageError(false);
@@ -52,7 +53,7 @@ export function Avatar({
           onError={() => setImageError(true)}
         />
       ) : (
-        <span aria-hidden="true">{fallback}</span>
+        <span aria-hidden="true">{fallbackText}</span>
       )}
     </div>
   );
