@@ -9,6 +9,8 @@ export interface NavbarProps {
   children?: React.ReactNode;
   actions?: React.ReactNode;
   mobileMenu?: React.ReactNode;
+  /** Accessible name for this navigation landmark, useful when multiple navs appear on a page. */
+  label?: string;
   className?: string;
 }
 
@@ -17,15 +19,17 @@ export function Navbar({
   children,
   actions,
   mobileMenu,
+  label = "Main navigation",
   className,
 }: NavbarProps) {
+  const accessibleLabel = label.trim() || "Main navigation";
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const mobileMenuId = React.useId();
   const mobileToggleRef = React.useRef<HTMLButtonElement>(null);
 
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={accessibleLabel}
       className={cn(
         "relative border-b border-border bg-surface backdrop-blur-xl",
         className,

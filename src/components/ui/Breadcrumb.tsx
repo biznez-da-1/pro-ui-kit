@@ -11,19 +11,25 @@ export interface BreadcrumbProps
   extends React.HTMLAttributes<HTMLElement> {
   items: BreadcrumbItem[];
   separator?: React.ReactNode;
+  /** Accessible name for this breadcrumb landmark, useful when multiple trails appear on a page. */
+  label?: string;
 }
 
 export function Breadcrumb({
   items,
   separator,
   className,
+  label,
+  "aria-label": ariaLabel,
   ...props
 }: BreadcrumbProps) {
+  const accessibleLabel = label?.trim() || ariaLabel?.trim() || "Breadcrumb";
+
   return (
     <nav
-      aria-label="Breadcrumb"
-      className={cn("w-full", className)}
       {...props}
+      aria-label={accessibleLabel}
+      className={cn("w-full", className)}
     >
       <ol className="flex flex-wrap items-center gap-1.5 text-sm">
         {items.map((item, index) => {
