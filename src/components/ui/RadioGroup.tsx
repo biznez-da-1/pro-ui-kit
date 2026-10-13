@@ -55,8 +55,8 @@ export function RadioGroup({
     >
       <legend className="sr-only">{label}</legend>
       <div className={cn("flex gap-3", orientation === "vertical" ? "flex-col" : "flex-row flex-wrap")}>
-        {options.map((option) => {
-          const id = `${generatedId}-${option.value}`;
+        {options.map((option, index) => {
+          const id = `${generatedId}-option-${index}`;
           const optionDisabled = disabled || option.disabled;
 
           return (
