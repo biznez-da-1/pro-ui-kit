@@ -45,6 +45,7 @@ export function Alert({
 
   return (
     <div
+      {...props}
       role={isError ? "alert" : "status"}
       aria-live={isError ? "assertive" : "polite"}
       aria-atomic="true"
@@ -53,7 +54,6 @@ export function Alert({
         config.className,
         className,
       )}
-      {...props}
     >
       <Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
       <div className="min-w-0">
