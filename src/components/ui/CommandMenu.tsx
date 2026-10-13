@@ -96,6 +96,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
+      event.stopPropagation();
       onCloseRef.current();
     } else if (event.key === "ArrowDown" && filtered.length) {
       event.preventDefault();
