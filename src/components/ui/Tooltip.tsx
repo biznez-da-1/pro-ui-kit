@@ -23,9 +23,7 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
   const child = React.Children.only(children);
 
   const trigger = React.cloneElement(child, {
-    "aria-describedby": open
-      ? [child.props["aria-describedby"], tooltipId].filter(Boolean).join(" ")
-      : child.props["aria-describedby"],
+    "aria-describedby": [child.props["aria-describedby"], tooltipId].filter(Boolean).join(" "),
     onFocus: (event: React.FocusEvent<HTMLElement>) => {
       child.props.onFocus?.(event);
       setOpen(true);
@@ -56,19 +54,18 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
       }}
     >
       {trigger}
-      {open && (
-        <span
-          id={tooltipId}
-          role="tooltip"
-          className={cn(
-            "pointer-events-none absolute z-50 whitespace-nowrap rounded-lg border border-border bg-muted px-2.5 py-1.5 text-xs font-medium text-foreground shadow-xl",
-            sideClasses[side],
-            className,
-          )}
-        >
-          {content}
-        </span>
-      )}
+      <span
+        id={tooltipId}
+        role="tooltip"
+        hidden={!open}
+        className={cn(
+          "pointer-events-none absolute z-50 whitespace-nowrap rounded-lg border border-border bg-muted px-2.5 py-1.5 text-xs font-medium text-foreground shadow-xl",
+          sideClasses[side],
+          className,
+        )}
+      >
+        {content}
+      </span>
     </span>
   );
 }
