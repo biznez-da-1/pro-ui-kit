@@ -56,7 +56,6 @@ export function Popover({
     {
       "aria-haspopup": "dialog",
       "aria-expanded": open,
-      "aria-label": trigger.props["aria-label"] ?? label,
       onClick: (event: React.MouseEvent<HTMLElement>) => {
         (trigger.props as React.HTMLAttributes<HTMLElement>).onClick?.(event);
         if (!event.defaultPrevented) onOpenChange(!open);
