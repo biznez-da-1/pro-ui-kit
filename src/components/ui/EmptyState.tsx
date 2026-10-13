@@ -24,7 +24,7 @@ export function EmptyState({
         className,
       )}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-muted text-muted-foreground">
+      <div aria-hidden="true" className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-muted text-muted-foreground">
         {icon ?? (
           <Inbox
             className="h-5 w-5"
