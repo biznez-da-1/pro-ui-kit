@@ -118,7 +118,7 @@ export function FileUpload({
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
             setDragging(false);
           }
-        }
+        }}
         onDrop={handleDrop}
         className={cn(
           "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors motion-reduce:transition-none",
