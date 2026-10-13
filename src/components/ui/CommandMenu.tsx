@@ -33,6 +33,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
     const search = query.trim().toLowerCase();
     return item.label.toLowerCase().includes(search) || Boolean(item.description?.toLowerCase().includes(search));
   });
+  const activeOption = filtered[activeIndex];
 
   React.useEffect(() => {
     if (!open) return;
@@ -92,6 +93,13 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
   React.useEffect(() => {
     setActiveIndex((index) => Math.min(index, Math.max(filtered.length - 1, 0)));
   }, [filtered.length]);
+
+  React.useEffect(() => {
+    if (!open || !activeOption) return;
+    document.getElementById(`${baseId}-option-${activeIndex}`)?.scrollIntoView({
+      block: "nearest",
+    });
+  }, [activeIndex, activeOption, baseId, open, query]);
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
