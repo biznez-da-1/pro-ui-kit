@@ -56,6 +56,7 @@ export function Popover({
   }, [open]);
 
   const accessibleTriggerLabel = triggerLabel?.trim() || trigger.props["aria-label"];
+  const accessiblePopoverLabel = label.trim() || "Additional details";
   const triggerElement = React.cloneElement(
     trigger as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
     {
@@ -75,7 +76,7 @@ export function Popover({
       {open && (
         <div
           role="dialog"
-          aria-label={label}
+          aria-label={accessiblePopoverLabel}
           className={cn(
             "absolute z-50 mt-2 min-w-64 rounded-xl border border-border bg-surface p-4 text-surface-foreground shadow-2xl",
             align === "left" && "left-0",
