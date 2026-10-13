@@ -198,6 +198,22 @@ export default function Home() {
   const [uploadedFiles, setUploadedFiles] = React.useState<File[]>([]);
   const [selectedAction, setSelectedAction] = React.useState("None selected");
 
+  React.useEffect(() => {
+    const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.key.toLowerCase() === "k" &&
+        !event.altKey
+      ) {
+        event.preventDefault();
+        setCommandOpen(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
   const filteredComponents = React.useMemo(() => {
     const query = search.trim().toLowerCase();
 
