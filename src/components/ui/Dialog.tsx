@@ -3,6 +3,7 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { acquireBodyScrollLock } from "@/lib/body-scroll-lock";
 
 export interface DialogProps {
   open: boolean;
@@ -33,7 +34,7 @@ export function Dialog({
     if (!open) return;
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
-    const previousOverflow = document.body.style.overflow;
+    const releaseScrollLock = acquireBodyScrollLock();
     const panel = panelRef.current;
     const focusableSelector =
       'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), summary:not([tabindex="-1"]), iframe:not([tabindex="-1"]), audio[controls]:not([tabindex="-1"]), video[controls]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
@@ -94,12 +95,11 @@ export function Dialog({
       }
     };
 
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKeyDown);
     focusFirst();
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock();
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
