@@ -43,6 +43,12 @@ export function Alert({
   const Icon = config.icon;
   const isError = variant === "error";
   const titleText = title?.trim();
+  const alertContent = typeof children === "string" ? children.trim() : children;
+  const hasAlertContent =
+    alertContent != null &&
+    alertContent !== false &&
+    alertContent !== true &&
+    alertContent !== "";
 
   return (
     <div
@@ -59,7 +65,11 @@ export function Alert({
       <Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
       <div className="min-w-0">
         {titleText && <p className="text-sm font-semibold text-surface-foreground">{titleText}</p>}
-        <div className="mt-1 text-sm leading-6 text-foreground">{children}</div>
+        {hasAlertContent ? (
+          <div className="mt-1 text-sm leading-6 text-foreground">{alertContent}</div>
+        ) : !titleText ? (
+          <div className="mt-1 text-sm leading-6 text-foreground">No details provided.</div>
+        ) : null}
       </div>
     </div>
   );
