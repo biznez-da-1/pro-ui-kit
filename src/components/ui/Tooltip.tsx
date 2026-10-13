@@ -18,7 +18,9 @@ const sideClasses = {
 };
 
 export function Tooltip({ content, children, side = "top", className }: TooltipProps) {
-  const [open, setOpen] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
+  const open = focused || hovered;
   const tooltipId = React.useId();
   const child = React.Children.only(children);
 
@@ -26,11 +28,11 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
     "aria-describedby": [child.props["aria-describedby"], tooltipId].filter(Boolean).join(" "),
     onFocus: (event: React.FocusEvent<HTMLElement>) => {
       child.props.onFocus?.(event);
-      setOpen(true);
+      setFocused(true);
     },
     onBlur: (event: React.FocusEvent<HTMLElement>) => {
       child.props.onBlur?.(event);
-      setOpen(false);
+      setFocused(false);
     },
     onMouseEnter: (event: React.MouseEvent<HTMLElement>) => {
       child.props.onMouseEnter?.(event);
@@ -43,13 +45,14 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
   return (
     <span
       className="relative inline-flex"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       onKeyDown={(event) => {
         if (event.key === "Escape" && open) {
           event.preventDefault();
           event.stopPropagation();
-          setOpen(false);
+          setFocused(false);
+          setHovered(false);
         }
       }}
     >
