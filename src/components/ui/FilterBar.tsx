@@ -25,6 +25,11 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
   const selectId = React.useId();
   const accessibleLabel = label.trim() || "Filter by";
   const hasActiveFilter = value !== undefined && value !== "";
+  const hasChildren = children != null && children !== false && children !== "";
+
+  if (options.length === 0 && !hasChildren && !(hasActiveFilter && onClear)) {
+    return null;
+  }
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2 rounded-ui-xl border border-border bg-surface p-3", className)}>
