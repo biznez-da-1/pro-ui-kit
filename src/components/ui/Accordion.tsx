@@ -46,6 +46,9 @@ export function Accordion({ items, type = "single", defaultValue, className }: A
         const isOpen = open.has(item.id);
         const triggerId = `${baseId}-trigger-${index}`;
         const panelId = `${baseId}-panel-${index}`;
+        const title = typeof item.title === "string"
+          ? item.title.trim() || `Section ${index + 1}`
+          : item.title;
         return (
           <div key={item.id}>
             <h3 className="m-0">
@@ -62,7 +65,7 @@ export function Accordion({ items, type = "single", defaultValue, className }: A
                   item.disabled && "cursor-not-allowed opacity-50",
                 )}
               >
-                <span>{item.title}</span>
+                <span>{title}</span>
                 <ChevronDown className={cn("h-4 w-4 shrink-0 text-muted-foreground transition-transform", !reduceMotion && "duration-200", isOpen && "rotate-180")} aria-hidden="true" />
               </button>
             </h3>
