@@ -161,7 +161,18 @@ function MenuItem({
   };
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseLeave={(event) => {
+        if (
+          hasSubmenu &&
+          !submenuRef.current?.contains(document.activeElement) &&
+          !event.currentTarget.contains(event.relatedTarget as Node | null)
+        ) {
+          setSubmenuOpen(false);
+        }
+      }}
+    >
       <button
         ref={triggerRef}
         type="button"
