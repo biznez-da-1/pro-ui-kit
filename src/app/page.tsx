@@ -209,11 +209,16 @@ export default function Home() {
   }, [search]);
 
   const scrollToComponent = (name: string) => {
-    document
-      .getElementById(
-        `component-${name.toLowerCase().replace(/\s+/g, "-")}`,
-      )
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const target = document.getElementById(
+      `component-${name.toLowerCase().replace(/\s+/g, "-")}`,
+    );
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    target?.scrollIntoView({
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
   };
 
   const showToast = () => {
