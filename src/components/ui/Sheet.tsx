@@ -111,7 +111,7 @@ export function Sheet({
     <div className="fixed inset-0 z-50">
       <button
         type="button"
-        aria-label="Close sheet"
+        aria-hidden="true"
         tabIndex={-1}
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={onClose}
