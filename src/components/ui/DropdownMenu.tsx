@@ -35,6 +35,7 @@ export function DropdownMenu({
   const [open, setOpen] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
+  const focusLastItem = React.useRef(false);
 
   const closeMenu = React.useCallback((restoreFocus = false) => {
     setOpen(false);
@@ -43,8 +44,12 @@ export function DropdownMenu({
 
   React.useEffect(() => {
     if (!open) return;
-    const first = menuRef.current?.querySelector<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)');
-    first?.focus();
+    const enabledItems = Array.from(
+      menuRef.current?.querySelectorAll<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)') ?? [],
+    );
+    const targetIndex = focusLastItem.current ? enabledItems.length - 1 : 0;
+    focusLastItem.current = false;
+    enabledItems[targetIndex]?.focus();
 
     const handlePointerDown = (event: PointerEvent) => {
       if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
@@ -97,8 +102,9 @@ export function DropdownMenu({
       trigger.props.onKeyDown?.(event);
       // Enter and Space use the native button activation, which fires onClick.
       // Handling them here as well would open on keydown and then toggle closed on click.
-      if (event.key === "ArrowDown") {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
         event.preventDefault();
+        focusLastItem.current = event.key === "ArrowUp";
         setOpen(true);
       }
     },
