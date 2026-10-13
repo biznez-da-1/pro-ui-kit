@@ -32,6 +32,8 @@ export function Sheet({
 }: SheetProps) {
   const titleId = React.useId();
   const descriptionId = React.useId();
+  const titleText = title?.trim();
+  const descriptionText = description?.trim();
   const panelRef = React.useRef<HTMLDivElement>(null);
   const onCloseRef = React.useRef(onClose);
   onCloseRef.current = onClose;
@@ -121,9 +123,9 @@ export function Sheet({
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
-        aria-label={title ? undefined : "Sheet"}
-        aria-labelledby={title ? titleId : undefined}
-        aria-describedby={description ? descriptionId : undefined}
+        aria-label={titleText ? undefined : "Sheet"}
+        aria-labelledby={titleText ? titleId : undefined}
+        aria-describedby={descriptionText ? descriptionId : undefined}
         className={cn(
           "fixed z-10 overflow-y-auto bg-surface p-6 shadow-2xl focus:outline-none",
           "border-border",
@@ -139,16 +141,16 @@ export function Sheet({
         >
           <X className="h-5 w-5" aria-hidden="true" />
         </button>
-        {(title || description) && (
+        {(titleText || descriptionText) && (
           <div className="mb-6 pr-10">
-            {title && (
+            {titleText && (
               <h2 id={titleId} className="text-xl font-semibold text-surface-foreground">
-                {title}
+                {titleText}
               </h2>
             )}
-            {description && (
+            {descriptionText && (
               <p id={descriptionId} className="mt-2 text-sm leading-6 text-muted-foreground">
-                {description}
+                {descriptionText}
               </p>
             )}
           </div>
