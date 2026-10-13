@@ -23,6 +23,8 @@ export function Toast({ title, message, variant = "info", onClose, className }: 
   const config = variants[variant];
   const Icon = config.icon;
   const isError = variant === "error";
+  const titleText = title.trim() || "Notification";
+  const messageText = message?.trim();
 
   return (
     <div
@@ -37,8 +39,8 @@ export function Toast({ title, message, variant = "info", onClose, className }: 
     >
       <Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-surface-foreground">{title}</p>
-        {message && <p className="mt-1 text-sm leading-5 text-foreground">{message}</p>}
+        <p className="text-sm font-semibold text-surface-foreground">{titleText}</p>
+        {messageText && <p className="mt-1 text-sm leading-5 text-foreground">{messageText}</p>}
       </div>
       {onClose && (
         <button
