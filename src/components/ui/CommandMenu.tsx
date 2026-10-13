@@ -184,7 +184,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
               {item.icon && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-muted-foreground">{item.icon}</span>}
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-medium text-surface-foreground">{item.label.trim() || "Command"}</span>
-                {item.description && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.description}</span>}
+                {item.description?.trim() && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.description.trim()}</span>}
               </span>
             </div>
           ))}
