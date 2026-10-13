@@ -12,6 +12,8 @@ export interface TimelineItem {
 
 export interface TimelineProps {
   items: TimelineItem[];
+  /** Accessible name for the ordered timeline list. */
+  label?: string;
   className?: string;
 }
 
@@ -24,22 +26,28 @@ const statusClasses = {
 
 export function Timeline({
   items,
+  label = "Timeline",
   className,
 }: TimelineProps) {
+  const accessibleLabel = label.trim() || "Timeline";
+
+  if (items.length === 0) {
+    return (
+      <p role="status" className={cn("py-6 text-center text-sm text-muted-foreground", className)}>
+        No timeline events yet.
+      </p>
+    );
+  }
+
   return (
-    <div className={cn("relative", className)}>
-      {items.length === 0 && (
-        <p role="status" className="py-6 text-center text-sm text-muted-foreground">
-          No timeline events yet.
-        </p>
-      )}
+    <ol aria-label={accessibleLabel} className={cn("relative m-0 list-none p-0", className)}>
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         const titleText = item.title.trim() || "Timeline event";
         const descriptionText = item.description?.trim();
 
         return (
-          <div
+          <li
             key={item.id}
             className="relative flex gap-4"
           >
@@ -89,9 +97,9 @@ export function Timeline({
                 </p>
               )}
             </div>
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }
