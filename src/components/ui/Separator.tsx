@@ -13,6 +13,7 @@ export function Separator({
 }: SeparatorProps) {
   return (
     <div
+      {...props}
       role="separator"
       aria-orientation={orientation}
       className={cn(
@@ -22,7 +23,6 @@ export function Separator({
           : "h-full w-px",
         className,
       )}
-      {...props}
     />
   );
 }
