@@ -28,6 +28,11 @@ export function Timeline({
 }: TimelineProps) {
   return (
     <div className={cn("relative", className)}>
+      {items.length === 0 && (
+        <p role="status" className="py-6 text-center text-sm text-muted-foreground">
+          No timeline events yet.
+        </p>
+      )}
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
 
