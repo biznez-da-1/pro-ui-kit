@@ -129,6 +129,13 @@ export function Dialog({
         aria-label={titleText ? undefined : "Dialog"}
         aria-labelledby={titleText ? titleId : undefined}
         aria-describedby={descriptionText ? descriptionId : undefined}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            event.stopPropagation();
+            onCloseRef.current();
+          }
+        }}
       >
         <button
           type="button"
