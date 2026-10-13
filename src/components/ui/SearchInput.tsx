@@ -12,6 +12,8 @@ export interface SearchInputProps
 
 export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
   ({ value, defaultValue, onChange, onClear, className, ...props }, ref) => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
     const [internalValue, setInternalValue] = React.useState(String(defaultValue ?? ""));
     const currentValue = value !== undefined ? String(value ?? "") : internalValue;
     const hasValue = currentValue.length > 0;
@@ -24,13 +26,14 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     const handleClear = () => {
       if (value === undefined) setInternalValue("");
       onClear?.();
+      inputRef.current?.focus();
     };
 
     return (
       <div className={cn("relative w-full", className)}>
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
         <input
-          ref={ref}
+          ref={inputRef}
           type="search"
           value={currentValue}
           onChange={handleChange}
