@@ -17,6 +17,9 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     const [internalValue, setInternalValue] = React.useState(String(defaultValue ?? ""));
     const currentValue = value !== undefined ? String(value ?? "") : internalValue;
     const hasValue = currentValue.length > 0;
+    const explicitLabel = props["aria-label"]?.trim();
+    const labelledBy = props["aria-labelledby"]?.trim();
+    const accessibleLabel = explicitLabel || (labelledBy ? undefined : "Search");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (value === undefined) setInternalValue(event.target.value);
@@ -42,6 +45,7 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
             onClear && "[&::-webkit-search-cancel-button]:hidden",
           )}
           {...props}
+          aria-label={accessibleLabel}
         />
         {hasValue && onClear && (
           <button
