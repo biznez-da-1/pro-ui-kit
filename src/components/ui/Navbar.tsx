@@ -60,7 +60,17 @@ export function Navbar({
         </button>
       </div>
 
-      <div id={mobileMenuId} hidden={!mobileOpen} className="border-t border-border px-4 py-4 md:hidden">
+      <div
+        id={mobileMenuId}
+        hidden={!mobileOpen}
+        className="border-t border-border px-4 py-4 md:hidden"
+        onClick={(event) => {
+          if (event.target instanceof Element && event.target.closest("a[href]")) {
+            setMobileOpen(false);
+            mobileToggleRef.current?.focus();
+          }
+        }}
+      >
         <div className="flex flex-col gap-2">{mobileMenu ?? children}</div>
         {actions && <div className="mt-4 border-t border-border pt-4">{actions}</div>}
       </div>
