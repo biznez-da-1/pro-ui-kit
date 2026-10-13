@@ -219,7 +219,7 @@ function MenuItem({
             onNavigateBack();
           }
         }}
-        onMouseEnter={() => hasSubmenu && setSubmenuOpen(true)}
+        onMouseEnter={() => hasSubmenu && !item.disabled && setSubmenuOpen(true)}
         className={cn(
           "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
