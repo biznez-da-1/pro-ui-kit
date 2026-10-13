@@ -43,7 +43,7 @@ export function Popover({
         event.preventDefault();
         event.stopPropagation();
         onOpenChangeRef.current(false);
-        containerRef.current?.querySelector<HTMLElement>('button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])')?.focus();
+        containerRef.current?.querySelector<HTMLElement>('[aria-haspopup="dialog"]')?.focus();
       }
     };
 
