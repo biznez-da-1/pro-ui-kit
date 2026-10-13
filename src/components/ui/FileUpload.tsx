@@ -27,6 +27,7 @@ export function FileUpload({
 }: FileUploadProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const generatedId = React.useId();
+  const accessibleLabel = label.trim() || "Upload files";
   const [files, setFiles] = React.useState<File[]>([]);
   const [dragging, setDragging] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -103,7 +104,7 @@ export function FileUpload({
       <div
         role="button"
         tabIndex={disabled ? -1 : 0}
-        aria-label={label}
+        aria-label={accessibleLabel}
         aria-disabled={disabled || undefined}
         aria-describedby={`${generatedId}-hint ${generatedId}-status`}
         onClick={() => { if (!disabled) inputRef.current?.click(); }}
