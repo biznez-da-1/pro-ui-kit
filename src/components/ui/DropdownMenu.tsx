@@ -95,7 +95,9 @@ export function DropdownMenu({
     },
     onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
       trigger.props.onKeyDown?.(event);
-      if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      // Enter and Space use the native button activation, which fires onClick.
+      // Handling them here as well would open on keydown and then toggle closed on click.
+      if (event.key === "ArrowDown") {
         event.preventDefault();
         setOpen(true);
       }
