@@ -55,7 +55,8 @@ export function Popover({
     };
   }, [open]);
 
-  const accessibleTriggerLabel = triggerLabel?.trim() || trigger.props["aria-label"];
+  const existingTriggerLabel = trigger.props["aria-label"]?.trim();
+  const accessibleTriggerLabel = triggerLabel?.trim() || existingTriggerLabel || undefined;
   const accessiblePopoverLabel = label.trim() || "Additional details";
   const triggerElement = React.cloneElement(
     trigger as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
