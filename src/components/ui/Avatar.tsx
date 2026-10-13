@@ -25,15 +25,11 @@ export function Avatar({
   size = "md",
   className,
 }: AvatarProps) {
-  const [imageError, setImageError] = React.useState(false);
+  const [failedSrc, setFailedSrc] = React.useState<string | null>(null);
   const accessibleAlt = alt.trim();
   const fallbackText = fallback.trim() || "?";
 
-  React.useEffect(() => {
-    setImageError(false);
-  }, [src]);
-
-  const showImage = Boolean(src) && !imageError;
+  const showImage = Boolean(src) && failedSrc !== src;
 
   return (
     <div
@@ -50,7 +46,7 @@ export function Avatar({
           src={src}
           alt=""
           className="h-full w-full object-cover"
-          onError={() => setImageError(true)}
+          onError={() => setFailedSrc(src ?? null)}
         />
       ) : (
         <span aria-hidden="true">{fallbackText}</span>
