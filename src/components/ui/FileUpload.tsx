@@ -60,7 +60,11 @@ export function FileUpload({
           return true;
         })
       : accepted.slice(0, 1);
-    const nextFiles = multiple ? [...files, ...uniqueAccepted] : uniqueAccepted;
+    const nextFiles = multiple
+      ? [...files, ...uniqueAccepted]
+      : uniqueAccepted.length
+        ? uniqueAccepted
+        : files;
     setFiles(nextFiles);
     onFilesChange?.(nextFiles);
 
