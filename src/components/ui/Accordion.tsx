@@ -42,6 +42,11 @@ export function Accordion({ items, type = "single", defaultValue, className }: A
 
   return (
     <div className={cn("divide-y divide-border overflow-hidden rounded-ui-lg border border-border bg-surface", className)}>
+      {items.length === 0 && (
+        <p role="status" className="px-4 py-6 text-center text-sm text-muted-foreground">
+          No sections available.
+        </p>
+      )}
       {items.map((item, index) => {
         const isOpen = open.has(item.id);
         const triggerId = `${baseId}-trigger-${index}`;
