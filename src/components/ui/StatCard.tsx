@@ -22,6 +22,7 @@ export function StatCard({
   className,
 }: StatCardProps) {
   const titleText = title.trim() || "Metric";
+  const valueText = typeof value === "string" ? value.trim() || "—" : value;
   const descriptionText = description?.trim();
   const trendLabelText = trendLabel?.trim();
   const hasTrend = typeof trend === "number";
@@ -47,7 +48,7 @@ export function StatCard({
           </p>
 
           <p className="mt-2 text-3xl font-bold tracking-tight text-surface-foreground">
-            {value}
+            {valueText}
           </p>
 
           {descriptionText && (
