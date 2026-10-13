@@ -6,6 +6,8 @@ export interface TimelineItem {
   title: string;
   description?: string;
   date?: string;
+  /** Machine-readable date/time string for the rendered <time> element, such as an ISO 8601 value. */
+  dateTime?: string;
   icon?: React.ReactNode;
   status?: "default" | "success" | "warning" | "danger";
 }
@@ -86,7 +88,7 @@ export function Timeline({
                 </h3>
 
                 {dateText && (
-                  <time className="text-xs text-muted-foreground">
+                  <time dateTime={item.dateTime?.trim() || undefined} className="text-xs text-muted-foreground">
                     {dateText}
                   </time>
                 )}
