@@ -93,6 +93,13 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
     setActiveIndex((index) => Math.min(index, Math.max(filtered.length - 1, 0)));
   }, [filtered.length]);
 
+  React.useEffect(() => {
+    if (!open || !filtered[activeIndex]) return;
+    document.getElementById(`${baseId}-option-${activeIndex}`)?.scrollIntoView({
+      block: "nearest",
+    });
+  }, [activeIndex, baseId, filtered, open]);
+
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
       event.preventDefault();
