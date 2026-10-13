@@ -63,6 +63,7 @@ export function Sidebar({
       <nav aria-label="Sidebar navigation" className="flex-1 overflow-y-auto p-3">
         <div className="space-y-1">
           {items.map((item) => {
+            const itemLabel = item.label.trim() || item.id.trim() || "Navigation item";
             const content = (
               <>
                 {item.icon && (
@@ -70,7 +71,7 @@ export function Sidebar({
                     {item.icon}
                   </span>
                 )}
-                {!collapsed && <span className="truncate">{item.label}</span>}
+                {!collapsed && <span className="truncate">{itemLabel}</span>}
               </>
             );
 
@@ -89,8 +90,8 @@ export function Sidebar({
                   key={item.id}
                   href={item.href}
                   aria-current={item.active ? "page" : undefined}
-                  title={collapsed ? item.label : undefined}
-                  aria-label={collapsed ? item.label : undefined}
+                  title={collapsed ? itemLabel : undefined}
+                  aria-label={collapsed ? itemLabel : undefined}
                   className={itemClassName}
                 >
                   {content}
