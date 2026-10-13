@@ -23,6 +23,7 @@ export interface FilterBarProps {
 
 export function FilterBar({ options, value, onChange, onClear, children, className, label = "Filter by" }: FilterBarProps) {
   const selectId = React.useId();
+  const accessibleLabel = label.trim() || "Filter by";
   const hasActiveFilter = value !== undefined && value !== "";
 
   return (
@@ -31,7 +32,7 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
         <div className="flex min-w-0 items-center gap-2">
           <label htmlFor={selectId} className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
             <Filter className="h-4 w-4" aria-hidden="true" />
-            <span>{label}</span>
+            <span>{accessibleLabel}</span>
           </label>
           <select
             id={selectId}
@@ -40,7 +41,11 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
             className="h-9 min-w-32 rounded-ui border border-border bg-muted px-3 text-sm text-surface-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
           >
             <option value="">All</option>
-            {options.map((option) => <option key={option.id} value={option.value}>{option.label}</option>)}
+            {options.map((option, index) => (
+              <option key={option.id} value={option.value}>
+                {option.label.trim() || option.value.trim() || `Option ${index + 1}`}
+              </option>
+            ))}
           </select>
         </div>
       )}
