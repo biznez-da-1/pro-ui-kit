@@ -3,6 +3,7 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { acquireBodyScrollLock } from "@/lib/body-scroll-lock";
 
 export interface SheetProps {
   open: boolean;
@@ -41,7 +42,7 @@ export function Sheet({
   React.useEffect(() => {
     if (!open) return;
 
-    const previousOverflow = document.body.style.overflow;
+    const releaseScrollLock = acquireBodyScrollLock();
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
     const focusableSelector =
@@ -96,12 +97,11 @@ export function Sheet({
       }
     };
 
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKeyDown);
     focusFirst();
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock();
       window.removeEventListener("keydown", handleKeyDown);
       previouslyFocused?.focus();
     };
