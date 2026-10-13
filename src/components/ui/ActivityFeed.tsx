@@ -40,6 +40,7 @@ export function ActivityFeed({
       {items.map((item) => {
         const titleText = item.title.trim() || "Activity";
         const descriptionText = item.description?.trim();
+        const timestampText = item.timestamp.trim();
 
         return (
           <li
@@ -58,9 +59,11 @@ export function ActivityFeed({
                   {titleText}
                 </p>
 
-                <time className="shrink-0 text-xs text-muted-foreground">
-                  {item.timestamp}
-                </time>
+                {timestampText && (
+                  <time className="shrink-0 text-xs text-muted-foreground">
+                    {timestampText}
+                  </time>
+                )}
               </div>
 
               {descriptionText && (
