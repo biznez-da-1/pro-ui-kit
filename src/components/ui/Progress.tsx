@@ -18,12 +18,13 @@ export function Progress({
   const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
   const safeValue = Number.isFinite(value) ? Math.min(safeMax, Math.max(0, value)) : 0;
   const percentage = (safeValue / safeMax) * 100;
+  const accessibleLabel = label.trim() || "Progress";
 
   return (
     <div className={cn("w-full", className)}>
       {showLabel && (
         <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-          <span>{label}</span>
+          <span>{accessibleLabel}</span>
           <span>{Math.round(percentage)}%</span>
         </div>
       )}
@@ -31,7 +32,7 @@ export function Progress({
       <div
         className="h-2 w-full overflow-hidden rounded-full bg-muted"
         role="progressbar"
-        aria-label={label}
+        aria-label={accessibleLabel}
         aria-valuenow={safeValue}
         aria-valuemin={0}
         aria-valuemax={safeMax}
