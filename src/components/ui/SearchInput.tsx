@@ -18,7 +18,8 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     const currentValue = value !== undefined ? String(value ?? "") : internalValue;
     const hasValue = currentValue.length > 0;
     const explicitLabel = props["aria-label"]?.trim();
-    const accessibleLabel = explicitLabel || (props["aria-labelledby"] ? undefined : "Search");
+    const labelledBy = props["aria-labelledby"]?.trim();
+    const accessibleLabel = explicitLabel || (labelledBy ? undefined : "Search");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (value === undefined) setInternalValue(event.target.value);
