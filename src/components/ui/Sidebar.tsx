@@ -19,6 +19,8 @@ export interface SidebarProps {
   footer?: React.ReactNode;
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
+  /** Accessible name for this navigation landmark, useful when multiple navs appear on a page. */
+  label?: string;
   className?: string;
 }
 
@@ -28,8 +30,11 @@ export function Sidebar({
   footer,
   collapsed = false,
   onCollapsedChange,
+  label = "Sidebar navigation",
   className,
 }: SidebarProps) {
+  const accessibleLabel = label.trim() || "Sidebar navigation";
+
   return (
     <aside
       className={cn(
@@ -60,7 +65,7 @@ export function Sidebar({
         )}
       </div>
 
-      <nav aria-label="Sidebar navigation" className="flex-1 overflow-y-auto p-3">
+      <nav aria-label={accessibleLabel} className="flex-1 overflow-y-auto p-3">
         <div className="space-y-1">
           {items.map((item) => {
             const itemLabel = item.label.trim() || item.id.trim() || "Navigation item";
