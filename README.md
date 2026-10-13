@@ -89,6 +89,7 @@ Check each component's props before use. Follow the documented contract instead 
 ## Accessibility and release readiness
 
 - [Accessibility checklist](./docs/accessibility.md)
+- [Component edge-case verification matrix](./docs/component-edge-case-verification.md)
 - [Release-readiness checklist](./docs/release-readiness.md)
 
 Use semantic HTML, visible focus indicators, explicit form labels, keyboard-operable controls, and descriptive error messages. The component audit and CI improve the baseline, but human browser and assistive-technology validation remains necessary.
