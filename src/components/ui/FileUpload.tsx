@@ -93,8 +93,8 @@ export function FileUpload({
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    if (disabled) return;
     setDragging(false);
+    if (disabled) return;
     processFiles(Array.from(event.dataTransfer.files));
   };
 
