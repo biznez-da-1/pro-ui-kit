@@ -31,7 +31,11 @@ export function ActivityFeed({
           No activity yet.
         </p>
       )}
-      {items.map((item) => (
+      {items.map((item) => {
+        const titleText = item.title.trim() || "Activity";
+        const descriptionText = item.description?.trim();
+
+        return (
         <div
           key={item.id}
           className={cn(
@@ -51,7 +55,7 @@ export function ActivityFeed({
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <p className="text-sm font-medium text-surface-foreground">
-                {item.title}
+                {titleText}
               </p>
 
               <time className="shrink-0 text-xs text-muted-foreground">
@@ -59,14 +63,15 @@ export function ActivityFeed({
               </time>
             </div>
 
-            {item.description && (
+            {descriptionText && (
               <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                {item.description}
+                {descriptionText}
               </p>
             )}
           </div>
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
