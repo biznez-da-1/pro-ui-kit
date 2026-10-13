@@ -37,8 +37,14 @@ export function Dialog({
       'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])';
 
     const focusFirst = () => {
-      const first = panel?.querySelector<HTMLElement>(focusableSelector);
-      (first ?? panel)?.focus();
+      const focusable = Array.from(
+        panel?.querySelectorAll<HTMLElement>(focusableSelector) ?? [],
+      ).filter(
+        (element) =>
+          element.getClientRects().length > 0 &&
+          !element.closest('[aria-hidden="true"]'),
+      );
+      (focusable[0] ?? panel)?.focus();
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -55,7 +61,7 @@ export function Dialog({
       ).filter(
         (element) =>
           element.getClientRects().length > 0 &&
-          element.getAttribute("aria-hidden") !== "true",
+          !element.closest('[aria-hidden="true"]'),
       );
 
       if (focusable.length === 0) {
