@@ -158,6 +158,7 @@ function DemoShell({
   return (
     <section
       id={`component-${name.toLowerCase().replace(/\s+/g, "-")}`}
+      tabIndex={-1}
       className="scroll-mt-24"
     >
       <Card variant="glass">
@@ -235,6 +236,7 @@ export default function Home() {
       behavior: prefersReducedMotion ? "auto" : "smooth",
       block: "start",
     });
+    target?.focus({ preventScroll: true });
   };
 
   const showToast = () => {
