@@ -21,6 +21,9 @@ export function StatCard({
   icon,
   className,
 }: StatCardProps) {
+  const titleText = title.trim() || "Metric";
+  const descriptionText = description?.trim();
+  const trendLabelText = trendLabel?.trim();
   const hasTrend = typeof trend === "number";
   const isPositive = hasTrend && trend > 0;
   const isNegative = hasTrend && trend < 0;
@@ -40,16 +43,16 @@ export function StatCard({
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-sm font-medium text-muted-foreground">
-            {title}
+            {titleText}
           </p>
 
           <p className="mt-2 text-3xl font-bold tracking-tight text-surface-foreground">
             {value}
           </p>
 
-          {description && (
+          {descriptionText && (
             <p className="mt-2 text-sm text-muted-foreground">
-              {description}
+              {descriptionText}
             </p>
           )}
         </div>
@@ -80,9 +83,9 @@ export function StatCard({
             {Math.abs(trend)}%
           </span>
 
-          {trendLabel && (
+          {trendLabelText && (
             <span className="text-muted-foreground">
-              {trendLabel}
+              {trendLabelText}
             </span>
           )}
         </div>
