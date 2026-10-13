@@ -23,6 +23,10 @@ export function PricingCard({
   popular = false,
   className,
 }: PricingCardProps) {
+  const titleText = title.trim() || "Plan";
+  const descriptionText = description?.trim();
+  const periodText = period?.trim();
+
   return (
     <div
       className={cn(
@@ -41,12 +45,12 @@ export function PricingCard({
 
       <div>
         <h3 className="text-lg font-semibold text-surface-foreground">
-          {title}
+          {titleText}
         </h3>
 
-        {description && (
+        {descriptionText && (
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            {description}
+            {descriptionText}
           </p>
         )}
 
@@ -55,30 +59,34 @@ export function PricingCard({
             {price}
           </span>
 
-          {period && (
+          {periodText && (
             <span className="text-sm text-muted-foreground">
-              {period}
+              {periodText}
             </span>
           )}
         </div>
       </div>
 
       <ul className="mt-8 flex-1 space-y-3">
-        {features.map((feature, index) => (
-          <li
-            key={`${feature}-${index}`}
-            className="flex items-start gap-3 text-sm text-surface-foreground"
-          >
-            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/10 text-success">
-              <Check
-                className="h-3.5 w-3.5"
-                aria-hidden="true"
-              />
-            </span>
+        {features.map((feature, index) => {
+          const featureText = feature.trim() || `Feature ${index + 1}`;
 
-            <span>{feature}</span>
-          </li>
-        ))}
+          return (
+            <li
+              key={`${feature}-${index}`}
+              className="flex items-start gap-3 text-sm text-surface-foreground"
+            >
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/10 text-success">
+                <Check
+                  className="h-3.5 w-3.5"
+                  aria-hidden="true"
+                />
+              </span>
+
+              <span>{featureText}</span>
+            </li>
+          );
+        })}
       </ul>
 
       {button && (
