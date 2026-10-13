@@ -152,7 +152,8 @@ function MenuItem({
 }) {
   const [submenuOpen, setSubmenuOpen] = React.useState(false);
   const hasSubmenu = Boolean(item.submenu?.length);
-  const submenuLabel = item.label.trim() || "Submenu";
+  const accessibleItemLabel = item.label.trim() || (hasSubmenu ? "Submenu" : "Menu item");
+  const submenuLabel = accessibleItemLabel;
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const submenuRef = React.useRef<HTMLDivElement>(null);
 
@@ -234,7 +235,7 @@ function MenuItem({
         )}
       >
         {item.checked ? <Check className="h-4 w-4 shrink-0" aria-hidden="true" /> : <span className="h-4 w-4 shrink-0" aria-hidden="true" />}
-        <span className="min-w-0 flex-1">{item.label}</span>
+        <span className="min-w-0 flex-1">{accessibleItemLabel}</span>
         {hasSubmenu && <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />}
       </button>
       {hasSubmenu && submenuOpen && (
