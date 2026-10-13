@@ -37,7 +37,10 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
           type="search"
           value={currentValue}
           onChange={handleChange}
-          className="h-10 w-full rounded-ui border border-border bg-surface py-2 pl-9 pr-10 text-sm text-surface-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
+          className={cn(
+            "h-10 w-full rounded-ui border border-border bg-surface py-2 pl-9 pr-10 text-sm text-surface-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
+            onClear && "[&::-webkit-search-cancel-button]:hidden",
+          )}
           {...props}
         />
         {hasValue && onClear && (
