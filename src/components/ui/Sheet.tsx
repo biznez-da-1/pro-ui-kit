@@ -49,7 +49,7 @@ export function Sheet({
       Array.from(panel?.querySelectorAll<HTMLElement>(focusableSelector) ?? []).filter(
         (element) =>
           element.getClientRects().length > 0 &&
-          element.getAttribute("aria-hidden") !== "true",
+          !element.closest('[aria-hidden="true"]'),
       );
 
     const focusFirst = () => {
