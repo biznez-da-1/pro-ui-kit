@@ -42,6 +42,7 @@ export function Alert({
   const config = variants[variant];
   const Icon = config.icon;
   const isError = variant === "error";
+  const titleText = title?.trim();
 
   return (
     <div
@@ -57,7 +58,7 @@ export function Alert({
     >
       <Icon className="mt-0.5 h-5 w-5 shrink-0" aria-hidden="true" />
       <div className="min-w-0">
-        {title && <p className="text-sm font-semibold text-surface-foreground">{title}</p>}
+        {titleText && <p className="text-sm font-semibold text-surface-foreground">{titleText}</p>}
         <div className="mt-1 text-sm leading-6 text-foreground">{children}</div>
       </div>
     </div>
