@@ -48,7 +48,11 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       onKeyDown={(event) => {
-        if (event.key === "Escape" && open) setOpen(false);
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          event.stopPropagation();
+          setOpen(false);
+        }
       }}
     >
       {trigger}
