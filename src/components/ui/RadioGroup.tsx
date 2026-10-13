@@ -37,6 +37,7 @@ export function RadioGroup({
   const generatedId = React.useId();
   const groupName = name ?? generatedId;
   const selectedValue = value ?? internalValue;
+  const accessibleLabel = label.trim() || "Options";
 
   const handleChange = (nextValue: string) => {
     if (value === undefined) setInternalValue(nextValue);
@@ -46,18 +47,19 @@ export function RadioGroup({
   return (
     <fieldset
       disabled={disabled}
-      aria-label={label}
+      aria-label={accessibleLabel}
       className={cn(
         "min-w-0 border-0 p-0",
         disabled && "opacity-60",
         className,
       )}
     >
-      <legend className="sr-only">{label}</legend>
+      <legend className="sr-only">{accessibleLabel}</legend>
       <div className={cn("flex gap-3", orientation === "vertical" ? "flex-col" : "flex-row flex-wrap")}>
         {options.map((option, index) => {
           const id = `${generatedId}-option-${index}`;
           const optionDisabled = disabled || option.disabled;
+          const optionLabel = option.label.trim() || option.value.trim() || `Option ${index + 1}`;
 
           return (
             <label
@@ -86,7 +88,7 @@ export function RadioGroup({
                 {selectedValue === option.value && <span className="h-2 w-2 rounded-full bg-primary-foreground" />}
               </span>
               <span className="min-w-0">
-                <span className="block text-sm font-medium text-surface-foreground">{option.label}</span>
+                <span className="block text-sm font-medium text-surface-foreground">{optionLabel}</span>
                 {option.description && <span className="mt-0.5 block text-xs text-muted-foreground">{option.description}</span>}
               </span>
             </label>
