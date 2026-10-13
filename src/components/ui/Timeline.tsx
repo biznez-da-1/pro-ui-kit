@@ -35,6 +35,8 @@ export function Timeline({
       )}
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
+        const titleText = item.title.trim() || "Timeline event";
+        const descriptionText = item.description?.trim();
 
         return (
           <div
@@ -71,7 +73,7 @@ export function Timeline({
             >
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h3 className="text-sm font-semibold text-surface-foreground">
-                  {item.title}
+                  {titleText}
                 </h3>
 
                 {item.date && (
@@ -81,9 +83,9 @@ export function Timeline({
                 )}
               </div>
 
-              {item.description && (
+              {descriptionText && (
                 <p className="mt-1 text-sm leading-6 text-muted-foreground">
-                  {item.description}
+                  {descriptionText}
                 </p>
               )}
             </div>
