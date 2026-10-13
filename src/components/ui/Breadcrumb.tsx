@@ -28,6 +28,7 @@ export function Breadcrumb({
       <ol className="flex flex-wrap items-center gap-1.5 text-sm">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
+          const label = item.label.trim() || (isLast ? "Current page" : `Breadcrumb ${index + 1}`);
 
           return (
             <React.Fragment key={`${item.label}-${index}`}>
@@ -48,18 +49,18 @@ export function Breadcrumb({
                     aria-current="page"
                     className="font-medium text-surface-foreground"
                   >
-                    {item.label}
+                    {label}
                   </span>
                 ) : item.href ? (
                   <a
                     href={item.href}
                     className="text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
-                    {item.label}
+                    {label}
                   </a>
                 ) : (
                   <span className="text-muted-foreground">
-                    {item.label}
+                    {label}
                   </span>
                 )}
               </li>
