@@ -29,6 +29,7 @@ export function Slider({
   className,
 }: SliderProps) {
   const [internalValue, setInternalValue] = React.useState(defaultValue);
+  const accessibleLabel = label.trim() || "Value";
   const generatedId = React.useId();
   const inputId = id ?? generatedId;
   const safeMin = Number.isFinite(min) ? min : 0;
@@ -48,7 +49,7 @@ export function Slider({
   return (
     <div className={cn("w-full", className)}>
       <label htmlFor={inputId} className="mb-2 block text-sm font-medium text-foreground">
-        {label} <span className="text-muted-foreground">({currentValue})</span>
+        {accessibleLabel} <span className="text-muted-foreground">({currentValue})</span>
       </label>
       <input
         id={inputId}
