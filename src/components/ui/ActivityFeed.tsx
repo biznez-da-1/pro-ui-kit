@@ -26,6 +26,11 @@ export function ActivityFeed({
         className,
       )}
     >
+      {items.length === 0 && (
+        <p role="status" className="px-4 py-8 text-center text-sm text-muted-foreground">
+          No activity yet.
+        </p>
+      )}
       {items.map((item) => (
         <div
           key={item.id}
