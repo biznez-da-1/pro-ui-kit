@@ -13,6 +13,8 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
     const inputId = id ?? generatedId;
     const accessibleLabel =
       typeof label === "string" && !label.trim() ? "Toggle switch" : label;
+    const explicitAriaLabel = props["aria-label"]?.trim();
+    const inputAriaLabel = explicitAriaLabel || (accessibleLabel == null ? "Toggle switch" : undefined);
 
     const control = (
       <span className="relative flex h-6 w-11 shrink-0">
@@ -24,7 +26,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           disabled={disabled}
           className={cn("peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0 disabled:cursor-not-allowed", className)}
           {...props}
-          aria-label={accessibleLabel == null ? (props["aria-label"] ?? "Toggle switch") : props["aria-label"]}
+          aria-label={inputAriaLabel}
         />
         <span
           aria-hidden="true"
