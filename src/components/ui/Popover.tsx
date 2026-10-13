@@ -72,7 +72,18 @@ export function Popover({
   );
 
   return (
-    <div ref={containerRef} className="relative inline-block">
+    <div
+      ref={containerRef}
+      className="relative inline-block"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          event.stopPropagation();
+          onOpenChangeRef.current(false);
+          containerRef.current?.querySelector<HTMLElement>('[aria-haspopup="dialog"]')?.focus();
+        }
+      }}
+    >
       {triggerElement}
       {open && (
         <div
