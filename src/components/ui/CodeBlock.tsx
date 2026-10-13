@@ -15,6 +15,9 @@ export function CodeBlock({
   filename,
   className,
 }: CodeBlockProps) {
+  const filenameText = filename?.trim();
+  const languageText = language.trim() || "text";
+
   return (
     <div
       className={cn(
@@ -24,15 +27,15 @@ export function CodeBlock({
     >
       <div className="flex items-center justify-between gap-4 border-b border-border bg-muted px-4 py-3">
         <div className="flex min-w-0 items-center gap-3">
-          {filename && (
+          {filenameText && (
             <span className="truncate text-sm font-medium text-surface-foreground">
-              {filename}
+              {filenameText}
             </span>
           )}
 
-          {!filename && (
+          {!filenameText && (
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              {language}
+              {languageText}
             </span>
           )}
         </div>
