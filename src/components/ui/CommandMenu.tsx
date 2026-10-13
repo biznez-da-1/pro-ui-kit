@@ -4,6 +4,7 @@ import * as React from "react";
 import { Command, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { acquireBodyScrollLock } from "@/lib/body-scroll-lock";
+import { getFocusableElements } from "@/lib/focusable-elements";
 
 export interface CommandItem {
   id: string;
@@ -46,15 +47,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
 
     const handleTabKey = (event: KeyboardEvent) => {
       if (event.key !== "Tab" || !dialogRef.current) return;
-      const focusable = Array.from(
-        dialogRef.current.querySelectorAll<HTMLElement>(
-          'a[href]:not([tabindex="-1"]), button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([type="hidden"]):not([tabindex="-1"]), select:not([disabled]):not([tabindex="-1"]), textarea:not([disabled]):not([tabindex="-1"]), summary:not([tabindex="-1"]), iframe:not([tabindex="-1"]), audio[controls]:not([tabindex="-1"]), video[controls]:not([tabindex="-1"]), [contenteditable]:not([contenteditable="false"]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter(
-        (element) =>
-          element.getClientRects().length > 0 &&
-          element.getAttribute("aria-hidden") !== "true",
-      );
+      const focusable = getFocusableElements(dialogRef.current);
 
       if (!focusable.length) {
         event.preventDefault();
@@ -140,6 +133,32 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
         role="dialog"
         aria-modal="true"
         aria-labelledby={`${baseId}-title`}
+        onKeyDown={(event) => {
+          if (event.key !== "Tab") return;
+          event.stopPropagation();
+
+          const dialog = dialogRef.current;
+          if (!dialog) return;
+          const focusable = getFocusableElements(dialog);
+          if (focusable.length === 0) {
+            event.preventDefault();
+            dialog.focus();
+            return;
+          }
+
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          const activeElement = document.activeElement;
+          const focusIsOutsideDialog = !dialog.contains(activeElement);
+
+          if (event.shiftKey && (activeElement === first || activeElement === dialog || focusIsOutsideDialog)) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && (activeElement === last || focusIsOutsideDialog)) {
+            event.preventDefault();
+            first.focus();
+          }
+        }}
       >
         <h2 id={`${baseId}-title`} className="sr-only">Command menu</h2>
         <div className="flex items-center gap-3 border-b border-border px-4">
