@@ -72,19 +72,19 @@ export function PricingCard({
           const featureText = feature.trim() || `Feature ${index + 1}`;
 
           return (
-          <li
-            key={`${feature}-${index}`}
-            className="flex items-start gap-3 text-sm text-surface-foreground"
-          >
-            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/10 text-success">
-              <Check
-                className="h-3.5 w-3.5"
-                aria-hidden="true"
-              />
-            </span>
+            <li
+              key={`${feature}-${index}`}
+              className="flex items-start gap-3 text-sm text-surface-foreground"
+            >
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/10 text-success">
+                <Check
+                  className="h-3.5 w-3.5"
+                  aria-hidden="true"
+                />
+              </span>
 
-            <span>{featureText}</span>
-          </li>
+              <span>{featureText}</span>
+            </li>
           );
         })}
       </ul>
