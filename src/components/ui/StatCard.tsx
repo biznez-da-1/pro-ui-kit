@@ -22,7 +22,13 @@ export function StatCard({
   className,
 }: StatCardProps) {
   const hasTrend = typeof trend === "number";
-  const isPositive = hasTrend && trend >= 0;
+  const isPositive = hasTrend && trend > 0;
+  const isNegative = hasTrend && trend < 0;
+  const trendColorClass = isPositive
+    ? "text-success"
+    : isNegative
+      ? "text-danger"
+      : "text-muted-foreground";
 
   return (
     <div
@@ -60,23 +66,17 @@ export function StatCard({
           <span
             className={cn(
               "inline-flex items-center gap-1 font-medium",
-              isPositive
-                ? "text-success"
-                : "text-danger",
+              trendColorClass,
             )}
           >
+            <span className="sr-only">
+              {isPositive ? "Increase" : isNegative ? "Decrease" : "No change"}{" "}
+            </span>
             {isPositive ? (
-              <ArrowUp
-                className="h-4 w-4"
-                aria-hidden="true"
-              />
-            ) : (
-              <ArrowDown
-                className="h-4 w-4"
-                aria-hidden="true"
-              />
-            )}
-
+              <ArrowUp className="h-4 w-4" aria-hidden="true" />
+            ) : isNegative ? (
+              <ArrowDown className="h-4 w-4" aria-hidden="true" />
+            ) : null}
             {Math.abs(trend)}%
           </span>
 
