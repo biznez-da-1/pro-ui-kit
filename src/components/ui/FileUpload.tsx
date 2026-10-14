@@ -28,6 +28,9 @@ export function FileUpload({
   const inputRef = React.useRef<HTMLInputElement>(null);
   const generatedId = React.useId();
   const accessibleLabel = label.trim() || "Upload files";
+  const sizeLimit = maxSize != null && Number.isFinite(maxSize) && maxSize >= 0
+    ? maxSize
+    : undefined;
   const [files, setFiles] = React.useState<File[]>([]);
   const [dragging, setDragging] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -48,7 +51,7 @@ export function FileUpload({
   };
 
   const processFiles = (incoming: File[]) => {
-    const tooLarge = (file: File) => maxSize != null && maxSize >= 0 && file.size > maxSize;
+    const tooLarge = (file: File) => sizeLimit != null && file.size > sizeLimit;
     const rejectedSize = incoming.filter(tooLarge);
     const rejectedType = incoming.filter((file) => !tooLarge(file) && !matchesAccept(file));
     const accepted = incoming.filter((file) => !tooLarge(file) && matchesAccept(file));
@@ -71,7 +74,7 @@ export function FileUpload({
 
     const messages: string[] = [];
     if (uniqueAccepted.length) messages.push(`${uniqueAccepted.length} file(s) selected.`);
-    if (rejectedSize.length) messages.push(`${rejectedSize.length} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(1)} MB size limit.`);
+    if (rejectedSize.length) messages.push(`${rejectedSize.length} file(s) exceeded the ${(sizeLimit! / 1024 / 1024).toFixed(1)} MB size limit.`);
     if (rejectedType.length) messages.push(`${rejectedType.length} file(s) did not match the accepted file types.`);
     if (!multiple && accepted.length > 1) messages.push("Only the first accepted file was selected.");
     if (multiple && accepted.length > uniqueAccepted.length) messages.push("Duplicate files were skipped.");
@@ -135,7 +138,7 @@ export function FileUpload({
         <p className="mt-4 text-sm font-medium text-surface-foreground">Drop files here or click to browse</p>
         <p id={`${generatedId}-hint`} className="mt-1 text-xs text-muted-foreground">
           {accept ? `Accepted: ${accept}` : "Select a file from your device"}
-          {maxSize != null && maxSize >= 0 ? ` · Up to ${(maxSize / 1024 / 1024).toFixed(1)} MB per file` : ""}
+          {sizeLimit != null ? ` · Up to ${(sizeLimit / 1024 / 1024).toFixed(1)} MB per file` : ""}
         </p>
       </div>
 

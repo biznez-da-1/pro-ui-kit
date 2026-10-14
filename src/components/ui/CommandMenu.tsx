@@ -3,6 +3,8 @@
 import * as React from "react";
 import { Command, Search } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { acquireBodyScrollLock } from "@/lib/body-scroll-lock";
+import { getFocusableElements } from "@/lib/focusable-elements";
 
 export interface CommandItem {
   id: string;
@@ -37,24 +39,15 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
 
   React.useEffect(() => {
     if (!open) return;
-    const previousOverflow = document.body.style.overflow;
+    const releaseScrollLock = acquireBodyScrollLock();
     const previouslyFocused = document.activeElement as HTMLElement | null;
     setQuery("");
     setActiveIndex(0);
-    document.body.style.overflow = "hidden";
     inputRef.current?.focus();
 
     const handleTabKey = (event: KeyboardEvent) => {
       if (event.key !== "Tab" || !dialogRef.current) return;
-      const focusable = Array.from(
-        dialogRef.current.querySelectorAll<HTMLElement>(
-          'button:not([disabled]):not([tabindex="-1"]), input:not([disabled]):not([tabindex="-1"]), [tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter(
-        (element) =>
-          element.getClientRects().length > 0 &&
-          element.getAttribute("aria-hidden") !== "true",
-      );
+      const focusable = getFocusableElements(dialogRef.current);
 
       if (!focusable.length) {
         event.preventDefault();
@@ -84,7 +77,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
 
     window.addEventListener("keydown", handleTabKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      releaseScrollLock();
       window.removeEventListener("keydown", handleTabKey);
       previouslyFocused?.focus();
     };
@@ -140,6 +133,32 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
         role="dialog"
         aria-modal="true"
         aria-labelledby={`${baseId}-title`}
+        onKeyDown={(event) => {
+          if (event.key !== "Tab") return;
+          event.stopPropagation();
+
+          const dialog = dialogRef.current;
+          if (!dialog) return;
+          const focusable = getFocusableElements(dialog);
+          if (focusable.length === 0) {
+            event.preventDefault();
+            dialog.focus();
+            return;
+          }
+
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          const activeElement = document.activeElement;
+          const focusIsOutsideDialog = !dialog.contains(activeElement);
+
+          if (event.shiftKey && (activeElement === first || activeElement === dialog || focusIsOutsideDialog)) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && (activeElement === last || focusIsOutsideDialog)) {
+            event.preventDefault();
+            first.focus();
+          }
+        }}
       >
         <h2 id={`${baseId}-title`} className="sr-only">Command menu</h2>
         <div className="flex items-center gap-3 border-b border-border px-4">
@@ -184,7 +203,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
               {item.icon && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-muted-foreground">{item.icon}</span>}
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-medium text-surface-foreground">{item.label.trim() || "Command"}</span>
-                {item.description && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.description}</span>}
+                {item.description?.trim() && <span className="mt-0.5 block truncate text-xs text-muted-foreground">{item.description.trim()}</span>}
               </span>
             </div>
           ))}

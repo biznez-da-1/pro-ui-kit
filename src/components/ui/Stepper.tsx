@@ -26,6 +26,7 @@ export function Stepper({ steps, currentStep, className, label = "Progress" }: S
           const stepNumber = index + 1;
           const completed = stepNumber < current;
           const active = stepNumber === current;
+          const descriptionText = step.description?.trim();
 
           return (
             <React.Fragment key={step.id}>
@@ -48,7 +49,7 @@ export function Stepper({ steps, currentStep, className, label = "Progress" }: S
                   <p className={cn("text-sm font-medium", active || completed ? "text-surface-foreground" : "text-muted-foreground")}>
                     {step.label.trim() || `Step ${stepNumber}`}
                   </p>
-                  {step.description && <p className="mt-1 text-xs leading-5 text-muted-foreground">{step.description}</p>}
+                  {descriptionText && <p className="mt-1 text-xs leading-5 text-muted-foreground">{descriptionText}</p>}
                 </div>
               </li>
               {index < steps.length - 1 && (

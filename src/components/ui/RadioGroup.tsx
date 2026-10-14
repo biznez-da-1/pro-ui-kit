@@ -65,6 +65,7 @@ export function RadioGroup({
           const id = `${generatedId}-option-${index}`;
           const optionDisabled = disabled || option.disabled;
           const optionLabel = option.label.trim() || option.value.trim() || `Option ${index + 1}`;
+          const optionDescription = option.description?.trim();
 
           return (
             <label
@@ -94,7 +95,7 @@ export function RadioGroup({
               </span>
               <span className="min-w-0">
                 <span className="block text-sm font-medium text-surface-foreground">{optionLabel}</span>
-                {option.description && <span className="mt-0.5 block text-xs text-muted-foreground">{option.description}</span>}
+                {optionDescription && <span className="mt-0.5 block text-xs text-muted-foreground">{optionDescription}</span>}
               </span>
             </label>
           );

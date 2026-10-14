@@ -24,6 +24,7 @@ export function PricingCard({
   className,
 }: PricingCardProps) {
   const titleText = title.trim() || "Plan";
+  const priceText = price.trim() || "—";
   const descriptionText = description?.trim();
   const periodText = period?.trim();
 
@@ -56,7 +57,7 @@ export function PricingCard({
 
         <div className="mt-6 flex items-baseline gap-1">
           <span className="text-4xl font-bold tracking-tight text-surface-foreground">
-            {price}
+            {priceText}
           </span>
 
           {periodText && (

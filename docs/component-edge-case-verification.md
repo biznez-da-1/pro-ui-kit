@@ -14,8 +14,12 @@ Use this matrix during browser and assistive-technology review. Automated typech
 ## Dialogs, tooltips, and focus
 
 - [ ] Open Dialog and Sheet with no title, an empty title, a whitespace-only title, and a description-only configuration. Confirm there are no empty heading or ID-reference announcements.
-- [ ] Dismiss Dialog, Sheet, DropdownMenu, and Tooltip with Escape. Confirm only the intended overlay closes and focus returns to the appropriate trigger.
+- [ ] Dismiss Dialog, Sheet, DropdownMenu, Popover, and Tooltip with Escape. Confirm only the intended overlay closes and focus returns to the appropriate trigger.
+- [ ] Open a DropdownMenu or Popover inside a Dialog or Sheet. Confirm Escape closes the innermost surface first and leaves the parent open.
+- [ ] Open a CommandMenu or another modal surface inside a Dialog/Sheet. Confirm Tab and Shift+Tab remain trapped in the innermost modal and do not trigger the parent focus trap.
+- [ ] Open two modal surfaces, then close them in both orders. Confirm body scrolling stays locked until the final modal closes and the original overflow style is restored.
 - [ ] Confirm focus stays out of hidden menus and panels after closing them.
+- [ ] Move the pointer from a tooltip trigger onto the tooltip content. Confirm the tooltip remains visible until the pointer leaves the combined trigger/content area.
 - [ ] Check tooltip descriptions with keyboard focus and pointer hover using at least one browser and screen reader.
 
 ## Empty, loading, and trend states

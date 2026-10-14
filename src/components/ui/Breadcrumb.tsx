@@ -25,6 +25,8 @@ export function Breadcrumb({
 }: BreadcrumbProps) {
   const accessibleLabel = label?.trim() || ariaLabel?.trim() || "Breadcrumb";
 
+  if (items.length === 0) return null;
+
   return (
     <nav
       {...props}
