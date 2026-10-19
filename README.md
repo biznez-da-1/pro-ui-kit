@@ -33,12 +33,13 @@ npm run dev -- --webpack
 ## Quality checks
 
 ```bash
+npm test
 npm run typecheck
 npm run lint
 npm run build
 ```
 
-The CI workflow runs dependency installation, typecheck, lint, and a production build. A green CI run does not replace browser, keyboard, screen-reader, contrast, or responsive testing.
+The CI workflow runs dependency installation, regression tests, typecheck, lint, and a production build. A green CI run does not replace browser, keyboard, screen-reader, contrast, or responsive testing.
 
 ## Project structure
 
