@@ -9,6 +9,7 @@ export function getFocusableElements(container: HTMLElement | null): HTMLElement
   ).filter((element) => {
     if (
       element.matches(":disabled") ||
+      element.tabIndex < 0 ||
       element.closest('[aria-hidden="true"], [inert], [hidden]')
     ) {
       return false;
