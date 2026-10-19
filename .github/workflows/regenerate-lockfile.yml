@@ -3,7 +3,7 @@ name: Regenerate lockfile (temporary)
 on:
   pull_request:
     branches:
-      - chore/next16-eslint-flat-config
+      - chore/stabilize-next16-tests
   push:
     branches:
       - chore/next16-eslint-flat-config
