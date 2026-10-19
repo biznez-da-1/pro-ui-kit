@@ -20,7 +20,7 @@ Use this matrix during browser and assistive-technology review. Automated typech
 - [ ] Open two modal surfaces, then close them in both orders. Confirm body scrolling stays locked until the final modal closes and the original overflow style is restored.
 - [ ] Confirm focus stays out of hidden menus and panels after closing them.
 - [ ] Place focusable controls inside an `inert` ancestor, a `[hidden]` ancestor, an `aria-hidden="true"` ancestor, and a `visibility: hidden` element. Confirm none are included in the modal focus trap.
-- [ ] Include disabled controls in a modal and verify Tab and Shift+Tab skip them while still wrapping correctly at the first and last enabled controls.
+- [ ] Include disabled controls and elements with `tabindex="-2"` or another negative tabindex in a modal. Verify Tab and Shift+Tab skip them while still wrapping correctly at the first and last sequentially focusable controls.
 - [ ] Move the pointer from a tooltip trigger onto the tooltip content. Confirm the tooltip remains visible until the pointer leaves the combined trigger/content area.
 - [ ] Check tooltip descriptions with keyboard focus and pointer hover using at least one browser and screen reader.
 
