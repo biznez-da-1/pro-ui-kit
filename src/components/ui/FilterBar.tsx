@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Filter, X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { shouldRenderFilterBar } from "@/lib/filter-bar-state";
 import { Button } from "./Button";
 
 export interface FilterOption {
@@ -25,6 +26,10 @@ export function FilterBar({ options, value, onChange, onClear, children, classNa
   const selectId = React.useId();
   const accessibleLabel = label.trim() || "Filter by";
   const hasActiveFilter = value !== undefined && value !== "";
+
+  if (!shouldRenderFilterBar(options.length, children, hasActiveFilter, onClear)) {
+    return null;
+  }
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2 rounded-ui-xl border border-border bg-surface p-3", className)}>
