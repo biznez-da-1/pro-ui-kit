@@ -1,0 +1,30 @@
+name: Refresh security lockfile
+
+on:
+  push:
+    branches:
+      - fix/security-dependency-audit
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Regenerate and patch lockfile
+        run: |
+          npm install --package-lock-only --ignore-scripts
+          npm audit fix --package-lock-only --ignore-scripts
+          npm audit --audit-level=high
+      - name: Upload regenerated lockfile
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-package-lock
+          path: package-lock.json
+          if-no-files-found: error
