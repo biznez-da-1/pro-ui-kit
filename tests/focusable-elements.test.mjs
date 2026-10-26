@@ -18,6 +18,8 @@ test("returns only visible, enabled elements that can receive focus", () => {
     element("button"),
     element("disabled", { disabled: true }),
     element("negative-tabindex", { tabIndex: -1 }),
+    element("negative-tabindex-minus-two", { tabIndex: -2 }),
+    element("negative-tabindex-minus-three", { tabIndex: -3 }),
     element("hidden-ancestor", { excludedAncestor: true }),
     element("display-none", { noLayout: true }),
     element("visibility-hidden", { visibility: "hidden" }),
