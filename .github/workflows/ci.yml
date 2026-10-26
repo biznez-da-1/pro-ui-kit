@@ -7,7 +7,6 @@ on:
       - main
       - "feat/**"
       - "fix/**"
-      - "chore/**"
 
 permissions:
   contents: read
