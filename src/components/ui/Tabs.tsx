@@ -14,14 +14,9 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
   const accessibleLabel = label.trim() || "Content tabs";
   const initialTab = tabs.some((tab) => tab.id === defaultTab) ? defaultTab : tabs[0]?.id;
   const [activeTab, setActiveTab] = React.useState<string | undefined>(initialTab);
+  const selectedTab = tabs.some((tab) => tab.id === activeTab) ? activeTab : tabs[0]?.id;
   const baseId = React.useId();
   const tabRefs = React.useRef(new Map<string, HTMLButtonElement>());
-
-  React.useEffect(() => {
-    if (!tabs.some((tab) => tab.id === activeTab)) {
-      setActiveTab(tabs[0]?.id);
-    }
-  }, [activeTab, tabs]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
     if (!tabs.length) return;
@@ -41,7 +36,7 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
     <div className={cn("w-full", className)}>
       <div role="tablist" aria-label={accessibleLabel} className="flex gap-1 overflow-x-auto rounded-ui-lg border border-border bg-surface p-1">
         {tabs.map((tab, index) => {
-          const active = tab.id === activeTab;
+          const active = tab.id === selectedTab;
           const tabLabel = tab.label.trim() || tab.id.trim() || `Tab ${index + 1}`;
           return (
             <button
@@ -73,7 +68,7 @@ export function Tabs({ tabs, defaultTab, className, label = "Content tabs" }: Ta
           role="tabpanel"
           aria-labelledby={`${baseId}-tab-${index}`}
           tabIndex={0}
-          hidden={tab.id !== activeTab}
+          hidden={tab.id !== selectedTab}
           className="mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {tab.content}
