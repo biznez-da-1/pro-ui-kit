@@ -9,7 +9,7 @@ export interface SelectProps
 export const Select = React.forwardRef<
   HTMLSelectElement,
   SelectProps
->(({ className, error = false, ...props }, ref) => {
+>(({ className, error = false, "aria-invalid": ariaInvalid, ...props }, ref) => {
   return (
     <select
       ref={ref}
