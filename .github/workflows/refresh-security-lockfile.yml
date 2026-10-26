@@ -6,7 +6,7 @@ on:
       - fix/security-dependency-audit
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   refresh:
@@ -21,6 +21,17 @@ jobs:
           npm install --package-lock-only --ignore-scripts
           npm audit fix --package-lock-only --ignore-scripts
           npm audit --audit-level=high
+      - name: Commit patched lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          if git diff --cached --quiet; then
+            echo "Lockfile is already up to date."
+          else
+            git commit -m "security: patch vulnerable dependency lockfile"
+            git push origin HEAD:fix/security-dependency-audit
+          fi
       - name: Upload regenerated lockfile
         if: always()
         uses: actions/upload-artifact@v4
