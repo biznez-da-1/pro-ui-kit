@@ -22,8 +22,9 @@ export function Tooltip({ content, children, side = "top", className }: TooltipP
   const hasContent = typeof content === "string"
     ? content.trim().length > 0
     : content != null && content !== false;
-  const existingDescribedBy = typeof children.props["aria-describedby"] === "string"
-    ? children.props["aria-describedby"].trim()
+  const triggerProps = children.props as React.HTMLAttributes<HTMLElement>;
+  const existingDescribedBy = typeof triggerProps["aria-describedby"] === "string"
+    ? triggerProps["aria-describedby"].trim()
     : "";
   const describedBy = [existingDescribedBy, open && hasContent ? tooltipId : ""].filter(Boolean).join(" ");
   const trigger = React.cloneElement(
