@@ -23,6 +23,7 @@ export const Select = React.forwardRef<
           : "border-neutral-800 focus:border-indigo-500 focus:ring-indigo-500/30",
         className,
       )}
+      aria-invalid={error || ariaInvalid || undefined}
       {...props}
     />
   );
