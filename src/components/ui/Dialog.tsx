@@ -112,7 +112,6 @@ export function Dialog({
             event.stopPropagation();
             onCloseRef.current();
           }
-          if (event.key === "Tab") event.stopPropagation();
         }}
       >
         <button
