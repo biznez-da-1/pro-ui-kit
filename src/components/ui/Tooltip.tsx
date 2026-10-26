@@ -1,5 +1,4 @@
 "use client";
-
 import * as React from "react";
 import { cn } from "@/lib/cn";
 
@@ -17,33 +16,29 @@ const sideClasses = {
   left: "right-full top-1/2 mr-2 -translate-y-1/2",
 };
 
-export function Tooltip({
-  content,
-  children,
-  side = "top",
-  className,
-}: TooltipProps) {
+export function Tooltip({ content, children, side = "top", className }: TooltipProps) {
   const [open, setOpen] = React.useState(false);
+  const tooltipId = React.useId();
+  const hasContent = typeof content === "string"
+    ? content.trim().length > 0
+    : content != null && content !== false;
+  const existingDescribedBy = typeof children.props["aria-describedby"] === "string"
+    ? children.props["aria-describedby"].trim()
+    : "";
+  const describedBy = [existingDescribedBy, open && hasContent ? tooltipId : ""].filter(Boolean).join(" ");
+  const trigger = React.cloneElement(
+    children as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
+    { "aria-describedby": describedBy || undefined } as React.HTMLAttributes<HTMLElement>,
+  );
 
   return (
-    <span
-      className="relative inline-flex"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={() => setOpen(false)}
-    >
-      {children}
-
-      {open && (
-        <span
-          role="tooltip"
-          className={cn(
-            "pointer-events-none absolute z-50 whitespace-nowrap rounded-lg border border-neutral-700 bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-xl",
-            sideClasses[side],
-            className,
-          )}
-        >
+    <span className="relative inline-flex" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}>
+      {trigger}
+      {open && hasContent && (
+        <span id={tooltipId} role="tooltip" className={cn(
+          "absolute z-50 whitespace-nowrap rounded-lg border border-neutral-700 bg-neutral-900 px-2.5 py-1.5 text-xs font-medium text-white shadow-xl",
+          sideClasses[side], className,
+        )}>
           {content}
         </span>
       )}
