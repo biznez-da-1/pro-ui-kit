@@ -113,6 +113,7 @@ export function FileUpload({
             setDragging(false);
           }
         }
+        }}
         onDrop={handleDrop}
         className={cn(
           "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors",
