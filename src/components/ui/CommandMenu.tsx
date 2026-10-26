@@ -22,27 +22,46 @@ export interface CommandMenuProps {
   className?: string;
 }
 
-export function CommandMenu({ open, onClose, items, placeholder = "Search commands...", className }: CommandMenuProps) {
+export function CommandMenu(props: CommandMenuProps) {
+  if (!props.open) return null;
+
+  return (
+    <CommandMenuContent
+      onClose={props.onClose}
+      items={props.items}
+      placeholder={props.placeholder}
+      className={props.className}
+    />
+  );
+}
+
+function CommandMenuContent({
+  onClose,
+  items,
+  placeholder = "Search commands...",
+  className,
+}: Omit<CommandMenuProps, "open">) {
   const [query, setQuery] = React.useState("");
   const [activeIndex, setActiveIndex] = React.useState(0);
   const baseId = React.useId();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const dialogRef = React.useRef<HTMLDivElement>(null);
   const onCloseRef = React.useRef(onClose);
-  onCloseRef.current = onClose;
+
+  React.useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   const filtered = items.filter((item) => {
     const search = query.trim().toLowerCase();
     return item.label.toLowerCase().includes(search) || Boolean(item.description?.toLowerCase().includes(search));
   });
-  const activeOption = filtered[activeIndex];
+  const safeActiveIndex = Math.min(activeIndex, Math.max(filtered.length - 1, 0));
+  const activeOption = filtered[safeActiveIndex];
 
   React.useEffect(() => {
-    if (!open) return;
     const releaseScrollLock = acquireBodyScrollLock();
     const previouslyFocused = document.activeElement as HTMLElement | null;
-    setQuery("");
-    setActiveIndex(0);
     inputRef.current?.focus();
 
     const handleTabKey = (event: KeyboardEvent) => {
@@ -81,18 +100,14 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
       window.removeEventListener("keydown", handleTabKey);
       previouslyFocused?.focus();
     };
-  }, [open]);
+  }, []);
 
   React.useEffect(() => {
-    setActiveIndex((index) => Math.min(index, Math.max(filtered.length - 1, 0)));
-  }, [filtered.length]);
-
-  React.useEffect(() => {
-    if (!open || !activeOption) return;
-    document.getElementById(`${baseId}-option-${activeIndex}`)?.scrollIntoView({
+    if (!activeOption) return;
+    document.getElementById(`${baseId}-option-${safeActiveIndex}`)?.scrollIntoView({
       block: "nearest",
     });
-  }, [activeIndex, activeOption, baseId, open, query]);
+  }, [safeActiveIndex, activeOption, baseId, query]);
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape") {
@@ -113,15 +128,13 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
       setActiveIndex(filtered.length - 1);
     } else if (event.key === "Enter") {
       event.preventDefault();
-      const item = filtered[activeIndex];
+      const item = filtered[safeActiveIndex];
       if (item) {
         item.onSelect();
         onCloseRef.current();
       }
     }
   };
-
-  if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-[15vh]">
@@ -174,7 +187,7 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
             aria-label="Search commands"
             aria-controls={`${baseId}-results`}
             aria-expanded="true"
-            aria-activedescendant={filtered[activeIndex] ? `${baseId}-option-${activeIndex}` : undefined}
+            aria-activedescendant={activeOption ? `${baseId}-option-${safeActiveIndex}` : undefined}
             className="h-14 min-w-0 flex-1 bg-transparent text-sm text-surface-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
           />
           <kbd className="hidden rounded-md border border-border bg-muted px-2 py-1 text-xs text-muted-foreground sm:inline-flex">ESC</kbd>
@@ -191,13 +204,13 @@ export function CommandMenu({ open, onClose, items, placeholder = "Search comman
               key={item.id}
               id={`${baseId}-option-${index}`}
               role="option"
-              aria-selected={index === activeIndex}
+              aria-selected={index === safeActiveIndex}
               onMouseEnter={() => setActiveIndex(index)}
               onMouseDown={(event) => event.preventDefault()}
               onClick={() => { item.onSelect(); onCloseRef.current(); }}
               className={cn(
                 "flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                index === activeIndex ? "bg-muted" : "hover:bg-muted",
+                index === safeActiveIndex ? "bg-muted" : "hover:bg-muted",
               )}
             >
               {item.icon && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border bg-surface text-muted-foreground">{item.icon}</span>}

@@ -28,7 +28,10 @@ export function Popover({
 }: PopoverProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const onOpenChangeRef = React.useRef(onOpenChange);
-  onOpenChangeRef.current = onOpenChange;
+
+  React.useEffect(() => {
+    onOpenChangeRef.current = onOpenChange;
+  }, [onOpenChange]);
 
   React.useEffect(() => {
     if (!open) return;
