@@ -15,8 +15,11 @@ export interface DropdownMenuItem {
 }
 
 export interface DropdownMenuProps {
-  trigger: React.ReactNode;
+  /** Use a single button-like element, such as the Button component. */
+  trigger: React.ReactElement<React.ButtonHTMLAttributes<HTMLButtonElement>>;
   items: DropdownMenuItem[];
+  /** Accessible name for the root menu, describing the actions in this menu. */
+  label?: string;
   align?: "left" | "right";
   className?: string;
 }
@@ -24,74 +27,121 @@ export interface DropdownMenuProps {
 export function DropdownMenu({
   trigger,
   items,
+  label = "Actions",
   align = "right",
   className,
 }: DropdownMenuProps) {
+  const accessibleLabel = label.trim() || "Actions";
   const [open, setOpen] = React.useState(false);
-
+  const rootRef = React.useRef<HTMLDivElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
+  const focusLastItem = React.useRef(false);
+
+  const closeMenu = React.useCallback((restoreFocus = false) => {
+    setOpen(false);
+    if (restoreFocus) requestAnimationFrame(() => rootRef.current?.querySelector<HTMLButtonElement>("button")?.focus());
+  }, []);
 
   React.useEffect(() => {
     if (!open) return;
+    const enabledItems = Array.from(
+      menuRef.current?.querySelectorAll<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)') ?? [],
+    );
+    const targetIndex = focusLastItem.current ? enabledItems.length - 1 : 0;
+    focusLastItem.current = false;
+    enabledItems[targetIndex]?.focus();
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node)
-      ) {
-        setOpen(false);
+      if (rootRef.current && !rootRef.current.contains(event.target as Node)) {
+        closeMenu(false);
       }
     };
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setOpen(false);
+        event.preventDefault();
+        event.stopPropagation();
+        closeMenu(true);
+        return;
       }
+      if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+
+      const activeElement = document.activeElement as HTMLElement | null;
+      const activeMenu = activeElement?.closest<HTMLDivElement>('[role="menu"]');
+      if (!activeMenu || !rootRef.current?.contains(activeMenu)) return;
+
+      const enabled = Array.from(
+        activeMenu.querySelectorAll<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)'),
+      );
+      if (!enabled.length) return;
+      event.preventDefault();
+      const index = enabled.indexOf(activeElement as HTMLButtonElement);
+      const next = event.key === "Home" ? 0
+        : event.key === "End" ? enabled.length - 1
+        : event.key === "ArrowDown" ? (index + 1 + enabled.length) % enabled.length
+        : (index - 1 + enabled.length) % enabled.length;
+      enabled[next]?.focus();
     };
 
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
-      document.removeEventListener(
-        "pointerdown",
-        handlePointerDown,
-      );
+      document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open]);
+  }, [open, closeMenu]);
+
+  const triggerElement = React.cloneElement(trigger, {
+    type: "button",
+    disabled: trigger.props.disabled || items.length === 0,
+    "aria-haspopup": "menu",
+    "aria-expanded": open,
+    onClick: (event: React.MouseEvent<HTMLButtonElement>) => {
+      trigger.props.onClick?.(event);
+      setOpen((value) => !value);
+    },
+    onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      trigger.props.onKeyDown?.(event);
+      // Enter and Space use the native button activation, which fires onClick.
+      // Handling them here as well would open on keydown and then toggle closed on click.
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        focusLastItem.current = event.key === "ArrowUp";
+        setOpen(true);
+      }
+    },
+  });
 
   return (
     <div
-      ref={menuRef}
+      ref={rootRef}
       className="relative inline-block text-left"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          event.stopPropagation();
+          closeMenu(true);
+        }
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          closeMenu(false);
+        }
+      }}
     >
-      <button
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={open}
-        onClick={() => setOpen((value) => !value)}
-      >
-        {trigger}
-      </button>
-
+      {triggerElement}
       {open && (
         <div
+          ref={menuRef}
           role="menu"
+          aria-label={accessibleLabel}
           className={cn(
             "absolute z-50 mt-2 min-w-48 overflow-hidden rounded-xl border border-neutral-800 bg-neutral-950 p-1 shadow-2xl",
-            align === "right"
-              ? "right-0"
-              : "left-0",
+            align === "right" ? "right-0" : "left-0",
             className,
           )}
         >
           {items.map((item) => (
-            <MenuItem
-              key={item.id}
-              item={item}
-              onClose={() => setOpen(false)}
-            />
+            <MenuItem key={item.id} item={item} onClose={() => closeMenu(true)} />
           ))}
         </div>
       )}
@@ -102,79 +152,111 @@ export function DropdownMenu({
 function MenuItem({
   item,
   onClose,
+  onNavigateBack,
 }: {
   item: DropdownMenuItem;
   onClose: () => void;
+  onNavigateBack?: () => void;
 }) {
-  const [submenuOpen, setSubmenuOpen] =
-    React.useState(false);
-
-  const hasSubmenu =
-    Boolean(item.submenu?.length);
+  const [submenuOpen, setSubmenuOpen] = React.useState(false);
+  const hasSubmenu = Boolean(item.submenu?.length);
+  const accessibleItemLabel = item.label.trim() || (hasSubmenu ? "Submenu" : "Menu item");
+  const submenuLabel = accessibleItemLabel;
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const submenuRef = React.useRef<HTMLDivElement>(null);
 
   const handleSelect = () => {
     if (item.disabled) return;
-
     if (hasSubmenu) {
       setSubmenuOpen((value) => !value);
       return;
     }
-
     item.onSelect?.();
     onClose();
   };
 
   return (
-    <div className="relative">
-      <button
-        type="button"
-        role="menuitem"
-        disabled={item.disabled}
-        onClick={handleSelect}
-        onMouseEnter={() =>
-          hasSubmenu && setSubmenuOpen(true)
+    <div
+      className="relative"
+      onMouseLeave={(event) => {
+        if (
+          hasSubmenu &&
+          !submenuRef.current?.contains(document.activeElement) &&
+          !event.currentTarget.contains(event.relatedTarget as Node | null)
+        ) {
+          setSubmenuOpen(false);
         }
+      }}
+    >
+      <button
+        ref={triggerRef}
+        type="button"
+        role={item.checked === undefined ? "menuitem" : "menuitemcheckbox"}
+        aria-checked={item.checked}
+        disabled={item.disabled}
+        aria-haspopup={hasSubmenu ? "menu" : undefined}
+        aria-expanded={hasSubmenu ? submenuOpen : undefined}
+        onClick={handleSelect}
+        onKeyDown={(event) => {
+          if (
+            hasSubmenu &&
+            submenuOpen &&
+            (event.key === "ArrowLeft" || event.key === "Escape")
+          ) {
+            event.preventDefault();
+            event.stopPropagation();
+            setSubmenuOpen(false);
+            triggerRef.current?.focus();
+          } else if (
+            hasSubmenu &&
+            (event.key === "Enter" || event.key === " ")
+          ) {
+            event.preventDefault();
+            const nextOpen = !submenuOpen;
+            setSubmenuOpen(nextOpen);
+            if (nextOpen) {
+              requestAnimationFrame(() => {
+                submenuRef.current?.querySelector<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)')?.focus();
+              });
+            }
+          } else if (hasSubmenu && event.key === "ArrowRight") {
+            event.preventDefault();
+            setSubmenuOpen(true);
+            requestAnimationFrame(() => {
+              submenuRef.current?.querySelector<HTMLButtonElement>(':scope > div > button[role^="menuitem"]:not(:disabled)')?.focus();
+            });
+          } else if (
+            onNavigateBack &&
+            (event.key === "ArrowLeft" || event.key === "Escape")
+          ) {
+            event.preventDefault();
+            event.stopPropagation();
+            onNavigateBack();
+          }
+        }}
+        onMouseEnter={() => hasSubmenu && !item.disabled && setSubmenuOpen(true)}
         className={cn(
           "flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors",
-          "focus:outline-none focus:ring-2 focus:ring-indigo-500",
-          item.destructive
-            ? "text-red-400 hover:bg-red-500/10"
-            : "text-neutral-200 hover:bg-neutral-800",
-          item.disabled &&
-            "cursor-not-allowed opacity-40",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500",
+          item.destructive ? "text-red-400 hover:bg-red-500/10" : "text-neutral-200 hover:bg-neutral-800",
+          item.disabled && "cursor-not-allowed opacity-40",
         )}
       >
-        {item.checked ? (
-          <Check
-            className="h-4 w-4 shrink-0"
-            aria-hidden="true"
-          />
-        ) : (
-          <span className="h-4 w-4 shrink-0" />
-        )}
-
-        <span className="min-w-0 flex-1">
-          {item.label}
-        </span>
-
-        {hasSubmenu && (
-          <ChevronRight
-            className="h-4 w-4 shrink-0 text-neutral-500"
-            aria-hidden="true"
-          />
-        )}
+        {item.checked ? <Check className="h-4 w-4 shrink-0" aria-hidden="true" /> : <span className="h-4 w-4 shrink-0" aria-hidden="true" />}
+        <span className="min-w-0 flex-1">{accessibleItemLabel}</span>
+        {hasSubmenu && <ChevronRight className="h-4 w-4 shrink-0 text-neutral-500" aria-hidden="true" />}
       </button>
-
       {hasSubmenu && submenuOpen && (
-        <div
-          role="menu"
-          className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-neutral-800 bg-neutral-950 p-1 shadow-2xl"
-        >
+        <div ref={submenuRef} role="menu" aria-label={submenuLabel} className="absolute left-full top-0 z-50 ml-1 min-w-48 rounded-xl border border-neutral-800 bg-neutral-950 p-1 shadow-2xl">
           {item.submenu?.map((subitem) => (
             <MenuItem
               key={subitem.id}
               item={subitem}
               onClose={onClose}
+              onNavigateBack={() => {
+                setSubmenuOpen(false);
+                triggerRef.current?.focus();
+              }}
             />
           ))}
         </div>
