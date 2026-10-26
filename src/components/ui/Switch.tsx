@@ -14,9 +14,12 @@ export interface SwitchProps
 export const Switch = React.forwardRef<
   HTMLInputElement,
   SwitchProps
->(({ className, label, ...props }, ref) => {
+>(({ className, label, disabled = false, "aria-label": ariaLabel, ...props }, ref) => {
+  const labelText = typeof label === "string" ? label.trim() || "Switch" : label;
+  const accessibleLabel = ariaLabel?.trim() || (labelText == null || labelText === false ? "Switch" : undefined);
+
   return (
-    <label className="inline-flex cursor-pointer items-center gap-3">
+    <label className={cn("inline-flex items-center gap-3", disabled ? "cursor-not-allowed" : "cursor-pointer")}>
       <span className="relative flex h-6 w-11 shrink-0">
         <input
           ref={ref}
@@ -24,8 +27,11 @@ export const Switch = React.forwardRef<
           role="switch"
           className={cn(
             "peer absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
+          disabled={disabled}
+          aria-label={accessibleLabel}
           {...props}
         />
 
@@ -68,11 +74,7 @@ export const Switch = React.forwardRef<
         />
       </span>
 
-      {label && (
-        <span className="text-sm text-neutral-300">
-          {label}
-        </span>
-      )}
+      {labelText && <span className="text-sm text-neutral-300">{labelText}</span>}
     </label>
   );
 });
