@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { hasRenderableContent } from "@/lib/has-renderable-content";
 import { cn } from "@/lib/cn";
 
 export interface TooltipProps {
@@ -15,18 +16,6 @@ const sideClasses = {
   bottom: "left-1/2 top-full mt-2 -translate-x-1/2",
   left: "right-full top-1/2 mr-2 -translate-y-1/2",
 };
-
-function hasRenderableContent(node: React.ReactNode): boolean {
-  if (node == null || typeof node === "boolean") return false;
-  if (typeof node === "string") return node.trim().length > 0;
-  if (typeof node === "number") return true;
-  if (Array.isArray(node)) return node.some(hasRenderableContent);
-  if (React.isValidElement(node) && node.type === React.Fragment) {
-    const fragment = node as React.ReactElement<{ children?: React.ReactNode }>;
-    return hasRenderableContent(fragment.props.children);
-  }
-  return true;
-}
 
 export function Tooltip({ content, children, side = "top", className }: TooltipProps) {
   const [open, setOpen] = React.useState(false);
