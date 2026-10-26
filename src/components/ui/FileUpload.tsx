@@ -112,7 +112,6 @@ export function FileUpload({
           if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
             setDragging(false);
           }
-        }
         }}
         onDrop={handleDrop}
         className={cn(
