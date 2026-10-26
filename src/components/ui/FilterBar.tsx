@@ -20,6 +20,18 @@ export interface FilterBarProps {
   className?: string;
 }
 
+function hasRenderableContent(node: React.ReactNode): boolean {
+  if (node == null || typeof node === "boolean") return false;
+  if (typeof node === "string") return node.trim().length > 0;
+  if (typeof node === "number") return true;
+  if (Array.isArray(node)) return node.some(hasRenderableContent);
+  if (React.isValidElement(node) && node.type === React.Fragment) {
+    const fragment = node as React.ReactElement<{ children?: React.ReactNode }>;
+    return hasRenderableContent(fragment.props.children);
+  }
+  return true;
+}
+
 export function FilterBar({
   options,
   value,
@@ -28,8 +40,11 @@ export function FilterBar({
   children,
   className,
 }: FilterBarProps) {
-  const hasActiveFilter =
-    value !== undefined && value !== "";
+  const hasActiveFilter = Boolean(value?.trim());
+  const hasClearAction = hasActiveFilter && Boolean(onClear);
+  const hasChildren = hasRenderableContent(children);
+
+  if (options.length === 0 && !hasChildren && !hasClearAction) return null;
 
   return (
     <div
@@ -38,6 +53,7 @@ export function FilterBar({
         className,
       )}
     >
+      {(options.length > 0 || hasClearAction) && (
       <div className="flex items-center gap-2 text-sm font-medium text-neutral-400">
         <Filter
           className="h-4 w-4"
@@ -45,6 +61,7 @@ export function FilterBar({
         />
         <span>Filter</span>
       </div>
+      )}
 
       {options.length > 0 && (
         <select
@@ -66,9 +83,9 @@ export function FilterBar({
         </select>
       )}
 
-      {children}
+      {hasChildren ? children : null}
 
-      {hasActiveFilter && onClear && (
+      {hasClearAction && (
         <Button
           type="button"
           variant="ghost"
