@@ -5,6 +5,7 @@ import { hasRenderableContent } from "../src/lib/has-renderable-content.ts";
 import { acquireBodyScrollLock } from "../src/lib/body-scroll-lock.ts";
 import { getFocusableElements } from "../src/lib/focusable-elements.ts";
 import { filterAcceptedFiles, mergeSelectedFiles, matchesAcceptedType } from "../src/lib/file-upload.ts";
+import { hasTextContent } from "../src/lib/has-text-content.ts";
 
 test("renderable-content detection handles empty nodes and preserves zero", () => {
   assert.equal(hasRenderableContent(null), false);
@@ -105,4 +106,13 @@ test("multiple-file uploads deduplicate both existing and incoming selections", 
   const duplicate = { name: "a.pdf", size: 100, lastModified: 1 };
   const next = { name: "b.pdf", size: 200, lastModified: 2 };
   assert.deepEqual(mergeSelectedFiles([existing], [duplicate, next, next], true), [existing, next]);
+});
+
+
+test("textual-label detection rejects icon-only nodes and accepts nested text", () => {
+  assert.equal(hasTextContent(null), false);
+  assert.equal(hasTextContent("   "), false);
+  assert.equal(hasTextContent(React.createElement("svg", null, React.createElement("path"))), false);
+  assert.equal(hasTextContent(React.createElement(React.Fragment, null, "Label")), true);
+  assert.equal(hasTextContent([" ", React.createElement("span", null, "Name")]), true);
 });
