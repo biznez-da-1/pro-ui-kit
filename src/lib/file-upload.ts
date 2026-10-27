@@ -27,9 +27,10 @@ export function filterAcceptedFiles<T extends { name: string; type: string; size
 ): FileFilterResult<T> {
   const typeAccepted = incoming.filter((file) => matchesAcceptedType(file, accept));
   const rejectedTypeCount = incoming.length - typeAccepted.length;
-  const accepted = maxSize === undefined
-    ? typeAccepted
-    : typeAccepted.filter((file) => file.size <= maxSize);
+  const hasValidSizeLimit = typeof maxSize === "number" && Number.isFinite(maxSize) && maxSize >= 0;
+  const accepted = hasValidSizeLimit
+    ? typeAccepted.filter((file) => file.size <= maxSize)
+    : typeAccepted;
 
   return {
     accepted,
