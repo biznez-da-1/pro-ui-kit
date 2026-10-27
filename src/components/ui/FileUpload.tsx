@@ -3,19 +3,7 @@
 import * as React from "react";
 import { Upload, X } from "lucide-react";
 import { cn } from "@/lib/cn";
-
-function matchesAcceptedType(file: File, accept?: string): boolean {
-  const rules = accept?.split(",").map((rule) => rule.trim().toLowerCase()).filter(Boolean) ?? [];
-  if (rules.length === 0) return true;
-
-  const fileName = file.name.toLowerCase();
-  const mimeType = file.type.toLowerCase();
-  return rules.some((rule) => {
-    if (rule.startsWith(".")) return fileName.endsWith(rule);
-    if (rule.endsWith("/*")) return mimeType.startsWith(rule.slice(0, -1));
-    return mimeType === rule;
-  });
-}
+import { filterAcceptedFiles, mergeSelectedFiles } from "@/lib/file-upload";
 
 export interface FileUploadProps {
   accept?: string;
@@ -51,31 +39,14 @@ export function FileUpload({
   };
 
   const processFiles = (incoming: File[]) => {
-    const typeAccepted = incoming.filter((file) => matchesAcceptedType(file, accept));
-    const rejectedTypeCount = incoming.length - typeAccepted.length;
-    const filtered = maxSize === undefined
-      ? typeAccepted
-      : typeAccepted.filter((file) => file.size <= maxSize);
-    const rejectedSizeCount = typeAccepted.length - filtered.length;
+    const { accepted: filtered, rejectedTypeCount, rejectedSizeCount } = filterAcceptedFiles(incoming, accept, maxSize);
     const errors = [
       rejectedTypeCount > 0 ? `${rejectedTypeCount} file(s) did not match the accepted file types and were skipped.` : "",
       rejectedSizeCount > 0 ? `${rejectedSizeCount} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(2)} MB size limit and were skipped.` : "",
     ].filter(Boolean);
     setErrorMessage(errors.join(" "));
 
-    const currentFiles = filesRef.current;
-    const uniqueIncoming = filtered.filter(
-      (file, index, all) => all.findIndex((candidate) =>
-        candidate.name === file.name && candidate.size === file.size && candidate.lastModified === file.lastModified
-      ) === index,
-    );
-    const nextFiles = multiple
-      ? [...currentFiles, ...uniqueIncoming.filter((file) => !currentFiles.some((current) =>
-          current.name === file.name && current.size === file.size && current.lastModified === file.lastModified
-        ))]
-      : uniqueIncoming.length > 0
-        ? uniqueIncoming.slice(0, 1)
-        : currentFiles;
+    const nextFiles = mergeSelectedFiles(filesRef.current, filtered, multiple);
 
     commitFiles(nextFiles);
   };
