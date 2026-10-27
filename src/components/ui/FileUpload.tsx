@@ -4,6 +4,19 @@ import * as React from "react";
 import { Upload, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 
+function matchesAcceptedType(file: File, accept?: string): boolean {
+  const rules = accept?.split(",").map((rule) => rule.trim().toLowerCase()).filter(Boolean) ?? [];
+  if (rules.length === 0) return true;
+
+  const fileName = file.name.toLowerCase();
+  const mimeType = file.type.toLowerCase();
+  return rules.some((rule) => {
+    if (rule.startsWith(".")) return fileName.endsWith(rule);
+    if (rule.endsWith("/*")) return mimeType.startsWith(rule.slice(0, -1));
+    return mimeType === rule;
+  });
+}
+
 export interface FileUploadProps {
   accept?: string;
   multiple?: boolean;
@@ -38,15 +51,17 @@ export function FileUpload({
   };
 
   const processFiles = (incoming: File[]) => {
+    const typeAccepted = incoming.filter((file) => matchesAcceptedType(file, accept));
+    const rejectedTypeCount = incoming.length - typeAccepted.length;
     const filtered = maxSize === undefined
-      ? incoming
-      : incoming.filter((file) => file.size <= maxSize);
-    const rejectedCount = incoming.length - filtered.length;
-    setErrorMessage(
-      rejectedCount > 0
-        ? `${rejectedCount} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(2)} MB size limit and were skipped.`
-        : "",
-    );
+      ? typeAccepted
+      : typeAccepted.filter((file) => file.size <= maxSize);
+    const rejectedSizeCount = typeAccepted.length - filtered.length;
+    const errors = [
+      rejectedTypeCount > 0 ? `${rejectedTypeCount} file(s) did not match the accepted file types and were skipped.` : "",
+      rejectedSizeCount > 0 ? `${rejectedSizeCount} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(2)} MB size limit and were skipped.` : "",
+    ].filter(Boolean);
+    setErrorMessage(errors.join(" "));
 
     const currentFiles = filesRef.current;
     const uniqueIncoming = filtered.filter(
