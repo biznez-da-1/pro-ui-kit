@@ -75,6 +75,7 @@ export function Sidebar({
       >
         <div className="space-y-1">
           {items.map((item) => {
+            const itemLabel = item.label.trim() || item.id.trim() || "Untitled navigation item";
             const content = (
               <>
                 {item.icon && (
@@ -85,7 +86,7 @@ export function Sidebar({
 
                 {!collapsed && (
                   <span className="truncate">
-                    {item.label}
+                    {itemLabel}
                   </span>
                 )}
               </>
@@ -104,10 +105,11 @@ export function Sidebar({
                 <a
                   key={item.id}
                   href={item.href}
+                  aria-label={collapsed ? itemLabel : undefined}
                   aria-current={
                     item.active ? "page" : undefined
                   }
-                  title={collapsed ? item.label : undefined}
+                  title={collapsed ? itemLabel : undefined}
                   className={className}
                 >
                   {content}
