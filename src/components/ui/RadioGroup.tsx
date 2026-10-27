@@ -110,7 +110,7 @@ export function RadioGroup({
 
             <span className="min-w-0">
               <span className="block text-sm font-medium text-white">
-                {option.label}
+                {optionLabel}
               </span>
 
               {optionDescription && (
