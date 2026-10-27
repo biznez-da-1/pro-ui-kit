@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pro UI Kit
 
-## Getting Started
+A dark-themed UI component showcase built with Next.js, React, TypeScript, Tailwind CSS, and Lucide icons. The home page presents interactive examples of reusable interface components, including form controls, navigation, overlays, feedback, and data-display primitives.
 
-First, run the development server:
+## Requirements
+
+- Node.js 24
+- npm
+
+## Run locally
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Quality checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run typecheck
+npm run test --if-present
+npm run lint
+npm run build
+npm audit --audit-level=moderate
+```
 
-## Learn More
+The CI workflow runs these checks on pull requests and pushes to the configured development branches. Dependency-audit failures are blocking.
 
-To learn more about Next.js, take a look at the following resources:
+## Component library
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Reusable components are exported from `src/components/ui/index.ts`. The showcase and live examples are in `src/app/page.tsx`; global styles and root metadata are in `src/app/globals.css` and `src/app/layout.tsx`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project scope
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This repository currently contains a component showcase and reusable UI primitives. It does not currently expose application API routes or a backend service.

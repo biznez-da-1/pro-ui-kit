@@ -20,13 +20,25 @@ export interface CommandMenuProps {
   className?: string;
 }
 
-export function CommandMenu({
-  open,
+export function CommandMenu(props: CommandMenuProps) {
+  if (!props.open) return null;
+
+  return (
+    <CommandMenuContent
+      onClose={props.onClose}
+      items={props.items}
+      placeholder={props.placeholder}
+      className={props.className}
+    />
+  );
+}
+
+function CommandMenuContent({
   onClose,
   items,
   placeholder = "Search commands...",
   className,
-}: CommandMenuProps) {
+}: Omit<CommandMenuProps, "open">) {
   const [query, setQuery] = React.useState("");
   const [activeIndex, setActiveIndex] = React.useState(0);
 
@@ -40,15 +52,6 @@ export function CommandMenu({
   });
 
   React.useEffect(() => {
-    if (!open) return;
-
-    setQuery("");
-    setActiveIndex(0);
-  }, [open]);
-
-  React.useEffect(() => {
-    if (!open) return;
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
@@ -84,9 +87,7 @@ export function CommandMenu({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open, filtered, activeIndex, onClose]);
-
-  if (!open) return null;
+  }, [filtered, activeIndex, onClose]);
 
   return (
     <div
