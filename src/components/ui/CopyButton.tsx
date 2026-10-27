@@ -17,7 +17,7 @@ export function CopyButton({
 }: CopyButtonProps) {
   const [copied, setCopied] = React.useState(false);
   const [copyFailed, setCopyFailed] = React.useState(false);
-  const timeoutRef = React.useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const timeoutRef = React.useRef<number | null>(null);
   const buttonLabel = label.trim() || "Copy";
 
   React.useEffect(() => () => {
