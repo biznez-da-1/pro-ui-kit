@@ -215,7 +215,7 @@ export default function Home() {
       .getElementById(
         `component-${name.toLowerCase().replace(/\s+/g, "-")}`,
       )
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   };
 
   const showToast = () => {
@@ -1085,7 +1085,7 @@ export function Example() {
                     setCommandOpen(false);
                     document
                       .getElementById("pricing")
-                      ?.scrollIntoView({ behavior: "smooth" });
+                      ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
                   },
                 },
                 {
@@ -1162,7 +1162,7 @@ export function Example() {
             onClick={() =>
               document
                 .getElementById("pricing")
-                ?.scrollIntoView({ behavior: "smooth" })
+                ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
             }
           >
             Get Pro UI Kit
@@ -1196,7 +1196,7 @@ export function Example() {
                 onClick={() =>
                   document
                     .getElementById("components")
-                    ?.scrollIntoView({ behavior: "smooth" })
+                    ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
                 }
               >
                 Explore components
@@ -1209,7 +1209,7 @@ export function Example() {
                 onClick={() =>
                   document
                     .getElementById("pricing")
-                    ?.scrollIntoView({ behavior: "smooth" })
+                    ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
                 }
               >
                 View pricing
