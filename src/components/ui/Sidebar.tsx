@@ -122,7 +122,8 @@ export function Sidebar({
                 key={item.id}
                 type="button"
                 onClick={item.onClick}
-                title={collapsed ? item.label : undefined}
+                aria-label={collapsed ? itemLabel : undefined}
+                title={collapsed ? itemLabel : undefined}
                 className={className}
               >
                 {content}
