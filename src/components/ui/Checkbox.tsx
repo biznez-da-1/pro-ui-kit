@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { hasRenderableContent } from "@/lib/has-renderable-content";
 
 export interface CheckboxProps
   extends Omit<
@@ -15,17 +16,24 @@ export interface CheckboxProps
 export const Checkbox = React.forwardRef<
   HTMLInputElement,
   CheckboxProps
->(({ className, label, ...props }, ref) => {
+>(({ className, label, disabled = false, "aria-label": ariaLabel, ...props }, ref) => {
+  const hasLabel = hasRenderableContent(label);
+  const labelText = hasLabel ? label : "Checkbox";
+  const accessibleLabel = ariaLabel?.trim() || (!hasLabel ? "Checkbox" : undefined);
+
   return (
-    <label className="inline-flex cursor-pointer items-center gap-3">
+    <label className={cn("inline-flex items-center gap-3", disabled ? "cursor-not-allowed" : "cursor-pointer")}>
       <span className="relative flex h-5 w-5 shrink-0 items-center justify-center">
         <input
           ref={ref}
           type="checkbox"
           className={cn(
             "peer absolute inset-0 h-full w-full cursor-pointer opacity-0",
+            "disabled:cursor-not-allowed disabled:opacity-50",
             className,
           )}
+          disabled={disabled}
+          aria-label={accessibleLabel}
           {...props}
         />
 
@@ -66,11 +74,7 @@ export const Checkbox = React.forwardRef<
         </span>
       </span>
 
-      {label && (
-        <span className="text-sm text-neutral-300">
-          {label}
-        </span>
-      )}
+      {labelText && <span className="text-sm text-neutral-300">{labelText}</span>}
     </label>
   );
 });
