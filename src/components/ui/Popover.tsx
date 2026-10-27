@@ -2,7 +2,17 @@
 
 import * as React from "react";
 import { cn } from "@/lib/cn";
-import { hasRenderableContent } from "@/lib/has-renderable-content";
+
+function hasTextLabel(node: React.ReactNode): boolean {
+  if (typeof node === "string") return node.trim().length > 0;
+  if (typeof node === "number") return true;
+  if (Array.isArray(node)) return node.some(hasTextLabel);
+  if (React.isValidElement(node)) {
+    const element = node as React.ReactElement<{ children?: React.ReactNode }>;
+    return hasTextLabel(element.props.children);
+  }
+  return false;
+}
 
 export interface PopoverProps {
   open: boolean;
@@ -60,7 +70,7 @@ export function Popover({
   }, [open]);
 
   const existingTriggerLabel = trigger.props["aria-label"]?.trim();
-  const hasVisibleTriggerText = hasRenderableContent(trigger.props.children);
+  const hasVisibleTriggerText = hasTextLabel(trigger.props.children);
   const accessibleTriggerLabel = triggerLabel?.trim() || existingTriggerLabel || (!hasVisibleTriggerText ? "Open additional details" : undefined);
   const accessiblePopoverLabel = label.trim() || "Additional details";
   const triggerElement = React.cloneElement(
