@@ -28,7 +28,7 @@ export function ActivityFeed({ items, className }: ActivityFeedProps) {
 
         return (
           <li key={item.id} className={cn("flex gap-4 p-4 transition-colors hover:bg-neutral-900/60", item.className)}>
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-400">
+            <div aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-400">
               {item.icon ?? <span className="h-2 w-2 rounded-full bg-indigo-500" aria-hidden="true" />}
             </div>
             <div className="min-w-0 flex-1">
