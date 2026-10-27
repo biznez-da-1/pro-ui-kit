@@ -6,10 +6,14 @@ import { cn } from "@/lib/cn";
 export interface PopoverProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  trigger: React.ReactNode;
+  /** A single focusable trigger element, preferably a native button or Button component. */
+  trigger: React.ReactElement;
   children: React.ReactNode;
   align?: "left" | "center" | "right";
   className?: string;
+  label?: string;
+  /** Accessible name for icon-only triggers; text triggers keep their visible name by default. */
+  triggerLabel?: string;
 }
 
 export function Popover({
@@ -19,55 +23,75 @@ export function Popover({
   children,
   align = "left",
   className,
+  label = "Additional details",
+  triggerLabel,
 }: PopoverProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const onOpenChangeRef = React.useRef(onOpenChange);
+
+  React.useEffect(() => {
+    onOpenChangeRef.current = onOpenChange;
+  }, [onOpenChange]);
 
   React.useEffect(() => {
     if (!open) return;
 
-    const handlePointerDown = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        onOpenChange(false);
+    const handlePointerDown = (event: PointerEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        onOpenChangeRef.current(false);
       }
     };
-
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onOpenChange(false);
+        event.preventDefault();
+        event.stopPropagation();
+        onOpenChangeRef.current(false);
+        containerRef.current?.querySelector<HTMLElement>('[aria-haspopup="dialog"]')?.focus();
       }
     };
 
-    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open, onOpenChange]);
+  }, [open]);
+
+  const existingTriggerLabel = trigger.props["aria-label"]?.trim();
+  const accessibleTriggerLabel = triggerLabel?.trim() || existingTriggerLabel || undefined;
+  const accessiblePopoverLabel = label.trim() || "Additional details";
+  const triggerElement = React.cloneElement(
+    trigger as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
+    {
+      "aria-haspopup": "dialog",
+      "aria-expanded": open,
+      "aria-label": accessibleTriggerLabel,
+      onClick: (event: React.MouseEvent<HTMLElement>) => {
+        (trigger.props as React.HTMLAttributes<HTMLElement>).onClick?.(event);
+        if (!event.defaultPrevented) onOpenChange(!open);
+      },
+    } as React.HTMLAttributes<HTMLElement>,
+  );
 
   return (
-    <div ref={containerRef} className="relative inline-block">
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => onOpenChange(!open)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            onOpenChange(!open);
-          }
-        }}
-      >
-        {trigger}
-      </div>
-
+    <div
+      ref={containerRef}
+      className="relative inline-block"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          event.stopPropagation();
+          onOpenChangeRef.current(false);
+          containerRef.current?.querySelector<HTMLElement>('[aria-haspopup="dialog"]')?.focus();
+        }
+      }}
+    >
+      {triggerElement}
       {open && (
         <div
           role="dialog"
+          aria-label={accessiblePopoverLabel}
           className={cn(
             "absolute z-50 mt-2 min-w-64 rounded-xl border border-neutral-800 bg-neutral-950 p-4 text-white shadow-2xl",
             align === "left" && "left-0",
