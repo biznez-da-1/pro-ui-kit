@@ -79,7 +79,7 @@ export function Sidebar({
             const content = (
               <>
                 {item.icon && (
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                  <span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center">
                     {item.icon}
                   </span>
                 )}
