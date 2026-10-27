@@ -11,6 +11,7 @@ export interface SliderProps {
   step?: number;
   onValueChange?: (value: number) => void;
   disabled?: boolean;
+  label?: string;
   className?: string;
 }
 
@@ -22,19 +23,21 @@ export function Slider({
   step = 1,
   onValueChange,
   disabled = false,
+  label = "Slider",
   className,
 }: SliderProps) {
   const [internalValue, setInternalValue] = React.useState(defaultValue);
-
-  const currentValue = value ?? internalValue;
+  const safeMin = Number.isFinite(min) ? min : 0;
+  const safeMax = Number.isFinite(max) && max > safeMin ? max : safeMin + 100;
+  const safeStep = Number.isFinite(step) && step > 0 ? step : 1;
+  const rawValue = value ?? internalValue;
+  const numericValue = Number.isFinite(rawValue) ? rawValue : safeMin;
+  const currentValue = Math.min(safeMax, Math.max(safeMin, numericValue));
+  const accessibleLabel = label.trim() || "Slider";
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const nextValue = Number(event.target.value);
-
-    if (value === undefined) {
-      setInternalValue(nextValue);
-    }
-
+    if (value === undefined) setInternalValue(nextValue);
     onValueChange?.(nextValue);
   };
 
@@ -43,12 +46,12 @@ export function Slider({
       <input
         type="range"
         value={currentValue}
-        min={min}
-        max={max}
-        step={step}
+        min={safeMin}
+        max={safeMax}
+        step={safeStep}
         disabled={disabled}
         onChange={handleChange}
-        aria-label="Slider"
+        aria-label={accessibleLabel}
         className="h-2 w-full cursor-pointer appearance-none rounded-full bg-neutral-800 accent-white disabled:cursor-not-allowed disabled:opacity-50"
       />
     </div>
