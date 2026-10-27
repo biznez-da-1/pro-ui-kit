@@ -44,11 +44,13 @@ export function Toast({
 }: ToastProps) {
   const config = variants[variant];
   const Icon = config.icon;
+  const titleText = title.trim() || (variant === "error" ? "Error" : "Notification");
+  const messageText = message?.trim();
 
   return (
     <div
-      role="status"
-      aria-live="polite"
+      role={variant === "error" ? "alert" : "status"}
+      aria-live={variant === "error" ? "assertive" : "polite"}
       className={cn(
         "flex w-full max-w-sm items-start gap-3 rounded-2xl border p-4 shadow-xl backdrop-blur-xl",
         config.className,
@@ -62,12 +64,12 @@ export function Toast({
 
       <div className="min-w-0 flex-1">
         <p className="text-sm font-semibold text-white">
-          {title}
+          {titleText}
         </p>
 
-        {message && (
+        {messageText && (
           <p className="mt-1 text-sm leading-5 text-neutral-300">
-            {message}
+            {messageText}
           </p>
         )}
       </div>
