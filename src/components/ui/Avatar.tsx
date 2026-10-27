@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/cn";
 
 export interface AvatarProps {
@@ -35,16 +36,19 @@ export function Avatar({
       role={showImage ? undefined : "img"}
       aria-label={showImage ? undefined : altText || fallbackText}
       className={cn(
-        "flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-800 font-semibold text-neutral-300",
+        "relative flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-800 font-semibold text-neutral-300",
         sizes[size],
         className,
       )}
     >
       {showImage ? (
-        <img
-          src={src}
+        <Image
+          src={src ?? ""}
           alt={altText}
-          className="h-full w-full object-cover"
+          fill
+          unoptimized
+          sizes="64px"
+          className="object-cover"
           onError={() => setFailedSrc(src)}
         />
       ) : (
