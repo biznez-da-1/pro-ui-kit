@@ -153,7 +153,6 @@ function CommandMenuContent({
             event.stopPropagation();
             onCloseRef.current();
           }
-          if (event.key === "Tab") event.stopPropagation();
         }}
         className={cn("relative z-10 w-full max-w-xl overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950 shadow-2xl focus:outline-none", className)}
       >
