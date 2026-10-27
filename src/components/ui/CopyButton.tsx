@@ -16,17 +16,27 @@ export function CopyButton({
   label = "Copy",
 }: CopyButtonProps) {
   const [copied, setCopied] = React.useState(false);
+  const [copyFailed, setCopyFailed] = React.useState(false);
+  const timeoutRef = React.useRef<number | null>(null);
+  const buttonLabel = label.trim() || "Copy";
+
+  React.useEffect(() => () => {
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+  }, []);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(value);
+      setCopyFailed(false);
       setCopied(true);
-
-      window.setTimeout(() => {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => {
         setCopied(false);
+        timeoutRef.current = null;
       }, 2000);
-    } catch (error) {
-      console.error("Failed to copy text:", error);
+    } catch {
+      setCopied(false);
+      setCopyFailed(true);
     }
   };
 
@@ -34,8 +44,8 @@ export function CopyButton({
     <button
       type="button"
       onClick={handleCopy}
-      aria-label={copied ? "Copied" : label}
-      title={copied ? "Copied" : label}
+      aria-label={copied ? "Copied" : copyFailed ? "Copy failed" : buttonLabel}
+      title={copied ? "Copied" : copyFailed ? "Copy failed" : buttonLabel}
       className={cn(
         "inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-neutral-800 bg-neutral-950 px-3 text-sm font-medium text-neutral-300 transition-colors",
         "hover:bg-neutral-900 hover:text-white",
@@ -57,7 +67,7 @@ export function CopyButton({
             className="h-4 w-4"
             aria-hidden="true"
           />
-          <span>{label}</span>
+          <span>{copyFailed ? "Copy failed" : buttonLabel}</span>
         </>
       )}
     </button>

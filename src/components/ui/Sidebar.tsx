@@ -75,17 +75,18 @@ export function Sidebar({
       >
         <div className="space-y-1">
           {items.map((item) => {
+            const itemLabel = item.label.trim() || item.id.trim() || "Untitled navigation item";
             const content = (
               <>
                 {item.icon && (
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                  <span aria-hidden="true" className="flex h-5 w-5 shrink-0 items-center justify-center">
                     {item.icon}
                   </span>
                 )}
 
                 {!collapsed && (
                   <span className="truncate">
-                    {item.label}
+                    {itemLabel}
                   </span>
                 )}
               </>
@@ -104,10 +105,11 @@ export function Sidebar({
                 <a
                   key={item.id}
                   href={item.href}
+                  aria-label={collapsed ? itemLabel : undefined}
                   aria-current={
                     item.active ? "page" : undefined
                   }
-                  title={collapsed ? item.label : undefined}
+                  title={collapsed ? itemLabel : undefined}
                   className={className}
                 >
                   {content}
@@ -120,7 +122,8 @@ export function Sidebar({
                 key={item.id}
                 type="button"
                 onClick={item.onClick}
-                title={collapsed ? item.label : undefined}
+                aria-label={collapsed ? itemLabel : undefined}
+                title={collapsed ? itemLabel : undefined}
                 className={className}
               >
                 {content}

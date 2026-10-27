@@ -46,6 +46,10 @@ export function RadioGroup({
     onValueChange?.(nextValue);
   };
 
+  if (options.length === 0) {
+    return <p role="status" className={cn("text-sm text-neutral-500", className)}>No options available.</p>;
+  }
+
   return (
     <div
       role="radiogroup"
@@ -60,11 +64,6 @@ export function RadioGroup({
         className,
       )}
     >
-      {options.length === 0 && (
-        <p role="status" className="text-sm text-neutral-500">
-          No options available.
-        </p>
-      )}
       {options.map((option, index) => {
         const id = `${generatedId}-option-${index}`;
         const optionDisabled = disabled || option.disabled;
@@ -110,7 +109,7 @@ export function RadioGroup({
 
             <span className="min-w-0">
               <span className="block text-sm font-medium text-white">
-                {option.label}
+                {optionLabel}
               </span>
 
               {optionDescription && (

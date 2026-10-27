@@ -17,12 +17,13 @@ export function Spinner({
   className,
   label = "Loading",
 }: SpinnerProps) {
+  const accessibleLabel = label.trim() || "Loading";
   return (
     <span
       role="status"
-      aria-label={label}
+      aria-label={accessibleLabel}
       className={cn(
-        "inline-block animate-spin rounded-full border-neutral-700 border-t-indigo-500",
+        "inline-block animate-spin motion-reduce:animate-none rounded-full border-neutral-700 border-t-indigo-500",
         sizes[size],
         className,
       )}

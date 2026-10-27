@@ -32,7 +32,7 @@ export function Stepper({ steps, currentStep, className }: StepperProps) {
         const description = step.description?.trim();
 
         return (
-          <li key={step.id} className="flex min-w-0 flex-1 items-start">
+          <li key={step.id} aria-current={active ? "step" : undefined} className="flex min-w-0 flex-1 items-start">
             <div className="flex min-w-0 flex-1 flex-col items-center text-center">
               <div
                 className={cn(
@@ -41,11 +41,10 @@ export function Stepper({ steps, currentStep, className }: StepperProps) {
                   active && "border-indigo-500 bg-indigo-600 text-white",
                   !completed && !active && "border-neutral-700 bg-neutral-950 text-neutral-500",
                 )}
-                aria-current={active ? "step" : undefined}
-                aria-label={`${label}: ${completed ? "completed" : active ? "current step" : "upcoming"}`}
               >
                 {completed ? <Check className="h-4 w-4" aria-hidden="true" /> : stepNumber}
               </div>
+              <span className="sr-only">{completed ? "Completed step" : active ? "Current step" : "Upcoming step"}</span>
               <div className="mt-3">
                 <p className={cn("text-sm font-medium", active || completed ? "text-white" : "text-neutral-500")}>{label}</p>
                 {description && <p className="mt-1 text-xs leading-5 text-neutral-500">{description}</p>}

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { hasRenderableContent } from "@/lib/has-renderable-content";
+import { hasTextContent } from "@/lib/has-text-content";
 import { cn } from "@/lib/cn";
 
 export interface SwitchProps
@@ -16,7 +16,7 @@ export const Switch = React.forwardRef<
   HTMLInputElement,
   SwitchProps
 >(({ className, label, disabled = false, "aria-label": ariaLabel, ...props }, ref) => {
-  const hasLabel = hasRenderableContent(label);
+  const hasLabel = hasTextContent(label);
   const labelText = hasLabel ? (typeof label === "string" ? label.trim() : label) : "Switch";
   const accessibleLabel = ariaLabel?.trim() || (!hasLabel ? "Switch" : undefined);
 

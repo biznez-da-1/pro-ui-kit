@@ -9,20 +9,13 @@ import {
   ChevronRight,
   Code2,
   Download,
-  FileText,
   Folder,
   Home as HomeIcon,
   Layers3,
-  Mail,
   Menu,
-  MoreHorizontal,
-  Play,
   Search,
   Settings,
   Star,
-  Terminal,
-  User,
-  X,
   Zap,
 } from "lucide-react";
 
@@ -215,7 +208,7 @@ export default function Home() {
       .getElementById(
         `component-${name.toLowerCase().replace(/\s+/g, "-")}`,
       )
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   };
 
   const showToast = () => {
@@ -475,7 +468,7 @@ export default function Home() {
         return (
           <Breadcrumb
             items={[
-              { label: "Home", href: "#" },
+              { label: "Home" },
               { label: "Components", href: "#components" },
               { label: "Breadcrumb" },
             ]}
@@ -497,17 +490,17 @@ export default function Home() {
                 </Button>
               }
               mobileMenu={
-                <div className="space-y-2 p-4 text-sm">
-                  <div>Components</div>
-                  <div>Pricing</div>
-                  <div>Documentation</div>
+                <div className="flex flex-col gap-2 p-4 text-sm">
+                  <a href="#components" className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/5">Components</a>
+                  <a href="#pricing" className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/5">Pricing</a>
+                  <a href="#components" className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-white/5">Documentation</a>
                 </div>
               }
             >
               <div className="hidden gap-5 text-sm text-zinc-400 md:flex">
-                <span>Components</span>
-                <span>Pricing</span>
-                <span>Docs</span>
+                <a href="#components" className="hover:text-white">Components</a>
+                <a href="#pricing" className="hover:text-white">Pricing</a>
+                <a href="#components" className="hover:text-white">Docs</a>
               </div>
             </Navbar>
           </div>
@@ -602,20 +595,20 @@ export default function Home() {
             <div className="flex gap-2">
               <Button
                 variant="outline"
-                disabled={step === 0}
-                onClick={() => setStep((value) => Math.max(0, value - 1))}
+                disabled={step === 1}
+                onClick={() => setStep((value) => Math.max(1, value - 1))}
               >
                 Previous
               </Button>
               <Button
-                disabled={step === 3}
-                onClick={() => setStep((value) => Math.min(3, value + 1))}
+                disabled={step === 4}
+                onClick={() => setStep((value) => Math.min(4, value + 1))}
               >
                 Next
               </Button>
             </div>
             <p className="text-sm text-zinc-400">
-              Step {step + 1} of 4
+              Step {step} of 4
             </p>
           </div>
         );
@@ -1085,7 +1078,7 @@ export function Example() {
                     setCommandOpen(false);
                     document
                       .getElementById("pricing")
-                      ?.scrollIntoView({ behavior: "smooth" });
+                      ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
                   },
                 },
                 {
@@ -1112,7 +1105,7 @@ export function Example() {
             description="The complete production-ready React component library."
             popular
             features={[
-              "41 production-ready components",
+              "39 showcased components",
               "TypeScript source",
               "Tailwind CSS",
               "Commercial-ready architecture",
@@ -1162,7 +1155,7 @@ export function Example() {
             onClick={() =>
               document
                 .getElementById("pricing")
-                ?.scrollIntoView({ behavior: "smooth" })
+                ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
             }
           >
             Get Pro UI Kit
@@ -1196,7 +1189,7 @@ export function Example() {
                 onClick={() =>
                   document
                     .getElementById("components")
-                    ?.scrollIntoView({ behavior: "smooth" })
+                    ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
                 }
               >
                 Explore components
@@ -1209,7 +1202,7 @@ export function Example() {
                 onClick={() =>
                   document
                     .getElementById("pricing")
-                    ?.scrollIntoView({ behavior: "smooth" })
+                    ?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })
                 }
               >
                 View pricing
@@ -1380,11 +1373,8 @@ export function Example() {
                 "Lifetime product access",
               ]}
               button={
-                <Button
-                  className="w-full"
-                  onClick={() => setSelectedAction("Pricing checkout clicked")}
-                >
-                  Get Pro UI Kit
+                <Button className="w-full" disabled>
+                  Checkout coming soon
                 </Button>
               }
             />
@@ -1400,7 +1390,7 @@ export function Example() {
       <footer className="border-t border-white/10 py-10">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 text-sm text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>PRO UI KIT</div>
-          <div>41 components · React · TypeScript · Tailwind</div>
+          <div>39 showcased components · React · TypeScript · Tailwind</div>
         </div>
       </footer>
 

@@ -4,6 +4,8 @@ import * as React from "react";
 import { hasRenderableContent } from "../src/lib/has-renderable-content.ts";
 import { acquireBodyScrollLock } from "../src/lib/body-scroll-lock.ts";
 import { getFocusableElements } from "../src/lib/focusable-elements.ts";
+import { filterAcceptedFiles, mergeSelectedFiles, matchesAcceptedType } from "../src/lib/file-upload.ts";
+import { hasTextContent } from "../src/lib/has-text-content.ts";
 
 test("renderable-content detection handles empty nodes and preserves zero", () => {
   assert.equal(hasRenderableContent(null), false);
@@ -74,4 +76,47 @@ test("focusable-element discovery filters disabled, hidden, negative-tabindex, a
     if (originalWindow === undefined) delete globalThis.window;
     else Object.defineProperty(globalThis, "window", { configurable: true, value: originalWindow });
   }
+});
+
+
+test("file upload validation enforces extensions, MIME wildcards, and size limits", () => {
+  const pdf = { name: "invoice.PDF", type: "application/pdf", size: 200 };
+  const image = { name: "cover.png", type: "image/png", size: 1200 };
+  const script = { name: "payload.js", type: "text/javascript", size: 10 };
+
+  assert.equal(matchesAcceptedType(pdf, ".pdf, image/*"), true);
+  assert.equal(matchesAcceptedType(image, ".pdf, image/*"), true);
+  assert.equal(matchesAcceptedType(script, ".pdf, image/*"), false);
+
+  const result = filterAcceptedFiles([pdf, image, script], ".pdf, image/*", 1000);
+  assert.deepEqual(result.accepted, [pdf]);
+  assert.equal(result.rejectedTypeCount, 1);
+  assert.equal(result.rejectedSizeCount, 1);
+
+  const invalidLimit = filterAcceptedFiles([pdf], undefined, Number.NaN);
+  assert.deepEqual(invalidLimit.accepted, [pdf]);
+  assert.equal(invalidLimit.rejectedSizeCount, 0);
+});
+
+test("rejected single-file uploads do not erase an existing valid selection", () => {
+  const existing = { name: "good.pdf", size: 100, lastModified: 1 };
+  const rejected = { name: "too-large.pdf", size: 5000, lastModified: 2 };
+  assert.deepEqual(mergeSelectedFiles([existing], [], false), [existing]);
+  assert.deepEqual(mergeSelectedFiles([existing], [rejected], false), [rejected]);
+});
+
+test("multiple-file uploads deduplicate both existing and incoming selections", () => {
+  const existing = { name: "a.pdf", size: 100, lastModified: 1 };
+  const duplicate = { name: "a.pdf", size: 100, lastModified: 1 };
+  const next = { name: "b.pdf", size: 200, lastModified: 2 };
+  assert.deepEqual(mergeSelectedFiles([existing], [duplicate, next, next], true), [existing, next]);
+});
+
+
+test("textual-label detection rejects icon-only nodes and accepts nested text", () => {
+  assert.equal(hasTextContent(null), false);
+  assert.equal(hasTextContent("   "), false);
+  assert.equal(hasTextContent(React.createElement("svg", null, React.createElement("path"))), false);
+  assert.equal(hasTextContent(React.createElement(React.Fragment, null, "Label")), true);
+  assert.equal(hasTextContent([" ", React.createElement("span", null, "Name")]), true);
 });

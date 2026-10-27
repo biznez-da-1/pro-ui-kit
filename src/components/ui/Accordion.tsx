@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { ChevronDown } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
 
 export interface AccordionItem {
@@ -25,6 +25,7 @@ export function Accordion({
   defaultValue,
   className,
 }: AccordionProps) {
+  const shouldReduceMotion = useReducedMotion();
   const baseId = React.useId();
   const [open, setOpen] = React.useState<Set<string>>(() => {
     if (defaultValue == null) return new Set();
@@ -86,10 +87,10 @@ export function Accordion({
               {isOpen && (
                 <motion.div
                   id={contentId}
-                  initial={{ height: 0, opacity: 0 }}
+                  initial={shouldReduceMotion ? false : { height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: shouldReduceMotion ? 0 : 0.2, ease: "easeOut" }}
                   className="overflow-hidden"
                 >
                   <div className="px-4 pb-4 text-sm leading-relaxed text-neutral-400">

@@ -120,7 +120,6 @@ export function Sheet({
             event.stopPropagation();
             onCloseRef.current();
           }
-          if (event.key === "Tab") event.stopPropagation();
         }}
         className={cn("fixed z-10 overflow-y-auto bg-neutral-950 p-6 shadow-2xl focus:outline-none", "border-neutral-800", sideClasses[side], className)}
       >

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Upload, X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { filterAcceptedFiles, mergeSelectedFiles } from "@/lib/file-upload";
 
 export interface FileUploadProps {
   accept?: string;
@@ -34,27 +35,14 @@ export function FileUpload({
   };
 
   const processFiles = (incoming: File[]) => {
-    const filtered = maxSize === undefined
-      ? incoming
-      : incoming.filter((file) => file.size <= maxSize);
-    const rejectedCount = incoming.length - filtered.length;
-    setErrorMessage(
-      rejectedCount > 0
-        ? `${rejectedCount} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(2)} MB size limit and were skipped.`
-        : "",
-    );
+    const { accepted: filtered, rejectedTypeCount, rejectedSizeCount } = filterAcceptedFiles(incoming, accept, maxSize);
+    const errors = [
+      rejectedTypeCount > 0 ? `${rejectedTypeCount} file(s) did not match the accepted file types and were skipped.` : "",
+      rejectedSizeCount > 0 ? `${rejectedSizeCount} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(2)} MB size limit and were skipped.` : "",
+    ].filter(Boolean);
+    setErrorMessage(errors.join(" "));
 
-    const currentFiles = filesRef.current;
-    const uniqueIncoming = filtered.filter(
-      (file, index, all) => all.findIndex((candidate) =>
-        candidate.name === file.name && candidate.size === file.size && candidate.lastModified === file.lastModified
-      ) === index,
-    );
-    const nextFiles = multiple
-      ? [...currentFiles, ...uniqueIncoming.filter((file) => !currentFiles.some((current) =>
-          current.name === file.name && current.size === file.size && current.lastModified === file.lastModified
-        ))]
-      : uniqueIncoming.slice(0, 1);
+    const nextFiles = mergeSelectedFiles(filesRef.current, filtered, multiple);
 
     commitFiles(nextFiles);
   };
@@ -75,9 +63,9 @@ export function FileUpload({
   ) => {
     event.preventDefault();
 
+    setDragging(false);
     if (disabled) return;
 
-    setDragging(false);
     processFiles(Array.from(event.dataTransfer.files));
   };
 
@@ -106,6 +94,8 @@ export function FileUpload({
 
           if (!disabled) {
             setDragging(true);
+          } else {
+            setDragging(false);
           }
         }}
         onDragLeave={(event) => {
@@ -116,7 +106,7 @@ export function FileUpload({
         onDrop={handleDrop}
         className={cn(
           "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors",
-          dragging
+          dragging && !disabled
             ? "border-indigo-500 bg-indigo-500/10"
             : "border-neutral-800 bg-neutral-950 hover:border-neutral-700 hover:bg-neutral-900/50",
           disabled && "cursor-not-allowed opacity-50",

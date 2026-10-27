@@ -17,6 +17,8 @@ export function EmptyState({
   action,
   className,
 }: EmptyStateProps) {
+  const titleText = title.trim() || "Nothing here yet";
+  const descriptionText = description?.trim();
   return (
     <div
       className={cn(
@@ -24,7 +26,7 @@ export function EmptyState({
         className,
       )}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-400">
+      <div aria-hidden="true" className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-800 bg-neutral-900 text-neutral-400">
         {icon ?? (
           <Inbox
             className="h-5 w-5"
@@ -34,12 +36,12 @@ export function EmptyState({
       </div>
 
       <h3 className="mt-4 text-lg font-semibold text-white">
-        {title}
+        {titleText}
       </h3>
 
-      {description && (
+      {descriptionText && (
         <p className="mt-2 max-w-md text-sm leading-6 text-neutral-400">
-          {description}
+          {descriptionText}
         </p>
       )}
 

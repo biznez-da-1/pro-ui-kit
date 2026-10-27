@@ -20,9 +20,18 @@ export function Navbar({
   className,
 }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const menuButtonRef = React.useRef<HTMLButtonElement>(null);
 
   return (
     <nav
+      aria-label="Main navigation"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && mobileOpen) {
+          event.preventDefault();
+          setMobileOpen(false);
+          menuButtonRef.current?.focus();
+        }
+      }}
       className={cn(
         "relative border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-xl",
         className,
@@ -46,6 +55,7 @@ export function Navbar({
         </div>
 
         <button
+          ref={menuButtonRef}
           type="button"
           aria-label={
             mobileOpen
@@ -72,7 +82,15 @@ export function Navbar({
 
       {mobileOpen && (
         <div className="border-t border-neutral-800 px-4 py-4 md:hidden">
-          <div className="flex flex-col gap-2">
+          <div
+            className="flex flex-col gap-2"
+            onClickCapture={(event) => {
+              const target = event.target;
+              if (target instanceof Element && target.closest("a")) {
+                setMobileOpen(false);
+              }
+            }}
+          >
             {mobileMenu ?? children}
           </div>
 
