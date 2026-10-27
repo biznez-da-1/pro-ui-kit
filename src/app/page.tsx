@@ -1373,11 +1373,8 @@ export function Example() {
                 "Lifetime product access",
               ]}
               button={
-                <Button
-                  className="w-full"
-                  onClick={() => setSelectedAction("Pricing checkout clicked")}
-                >
-                  Get Pro UI Kit
+                <Button className="w-full" disabled>
+                  Checkout coming soon
                 </Button>
               }
             />
