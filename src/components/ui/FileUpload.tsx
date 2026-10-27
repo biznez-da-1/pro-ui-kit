@@ -27,6 +27,10 @@ export function FileUpload({
   const [dragging, setDragging] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
 
+  React.useEffect(() => {
+    if (disabled) setDragging(false);
+  }, [disabled]);
+
   const commitFiles = (nextFiles: File[]) => {
     filesRef.current = nextFiles;
     setFiles(nextFiles);
@@ -54,7 +58,9 @@ export function FileUpload({
       ? [...currentFiles, ...uniqueIncoming.filter((file) => !currentFiles.some((current) =>
           current.name === file.name && current.size === file.size && current.lastModified === file.lastModified
         ))]
-      : uniqueIncoming.slice(0, 1);
+      : uniqueIncoming.length > 0
+        ? uniqueIncoming.slice(0, 1)
+        : currentFiles;
 
     commitFiles(nextFiles);
   };
@@ -75,9 +81,9 @@ export function FileUpload({
   ) => {
     event.preventDefault();
 
+    setDragging(false);
     if (disabled) return;
 
-    setDragging(false);
     processFiles(Array.from(event.dataTransfer.files));
   };
 
