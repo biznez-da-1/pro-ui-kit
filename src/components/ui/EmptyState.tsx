@@ -17,6 +17,8 @@ export function EmptyState({
   action,
   className,
 }: EmptyStateProps) {
+  const titleText = title.trim() || "Nothing here yet";
+  const descriptionText = description?.trim();
   return (
     <div
       className={cn(
@@ -34,12 +36,12 @@ export function EmptyState({
       </div>
 
       <h3 className="mt-4 text-lg font-semibold text-white">
-        {title}
+        {titleText}
       </h3>
 
-      {description && (
+      {descriptionText && (
         <p className="mt-2 max-w-md text-sm leading-6 text-neutral-400">
-          {description}
+          {descriptionText}
         </p>
       )}
 
