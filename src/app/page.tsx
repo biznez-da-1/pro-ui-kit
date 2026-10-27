@@ -596,13 +596,13 @@ export default function Home() {
               <Button
                 variant="outline"
                 disabled={step === 1}
-                onClick={() => setStep((value) => Math.max(1, value - 1))
+                onClick={() => setStep((value) => Math.max(1, value - 1))}
               >
                 Previous
               </Button>
               <Button
                 disabled={step === 4}
-                onClick={() => setStep((value) => Math.min(4, value + 1))
+                onClick={() => setStep((value) => Math.min(4, value + 1))}
               >
                 Next
               </Button>
