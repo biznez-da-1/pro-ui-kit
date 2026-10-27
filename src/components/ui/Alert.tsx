@@ -13,6 +13,18 @@ export interface AlertProps
   title?: string;
 }
 
+function hasRenderableContent(node: React.ReactNode): boolean {
+  if (node == null || typeof node === "boolean") return false;
+  if (typeof node === "string") return node.trim().length > 0;
+  if (typeof node === "number") return true;
+  if (Array.isArray(node)) return node.some(hasRenderableContent);
+  if (React.isValidElement(node) && node.type === React.Fragment) {
+    const fragment = node as React.ReactElement<{ children?: React.ReactNode }>;
+    return hasRenderableContent(fragment.props.children);
+  }
+  return true;
+}
+
 const variants = {
   info: {
     icon: Info,
@@ -45,6 +57,10 @@ export function Alert({
 }: AlertProps) {
   const config = variants[variant];
   const Icon = config.icon;
+  const titleText = title?.trim();
+  const alertContent = typeof children === "string" ? children.trim() : children;
+  const hasAlertContent = hasRenderableContent(alertContent);
+  const showFallback = !titleText && !hasAlertContent;
 
   return (
     <div
@@ -62,15 +78,12 @@ export function Alert({
       />
 
       <div className="min-w-0">
-        {title && (
-          <p className="text-sm font-semibold text-white">
-            {title}
-          </p>
+        {titleText && <p className="text-sm font-semibold text-white">{titleText}</p>}
+        {(hasAlertContent || showFallback) && (
+          <div className="mt-1 text-sm leading-6 text-neutral-300">
+            {hasAlertContent ? alertContent : "No details provided."}
+          </div>
         )}
-
-        <div className="mt-1 text-sm leading-6 text-neutral-300">
-          {children}
-        </div>
       </div>
     </div>
   );

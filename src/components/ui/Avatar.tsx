@@ -25,12 +25,15 @@ export function Avatar({
   size = "md",
   className,
 }: AvatarProps) {
-  const [imageError, setImageError] = React.useState(false);
-
-  const showImage = Boolean(src) && !imageError;
+  const [failedSrc, setFailedSrc] = React.useState<string | undefined>(undefined);
+  const altText = alt.trim();
+  const fallbackText = fallback.trim() || "?";
+  const showImage = Boolean(src) && failedSrc !== src;
 
   return (
     <div
+      role={showImage ? undefined : "img"}
+      aria-label={showImage ? undefined : altText || fallbackText}
       className={cn(
         "flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-neutral-700 bg-neutral-800 font-semibold text-neutral-300",
         sizes[size],
@@ -40,14 +43,12 @@ export function Avatar({
       {showImage ? (
         <img
           src={src}
-          alt={alt}
+          alt={altText}
           className="h-full w-full object-cover"
-          onError={() => setImageError(true)}
+          onError={() => setFailedSrc(src)}
         />
       ) : (
-        <span aria-hidden={alt ? "true" : undefined}>
-          {fallback}
-        </span>
+        <span aria-hidden="true">{fallbackText}</span>
       )}
     </div>
   );

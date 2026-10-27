@@ -23,28 +23,44 @@ export function FileUpload({
 }: FileUploadProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [files, setFiles] = React.useState<File[]>([]);
+  const filesRef = React.useRef<File[]>([]);
   const [dragging, setDragging] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
-  const processFiles = (incoming: File[]) => {
-    const filtered = maxSize
-      ? incoming.filter((file) => file.size <= maxSize)
-      : incoming;
-
-    const nextFiles = multiple
-      ? [...files, ...filtered]
-      : filtered.slice(0, 1);
-
+  const commitFiles = (nextFiles: File[]) => {
+    filesRef.current = nextFiles;
     setFiles(nextFiles);
     onFilesChange?.(nextFiles);
   };
 
-  const removeFile = (index: number) => {
-    const nextFiles = files.filter(
-      (_, fileIndex) => fileIndex !== index,
+  const processFiles = (incoming: File[]) => {
+    const filtered = maxSize === undefined
+      ? incoming
+      : incoming.filter((file) => file.size <= maxSize);
+    const rejectedCount = incoming.length - filtered.length;
+    setErrorMessage(
+      rejectedCount > 0
+        ? `${rejectedCount} file(s) exceeded the ${(maxSize! / 1024 / 1024).toFixed(2)} MB size limit and were skipped.`
+        : "",
     );
 
-    setFiles(nextFiles);
-    onFilesChange?.(nextFiles);
+    const currentFiles = filesRef.current;
+    const uniqueIncoming = filtered.filter(
+      (file, index, all) => all.findIndex((candidate) =>
+        candidate.name === file.name && candidate.size === file.size && candidate.lastModified === file.lastModified
+      ) === index,
+    );
+    const nextFiles = multiple
+      ? [...currentFiles, ...uniqueIncoming.filter((file) => !currentFiles.some((current) =>
+          current.name === file.name && current.size === file.size && current.lastModified === file.lastModified
+        ))]
+      : uniqueIncoming.slice(0, 1);
+
+    commitFiles(nextFiles);
+  };
+
+  const removeFile = (index: number) => {
+    commitFiles(filesRef.current.filter((_, fileIndex) => fileIndex !== index));
   };
 
   const handleInputChange = (
@@ -92,7 +108,11 @@ export function FileUpload({
             setDragging(true);
           }
         }}
-        onDragLeave={() => setDragging(false)}
+        onDragLeave={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+            setDragging(false);
+          }
+        }}
         onDrop={handleDrop}
         className={cn(
           "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors",
@@ -126,6 +146,8 @@ export function FileUpload({
             : "Select a file from your device"}
         </p>
       </div>
+
+      {errorMessage && <p role="alert" className="mt-2 text-sm text-red-400">{errorMessage}</p>}
 
       {files.length > 0 && (
         <div className="mt-3 space-y-2">
