@@ -92,6 +92,10 @@ test("file upload validation enforces extensions, MIME wildcards, and size limit
   assert.deepEqual(result.accepted, [pdf]);
   assert.equal(result.rejectedTypeCount, 1);
   assert.equal(result.rejectedSizeCount, 1);
+
+  const invalidLimit = filterAcceptedFiles([pdf], undefined, Number.NaN);
+  assert.deepEqual(invalidLimit.accepted, [pdf]);
+  assert.equal(invalidLimit.rejectedSizeCount, 0);
 });
 
 test("rejected single-file uploads do not erase an existing valid selection", () => {
