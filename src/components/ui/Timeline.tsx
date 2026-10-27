@@ -37,7 +37,7 @@ export function Timeline({ items, className }: TimelineProps) {
         return (
           <li key={item.id} className="relative flex gap-4">
             {!isLast && <div className="absolute left-4 top-9 h-[calc(100%-1rem)] w-px bg-neutral-800" aria-hidden="true" />}
-            <div className={cn("relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border", statusClasses[item.status ?? "default"])}>
+            <div aria-hidden="true" className={cn("relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border", statusClasses[item.status ?? "default"])}>
               {item.icon ?? <span className="h-2.5 w-2.5 rounded-full bg-current" aria-hidden="true" />}
             </div>
             <div className={cn("min-w-0 flex-1", !isLast && "pb-8")}>
