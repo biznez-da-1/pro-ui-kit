@@ -31,10 +31,6 @@ export function RadioGroup({
   disabled = false,
   className,
 }: RadioGroupProps) {
-  if (options.length === 0) {
-    return <p role="status" className={cn("text-sm text-neutral-500", className)}>No options available.</p>;
-  }
-
   const [internalValue, setInternalValue] = React.useState(
     defaultValue ?? "",
   );
@@ -49,6 +45,10 @@ export function RadioGroup({
 
     onValueChange?.(nextValue);
   };
+
+  if (options.length === 0) {
+    return <p role="status" className={cn("text-sm text-neutral-500", className)}>No options available.</p>;
+  }
 
   return (
     <div
