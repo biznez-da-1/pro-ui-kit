@@ -28,10 +28,6 @@ export function FileUpload({
   const [dragging, setDragging] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
 
-  React.useEffect(() => {
-    if (disabled) setDragging(false);
-  }, [disabled]);
-
   const commitFiles = (nextFiles: File[]) => {
     filesRef.current = nextFiles;
     setFiles(nextFiles);
@@ -98,6 +94,8 @@ export function FileUpload({
 
           if (!disabled) {
             setDragging(true);
+          } else {
+            setDragging(false);
           }
         }}
         onDragLeave={(event) => {
@@ -108,7 +106,7 @@ export function FileUpload({
         onDrop={handleDrop}
         className={cn(
           "flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-8 text-center transition-colors",
-          dragging
+          dragging && !disabled
             ? "border-indigo-500 bg-indigo-500/10"
             : "border-neutral-800 bg-neutral-950 hover:border-neutral-700 hover:bg-neutral-900/50",
           disabled && "cursor-not-allowed opacity-50",
