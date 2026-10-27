@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { hasRenderableContent } from "@/lib/has-renderable-content";
+import { hasTextContent } from "@/lib/has-text-content";
 
 export interface CheckboxProps
   extends Omit<
@@ -17,7 +17,7 @@ export const Checkbox = React.forwardRef<
   HTMLInputElement,
   CheckboxProps
 >(({ className, label, disabled = false, "aria-label": ariaLabel, ...props }, ref) => {
-  const hasLabel = hasRenderableContent(label);
+  const hasLabel = hasTextContent(label);
   const labelText = hasLabel ? label : "Checkbox";
   const accessibleLabel = ariaLabel?.trim() || (!hasLabel ? "Checkbox" : undefined);
 
