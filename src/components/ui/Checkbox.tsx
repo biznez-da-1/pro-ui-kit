@@ -44,6 +44,7 @@ export const Checkbox = React.forwardRef<
             transition-colors
             peer-checked:border-indigo-500
             peer-checked:bg-indigo-600
+            peer-checked:[&>svg]:opacity-100
             peer-focus-visible:ring-2
             peer-focus-visible:ring-indigo-500
             peer-focus-visible:ring-offset-2
@@ -59,7 +60,6 @@ export const Checkbox = React.forwardRef<
               text-white
               opacity-0
               transition-opacity
-              peer-checked:opacity-100
             "
             aria-hidden="true"
           />

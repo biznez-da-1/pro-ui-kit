@@ -34,7 +34,8 @@ export function RadioGroup({
   const [internalValue, setInternalValue] = React.useState(
     defaultValue ?? "",
   );
-
+  const generatedId = React.useId();
+  const groupName = name?.trim() || generatedId;
   const selectedValue = value ?? internalValue;
 
   const handleChange = (nextValue: string) => {
@@ -48,6 +49,7 @@ export function RadioGroup({
   return (
     <div
       role="radiogroup"
+      aria-label={name?.trim() || "Options"}
       aria-disabled={disabled}
       className={cn(
         "flex gap-3",
@@ -58,9 +60,16 @@ export function RadioGroup({
         className,
       )}
     >
-      {options.map((option) => {
-        const id = `${name ?? "radio-group"}-${option.value}`;
+      {options.length === 0 && (
+        <p role="status" className="text-sm text-neutral-500">
+          No options available.
+        </p>
+      )}
+      {options.map((option, index) => {
+        const id = `${generatedId}-option-${index}`;
         const optionDisabled = disabled || option.disabled;
+        const optionLabel = option.label.trim() || option.value.trim() || `Option ${index + 1}`;
+        const optionDescription = option.description?.trim();
 
         return (
           <label
@@ -76,18 +85,19 @@ export function RadioGroup({
             <input
               id={id}
               type="radio"
-              name={name}
+              name={groupName}
               value={option.value}
               checked={selectedValue === option.value}
               disabled={optionDisabled}
               onChange={() => handleChange(option.value)}
-              className="sr-only"
+              className="peer sr-only"
             />
 
             <span
               aria-hidden="true"
               className={cn(
                 "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
+                "peer-focus-visible:outline-none peer-focus-visible:ring-2 peer-focus-visible:ring-indigo-500 peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-neutral-950",
                 selectedValue === option.value
                   ? "border-white bg-white"
                   : "border-neutral-700 bg-neutral-950",
@@ -103,9 +113,9 @@ export function RadioGroup({
                 {option.label}
               </span>
 
-              {option.description && (
+              {optionDescription && (
                 <span className="mt-0.5 block text-xs text-neutral-500">
-                  {option.description}
+                  {optionDescription}
                 </span>
               )}
             </span>
