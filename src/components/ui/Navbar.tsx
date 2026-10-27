@@ -23,6 +23,7 @@ export function Navbar({
 
   return (
     <nav
+      aria-label="Main navigation"
       className={cn(
         "relative border-b border-neutral-800 bg-neutral-950/90 backdrop-blur-xl",
         className,
